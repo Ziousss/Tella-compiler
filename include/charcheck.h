@@ -9,7 +9,7 @@
 
 bool isDelimiter (char chr);
 bool isOperation (char chr);
-bool validIdentitfier (char chr);
+bool validIdentitfier (char *str);
 bool isKeyword (char *str);
 bool isInteger (char *str);
 char* getSubstring (char *str, int start, int end) ;
