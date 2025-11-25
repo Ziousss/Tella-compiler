@@ -5,6 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(include)
 
-file(GLOB SOURCES "source/*.c")
+file(GLOB SOURCES "source/lexer/*.c")
 
 add_executable(compiler ${SOURCES})
