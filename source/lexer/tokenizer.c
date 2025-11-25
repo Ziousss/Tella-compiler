@@ -1,15 +1,38 @@
 #include "../include/lexer/tokenizer.h"
 #include "../include/lexer/charcheck.h"
 
+const char* tokenTypeToString(int type) {
+    switch (type) {
+        case IDENTIFIER: return "IDENTIFIER";
+        case KEYWORD:    return "KEYWORD";
+        case OPERATOR:   return "OPERATOR";
+        case DELIMITER:  return "DELIMITER";
+        case INTEGER:    return "INTEGER";
+        case UNIDENTIFIED: return "UNIDENTIFIED";
+        default: return "UNKNOWN";
+    }
+}
 
 int lexicalAnalyzer (char* input) {
     int left = 0, right = 0;
     int len = strlen(input);
     Tokenstruct *tokenList = NULL;
     int tokenCount = 0;
+    int line = 1;
 
     while (right <= len && left <= right)
     {
+        while(whiteSpace(input[right])){
+            right++;
+            left = right;
+        }
+
+        if(input[right] == '\n'){
+            line++;
+            right++;
+            left = right;
+        }
+
         if(!isDelimiter(input[right])){
             right++;
         }
@@ -66,8 +89,8 @@ int lexicalAnalyzer (char* input) {
         }
     }
 
-    for (int i = 0; i < tokenCount; i++){
-        printf("%s\n", tokenList[i].lexeme);    
+    for (int i = 0; i < tokenCount; i++) {
+        printf("Type: %s, Lexeme: %s\n", tokenTypeToString(tokenList[i].type), tokenList[i].lexeme);
     }
 
     //for now I free here I will change this because i need the list later on

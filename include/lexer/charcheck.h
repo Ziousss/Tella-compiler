@@ -12,7 +12,8 @@ bool isOperation (char chr);
 bool validIdentitfier (char *str);
 bool isKeyword (char *str);
 bool isInteger (char *str);
-char* getSubstring (char *str, int start, int end) ;
+char* getSubstring (char *str, int start, int end);
 bool specialCaseDelimiter (char chr);
+bool whiteSpace(char chr);
 
 #endif

@@ -8,6 +8,7 @@
 #include <ctype.h>
 
 int lexicalAnalyzer (char* input);
+const char* tokenTypeToString(int type);
 
 enum Tokentype {
     IDENTIFIER, OPERATOR, DELIMITER, KEYWORD, INTEGER, UNIDENTIFIED

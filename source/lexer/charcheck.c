@@ -87,3 +87,7 @@ char* getSubstring (char *str, int start, int end) {
     subStr[sublength] = '\0';
     return subStr;
 }
+
+bool whiteSpace(char chr){
+    return (chr == ' ');
+}
