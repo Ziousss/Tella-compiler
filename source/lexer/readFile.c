@@ -1,12 +1,33 @@
-#include "../include/lexer/lexer.h"
-#include "../include/lexer/charcheck.h"
-#include "../include/lexer/tokenizer.h"
-
-#define MAX_LENGTH 100
+#include "../include/lexer/readFile.h"
 
 
-int main()
+char *readFile(char *filename)
 {
-    //example
-    lexicalAnalyzer("int main() {int a,b; a=10; return 0;}");
+    FILE *fp = fopen(filename, "r");
+    if (!fp){
+        perror("File could not open");
+        return NULL;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    rewind(fp);
+
+    char *content = malloc(size+1);
+    if (!content) {
+        perror("Memory allocation failed");
+        fclose(fp);
+        return NULL;
+    }
+
+    if (fread(content, 1, size, fp) != size) {
+        perror("Failed to read file");
+        free(content);
+        fclose(fp);
+        return NULL;
+    }
+    content[size] = '\0';
+
+    fclose(fp);
+    return content;
 }

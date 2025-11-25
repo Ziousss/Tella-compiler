@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "../include/lexer/charcheck.h"
+#include "charcheck.h"
+
+char *readFile(char *filename);
 
 #endif
