@@ -89,5 +89,5 @@ char* getSubstring (char *str, int start, int end) {
 }
 
 bool whiteSpace(char chr){
-    return (chr == ' ');
+    return (chr == ' ' || chr == '\t' || chr == '\r');
 }

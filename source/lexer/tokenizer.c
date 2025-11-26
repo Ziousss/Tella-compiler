@@ -31,7 +31,38 @@ int lexicalAnalyzer (char* input) {
             line++;
             right++;
             left = right;
+            continue;
         }
+
+        if(input[right] == '/' && right+1 <= len){
+            if (input[right+1] == '/'){
+                while (input[right] != '\n')
+                {
+                    right++;
+                }
+                line++;
+                right++;
+                left = right;
+            }
+        }
+
+        if (input[right] == '/' && right + 1 < len && input[right + 1] == '*') {
+            right += 2;
+            while (right + 1 < len && !(input[right] == '*' && input[right + 1] == '/')) {
+                if (input[right] == '\n') {
+                    line++;
+                }
+                right++;
+            }
+
+            if (right + 1 < len) {
+                right += 2;
+            }
+
+            left = right;
+            continue;
+        }
+
 
         if(!isDelimiter(input[right])){
             right++;
@@ -58,7 +89,7 @@ int lexicalAnalyzer (char* input) {
             right++;
             left = right;
         }
-        else if (isDelimiter(input[right]) && left != right || (right == len && left != right)){
+        else if ((isDelimiter(input[right]) && left != right) || (right == len && left != right)) {
             char *sub = getSubstring(input, left, right-1);
 
             if(isKeyword(sub)){
