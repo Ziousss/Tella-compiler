@@ -7,16 +7,18 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-int lexicalAnalyzer (char* input);
-const char* tokenTypeToString(int type);
-
-enum Tokentype {
+typedef enum {
     IDENTIFIER, OPERATOR, DELIMITER, KEYWORD, INTEGER, UNIDENTIFIED
-};
+} Tokentype;
 
 typedef struct {
-    enum Tokentype type;
+    Tokentype type;
     char* lexeme;
 } Tokenstruct;
+
+
+Tokenstruct *lexicalAnalyzer (char* input);
+const char* tokenTypeToString(int type);
+
 
 #endif

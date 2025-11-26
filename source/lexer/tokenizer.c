@@ -13,7 +13,7 @@ const char* tokenTypeToString(int type) {
     }
 }
 
-int lexicalAnalyzer (char* input) {
+Tokenstruct *lexicalAnalyzer (char* input) {
     int left = 0, right = 0;
     int len = strlen(input);
     Tokenstruct *tokenList = NULL;
@@ -25,6 +25,7 @@ int lexicalAnalyzer (char* input) {
         while(whiteSpace(input[right])){
             right++;
             left = right;
+            continue;
         }
 
         if(input[right] == '\n'){
@@ -124,11 +125,5 @@ int lexicalAnalyzer (char* input) {
         printf("Type: %s, Lexeme: %s\n", tokenTypeToString(tokenList[i].type), tokenList[i].lexeme);
     }
 
-    //for now I free here I will change this because i need the list later on
-    for(int i = 0; i < tokenCount; i++){
-        free(tokenList[i].lexeme);
-    }
-    free(tokenList);
-
-    return 0;
+    return tokenList;
 }
