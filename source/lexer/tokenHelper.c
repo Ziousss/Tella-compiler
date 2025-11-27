@@ -29,6 +29,7 @@ const char* tokenTypeToString(int type) {
         case TOK_SEMICOLON:     return "SEMICOLON";
         case TOK_DOUBLEPOINT:   return "DOOUBLEPOINT";
         case TOK_EXCLAMATION:   return "EXCLAMATION";
+        case TOK_DOT:           return "DOT";
 
         case TOK_IF:            return "IF";
         case TOK_WHILE:         return "WHILE";

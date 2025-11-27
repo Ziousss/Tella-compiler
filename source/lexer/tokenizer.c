@@ -22,6 +22,15 @@ Tokenstruct *lexicalAnalyzer(char *input){
         }
 
         if (right == left && right < len){
+            if (input[right] == '.'){
+                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                maketokenChar(tokenList, tokencount, TOK_DOT, '.', 1, line);
+                right++;
+                left = right;
+                tokencount++;
+                continue;
+            }
+
             //Delimiter token
             if(isDelimiter(input[right])){
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
@@ -172,8 +181,6 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 left = right;
                 continue;
             }
-            
-
             right++;
         }
     }
