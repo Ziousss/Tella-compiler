@@ -21,6 +21,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
             continue;
         }
 
+        //Delimiter token
         if (right == left && right < len){
             if(isDelimiter(input[right])){
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
@@ -43,6 +44,8 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 left = right;
                 continue;
             }
+
+            //Operator token
             //need to add <, > <=, >= and - 
             if(isOperation(input[right])){
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
@@ -67,6 +70,44 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 left = right;
                 continue;
             }
+
+            //String and Char literal token
+            if (input[right] == '\'')
+            {
+                right++;
+                int start = right;
+                while (input[right] != '\'')
+                {
+                    right++;
+                }
+                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                char *sub = getSubstring(input,start,right-1);
+                int sublen = strlen(sub);
+                maketokenString(tokenList,tokencount,CHAR_LITERAL, sub,sublen, line);
+                right++;
+                left = right;
+                tokencount++;
+                continue;
+            }
+            
+            if (input[right] == '\"')
+            {
+                right++;
+                int start = right;
+                while (input[right] != '\"')
+                {
+                    right++;
+                }
+                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                char *sub = getSubstring(input,start,right-1);
+                int sublen = strlen(sub);
+                maketokenString(tokenList,tokencount,STRING_LITERAL, sub,sublen, line);
+                right++;
+                left = right;
+                tokencount++;
+                continue;
+            }
+
             right++;
         }
         else if (right != left) {

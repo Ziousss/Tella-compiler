@@ -1,1 +1,1 @@
-{}(while():+for
+void 'c' "THIS IS A TEST"

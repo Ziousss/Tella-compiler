@@ -33,10 +33,14 @@ const char* tokenTypeToString(int type) {
         case TOK_FOR:           return "FOR";
         case TOK_CASE:          return "CASE";
 
+        case TOK_INT:           return "INT_TYPE";
+        case TOK_CHAR:          return "CHAR_TYPE";
+        case TOK_VOID:          return "VOID_TYPE";
+
         case TOK_EOF:           return "EOF";
         case TOK_ERROR:         return "ERROR";
 
-        default:                return "UNKNOWN";
+        default:                return "NOT NAMED YET";
     }
 }
 
@@ -60,9 +64,20 @@ Tokenstruct *maketokenString (Tokenstruct *tokenlist, int count, Tokentype type,
 
 Keyword keywords[] = {
     {"if", TOK_IF},
+    {"else", TOK_ELSE},
     {"while", TOK_WHILE},
-    {"return", TOK_RETURN},
     {"for", TOK_FOR},
+    {"do", TOK_DO},
+    {"switch", TOK_SWITCH},
     {"case", TOK_CASE},
+    {"break", TOK_BREAK},
+    {"continue", TOK_CONTINUE},
+    {"return", TOK_RETURN},
+    {"int", TOK_INT},
+    {"char", TOK_CHAR},
+    {"void", TOK_VOID},
+    {"true", TOK_TRUE},
+    {"false", TOK_FALSE},
+    {"NULL", TOK_NULL},
     {NULL, 0} 
 };
