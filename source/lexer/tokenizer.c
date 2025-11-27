@@ -1,167 +1,89 @@
 #include "../include/lexer/tokenizer.h"
 #include "../include/lexer/charcheck.h"
 
-const char* tokenTypeToString(int type) {
-    switch (type) {
-        case IDENTIFIER: return "IDENTIFIER";
-        case KEYWORD:    return "KEYWORD";
-        case OPERATOR:   return "OPERATOR";
-        case DELIMITER:  return "DELIMITER";
-        case INTEGER_LITERAL:    return "INTEGER";
-        case FLOAT_LITERAL:    return "FLOAT";
-        case CHAR_LITERAL:    return "CHAR";
-        case STRING_LITERAL:    return "STRING";
-        case UNIDENTIFIED: return "UNDENTIFIED";
-        default: return "UNKNOWN";
-    }
+Tokenstruct *maketokenChar (Tokenstruct *tokenlist, int count, Tokentype type, char chr, int length, int line){
+    tokenlist[count].type = type;
+    tokenlist[count].lexeme = malloc(2);
+    tokenlist[count].lexeme[0] = (char)chr;
+    tokenlist[count].lexeme[1] = '\0';
+    tokenlist[count].line = line;
+    tokenlist[count].length = length;
+    return tokenlist;
 }
 
-Tokenstruct *lexicalAnalyzer (char* input) {
-    int left = 0, right = 0;
-    int len = strlen(input);
-    Tokenstruct *tokenList = NULL;
-    int tokenCount = 0;
+Tokenstruct *maketokenString (Tokenstruct *tokenlist, int count, Tokentype type, char *sub, int length, int line) {
+    tokenlist[count].type = type;
+    tokenlist[count].lexeme = sub;
+    tokenlist[count].line = line;
+    tokenlist[count].length = length;
+    return tokenlist;
+}
+
+Tokenstruct *lexicalAnalyzer(char *input){
+    int right = 0, left = 0, tokencount = 0;
     int line = 1;
+    Tokenstruct *tokenList = NULL;
+    int len = strlen(input);
+    while (right < len){
 
-    while (right <= len && left <= right)
-    {
-        while(whiteSpace(input[right])){
-            right++;
-            left = right;
-            continue;
-        }
-
-        if(input[right] == '\n'){
-            line++;
-            right++;
-            left = right;
-            continue;
-        }
-
-        if(input[right] == '/' && right+1 <= len){
-            if (input[right+1] == '/'){
-                while (input[right] != '\n')
-                {
-                    right++;
-                }
-                line++;
-                right++;
-                left = right;
-            }
-        }
-
-        if (input[right] == '/' && right + 1 < len && input[right + 1] == '*') {
-            right += 2;
-            while (right + 1 < len && !(input[right] == '*' && input[right + 1] == '/')) {
-                if (input[right] == '\n') {
-                    line++;
-                }
-                right++;
-            }
-
-            if (right + 1 < len) {
-                right += 2;
-            }
-
-            left = right;
-            continue;
-        }
-
-        //Char literal
-        if (input[right] == '\'' && right+1 < len) { 
-            ++right;
-            int start = right;
-            while (input[right] != '\'' && right < len)
+        if(isDelimiter(input[right])){
+            tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+            switch (input[right])
             {
-                ++right;
+                case ';': maketokenChar(tokenList, tokencount, TOK_SEMICOLON, input[right], 1, line); break;
+                case ',': maketokenChar(tokenList, tokencount, TOK_COMMA, input[right], 1, line);break;
+                case '(': maketokenChar(tokenList, tokencount, TOK_LPAREN, input[right], 1, line);break;
+                case ')': maketokenChar(tokenList, tokencount, TOK_RPAREN, input[right], 1, line);break;
+                case '{': maketokenChar(tokenList, tokencount, TOK_LBRACE, input[right], 1, line);break;
+                case '}': maketokenChar(tokenList, tokencount, TOK_RBRACE, input[right], 1, line);break;
+                case '[': maketokenChar(tokenList, tokencount, TOK_LSQRTBRAK, input[right], 1, line);break;
+                case ']': maketokenChar(tokenList, tokencount, TOK_RSQRTBRAK, input[right], 1, line);break;
+                case ':': maketokenChar(tokenList, tokencount, TOK_DOUBLEPOINT, input[right], 1, line);break;
+                default: maketokenChar(tokenList, tokencount, UNIDENTIFIED, input[right], 1, line);break;
             }
-
-            char *sub = getSubstring(input, start, right-1);
-            tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokenCount+1));
-            tokenList[tokenCount].type = CHAR_LITERAL;
-            tokenList[tokenCount].lexeme = sub;
-            tokenCount++;
             right++;
+            printf("%s", tokenList[tokencount].lexeme);
+            tokencount++;
             left = right;
+            continue;
         }
-
-        //String literal
-        if (input[right] == '\"' && right+1 < len) { 
-            ++right;
-            int start = right;
-            while (input[right] != '\"' && right < len)
+        //need to add <, > <=, >= and - 
+        if(isOperation(input[right])){
+            tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+            switch (input[right])
             {
-                ++right;
+                case '+': maketokenChar(tokenList, tokencount, TOK_PLUS, input[right], 1, line); break;
+                case '-': maketokenChar(tokenList, tokencount, TOK_MINUS, input[right], 1, line);break;
+                case '/': maketokenChar(tokenList, tokencount, TOK_SLASH, input[right], 1, line);break;
+                case '*': maketokenChar(tokenList, tokencount, TOK_STAR, input[right], 1, line);break;
+                case '=': 
+                    if(input[right+1] == '='){
+                        maketokenString(tokenList, tokencount, TOK_EQEQ, "==", 2, line);
+                        right++;
+                    } else {
+                        maketokenChar(tokenList, tokencount, TOK_EQ, input[right], 1, line);break;
+                    }
+                
+                default: maketokenChar(tokenList, tokencount, UNIDENTIFIED, input[right], 1, line);break;
             }
-
-            char *sub = getSubstring(input, start, right-1);
-            tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokenCount+1));
-            tokenList[tokenCount].type = STRING_LITERAL;
-            tokenList[tokenCount].lexeme = sub;
-            tokenCount++;
             right++;
+            printf("%s", tokenList[tokencount].lexeme);
+            tokencount++;
             left = right;
+            continue;
         }
 
-        if(!isDelimiter(input[right])){
-            right++;
-        }
+        
 
-        if(isDelimiter(input[right]) && left == right){
-            if(isOperation(input[right])){
-                tokenList = realloc (tokenList, sizeof(Tokenstruct) * (tokenCount + 1));
-                tokenList[tokenCount].type = OPERATOR;
-                tokenList[tokenCount].lexeme = malloc(2);
-                tokenList[tokenCount].lexeme[0] = (char)input[right];
-                tokenList[tokenCount].lexeme[1] = '\0';
-                tokenCount++;
-            } 
-            else if (specialCaseDelimiter(input[right]) && left == right){
-                tokenList = realloc (tokenList, sizeof(Tokenstruct) * (tokenCount + 1));
-                tokenList[tokenCount].type = DELIMITER;
-                tokenList[tokenCount].lexeme = malloc(2);
-                tokenList[tokenCount].lexeme[0] = (char)input[right];
-                tokenList[tokenCount].lexeme[1] = '\0';
-                tokenCount++;
-            }
+        right++;        
 
-            right++;
-            left = right;
-        }
-        else if ((isDelimiter(input[right]) && left != right) || (right == len && left != right)) {
-            char *sub = getSubstring(input, left, right-1);
-            if(isKeyword(sub)){
-                tokenList = realloc (tokenList, sizeof(Tokenstruct) * (tokenCount + 1));
-                tokenList[tokenCount].type = KEYWORD;
-                tokenList[tokenCount].lexeme = sub;
-                tokenCount++;
-            }
-            else if (isInteger (sub)) {
-                tokenList = realloc (tokenList, sizeof(Tokenstruct) * (tokenCount + 1));
-                tokenList[tokenCount].type = INTEGER_LITERAL;
-                tokenList[tokenCount].lexeme = sub;
-                tokenCount++;
-            }
-            else if (validIdentitfier(sub) && !isDelimiter(input[right-1])){
-                tokenList = realloc (tokenList, sizeof(Tokenstruct) * (tokenCount + 1));
-                tokenList[tokenCount].type = IDENTIFIER;
-                tokenList[tokenCount].lexeme = sub;
-                tokenCount++;
-            }
-            else if (!validIdentitfier(sub) && !isDelimiter(input[right-1])){
-                tokenList = realloc (tokenList, sizeof(Tokenstruct) * (tokenCount + 1));
-                tokenList[tokenCount].type = UNIDENTIFIED;
-                tokenList[tokenCount].lexeme = sub;
-                tokenCount++;
-            }
-            left = right;
 
-        }
+
+
+
+
+
+
     }
-
-    for (int i = 0; i < tokenCount; i++) {
-        printf("Type: %s, Lexeme: %s\n", tokenTypeToString(tokenList[i].type), tokenList[i].lexeme);
-    }
-
     return tokenList;
 }
