@@ -1,24 +1,6 @@
 #include "../include/lexer/tokenizer.h"
 #include "../include/lexer/charcheck.h"
 
-Tokenstruct *maketokenChar (Tokenstruct *tokenlist, int count, Tokentype type, char chr, int length, int line){
-    tokenlist[count].type = type;
-    tokenlist[count].lexeme = malloc(2);
-    tokenlist[count].lexeme[0] = (char)chr;
-    tokenlist[count].lexeme[1] = '\0';
-    tokenlist[count].line = line;
-    tokenlist[count].length = length;
-    return tokenlist;
-}
-
-Tokenstruct *maketokenString (Tokenstruct *tokenlist, int count, Tokentype type, char *sub, int length, int line) {
-    tokenlist[count].type = type;
-    tokenlist[count].lexeme = sub;
-    tokenlist[count].line = line;
-    tokenlist[count].length = length;
-    return tokenlist;
-}
-
 Tokenstruct *lexicalAnalyzer(char *input){
     int right = 0, left = 0, tokencount = 0;
     int line = 1;

@@ -22,7 +22,7 @@ const char* tokenTypeToString(int type) {
         case TOK_LBRACE:        return "LEFT_BRACE";
         case TOK_RBRACE:        return "RIGHT_BRACE";
 
-        case TOK_COMMA:          return "COMMA";       // (I kept your spelling)
+        case TOK_COMMA:          return "COMMA"; 
         case TOK_SEMICOLON:     return "SEMICOLON";
 
         case TOK_IF:            return "IF";
