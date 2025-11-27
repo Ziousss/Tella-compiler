@@ -1,1 +1,3 @@
-void 'c' "THIS IS A TEST"
+int (){
+    int a = 5;
+}

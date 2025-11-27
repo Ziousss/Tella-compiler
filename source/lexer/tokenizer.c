@@ -89,6 +89,23 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 tokencount++;
                 continue;
             }
+
+            if (isdigit(input[right])){
+                int start = right;
+                while (isdigit(input[right]))
+                {
+                    right++;
+                }
+                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                char *sub = getSubstring(input, start,right-1);
+                int sublen = strlen(sub);
+                maketokenString(tokenList, tokencount, INTEGER_LITERAL, sub, sublen,line);
+                printf("%s", sub);
+
+                left = right;
+                tokencount++;
+                continue;
+            }
             
             if (input[right] == '\"')
             {
@@ -128,14 +145,8 @@ Tokenstruct *lexicalAnalyzer(char *input){
             }
             right++;
         }
-        
-        
-
-
-
-
-        
     }
+
     for (int i = 0; i < tokencount; i++){
         printf("%s, %s\n", tokenList[i].lexeme, tokenTypeToString(tokenList[i].type));
     }

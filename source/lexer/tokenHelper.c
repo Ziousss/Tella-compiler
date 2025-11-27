@@ -2,7 +2,7 @@
 
 const char* tokenTypeToString(int type) {
     switch (type) {
-        case TOK_IDENTIFIER:    return "IDENTIFIER";
+        case TOK_LABEL:         return "LABEL";
         case INTEGER_LITERAL:   return "INTEGER_LITERAL";
         case FLOAT_LITERAL:     return "FLOAT_LITERAL";
         case CHAR_LITERAL:      return "CHAR_LITERAL";
@@ -79,5 +79,6 @@ Keyword keywords[] = {
     {"true", TOK_TRUE},
     {"false", TOK_FALSE},
     {"NULL", TOK_NULL},
+    {"main", TOK_MAIN},
     {NULL, 0} 
 };
