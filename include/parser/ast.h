@@ -4,24 +4,29 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
+#include "../include/lexer/tokenizer.h"
 
-// Forward declaration
 typedef struct ASTnode ASTnode;
 
 typedef enum {
-    NODE_PROGRAM, 
-    NODE_FUNCDEF, 
-    NODE_PARAMETERS, 
-    NODE_STATEMENT, 
-    NODE_DECLARATION, 
-    NODE_BLOCK, 
-    NODE_TYPE,
-    NODE_NUMBER,
-    NODE_IDENTIFIER,
-    NODE_OPERATOR,
-    NODE_EXPRESSION,
-    NODE_FUNCCALL
+    AST_PROGRAM,
+
+    AST_FUNC_DEF,
+    AST_VAR_DECL,
+    AST_PARAM_DECL,
+
+    AST_BLOCK,
+    AST_RETURN,
+    AST_EXPR_STMT,
+
+    AST_BINARY_EXPR,
+    AST_ASSIGN_EXPR,
+    AST_CALL_EXPR,
+
+    AST_IDENTIFIER,
+    AST_NUMBER,
 } NodeType;
+
 
 typedef struct {
     double value;
@@ -54,7 +59,7 @@ typedef struct {
 
 typedef struct {
     char *name;
-    ASTnode *return_type;
+    Tokentype return_type;
     ASTnode *parameters;
     ASTnode *body;
 } FunctionDefNode;
