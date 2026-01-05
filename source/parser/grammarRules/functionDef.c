@@ -1,0 +1,56 @@
+#include "../include/parser/ast.h"
+#include "../include/parser/grammarRules.h"
+
+ASTnode *funcDefparse(Tokenstruct *tokenList, int *index){
+    int i = *index;
+    
+    
+    if(!isTOKType(tokenList[i].type)){
+        printf("type expected in the function definitionn, line %d", tokenList[i].line);
+        return NULL;
+    }
+    Tokentype return_type = tokenList[i].type; 
+    ++i;
+
+    if(tokenList[i].type != TOK_IDENTIFIER){
+        printf("indentifier expected in the function definition, line %d", tokenList[i].line);
+        return NULL;
+    } 
+    char *name = tokenList[i].lexeme;
+    ++i;
+
+    if(tokenList[i].type != TOK_LPAREN){
+        printf(" \"(\" expected in the function definition, line %d", tokenList[i].line);
+        return NULL;     
+    } ++i;
+
+    ASTnode *parameters = NULL;
+    if(tokenList[i].type == TOK_RPAREN){
+        ++i;
+        
+    } else {
+        parameters = parameterParse(tokenList, &i);
+        if (parameters == NULL){
+            return NULL;
+        }
+        if(tokenList[i].type != TOK_RPAREN){
+            printf("Right parenthesis expected, line %d", tokenList[i].line);
+        }
+    }
+
+    ASTnode *block = blockParse(tokenList, &i);
+    if (block == NULL){
+        return NULL; 
+    }
+
+    //all good, we can create the node
+    ASTnode *func_def_ast = malloc(sizeof(ASTnode));
+    func_def_ast->type = AST_FUNC_DEF;
+    func_def_ast->data.function_def.body = block;
+    func_def_ast->data.function_def.name = name;
+    func_def_ast->data.function_def.parameters = parameters;
+    func_def_ast->data.function_def.return_type = return_type;
+    *index = i;
+
+    return func_def_ast;
+}
