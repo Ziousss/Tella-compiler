@@ -2,7 +2,7 @@
 #include "../include/parser/grammarRules.h"
 #include "../include/parser/helperFunc.h"
 
-ASTnode *funcDefparse(Tokenstruct *tokenList, int *index){
+ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     
     

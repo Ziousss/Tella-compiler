@@ -29,17 +29,14 @@ void param_list_add(ParameterNode **head, ParameterNode *param) {
     cur->next = param;
 }
 
-ASTnode *new_stmt_list() {
-    ASTnode *tmp = malloc(sizeof(ASTnode));
-    tmp->ast_type = AST_STMT_LIST;
-    tmp->data.block.stmts = NULL;
-    return tmp;
-}
+void add_stmt_list(ASTnode *head, ASTnode *last, ASTnode *stmt, Tokentype ast_type) {
+    if (head == NULL){
+        head = stmt;
+        head->ast_type = ast_type;
+    } else {
+        last->next = stmt;
+        last->next->ast_type = ast_type;
+    }
 
-void add_stmt_list(ASTnode *list, ASTnode *stmt) {
-    ASTnode *tmp = list->data.block.stmts->next;
-    while (tmp->data.block.stmts->next)
-        tmp = tmp->data.block.stmts->next;
-
-    tmp->data.block.stmts->next = stmt;
+    last = stmt;
 }

@@ -9,48 +9,49 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
         printf("Expected '{' line %d", tokenList[i].line);
     } ++i;
 
-    ASTnode *stmt_list = new_stmt_list();
+    ASTnode *stmt_list = NULL;
+    ASTnode *last = NULL;
     while (tokenList[i].type != TOK_RBRACE)
     {
         int start_i = i;
         if(tokenList[i].type == TOK_IDENTIFIER){
             ASTnode *func_call = funcCallParse(tokenList, &i);
             if(func_call != NULL){
-                add_stmt_list(stmt_list, func_call);
+                add_stmt_list(stmt_list, last, func_call, AST_FUNC_CALL);
                 continue;
             }
 
-            ASTnode *assignment = assignementParse(tokenList, &i);
+            ASTnode *assignment = assignParser(tokenList, &i);
             if(assignment != NULL){
-                add_stmt_list(stmt_list, assignment);
+                add_stmt_list(stmt_list,last, assignment, AST_ASSIGN_EXPR);
                 continue;
             }
         } 
         if(isTOKType(tokenList[i].type)){
             ASTnode *declaration = declaParse(tokenList, &i);
             if(declaration != NULL){
-                add_stmt_list(stmt_list, declaration);
+                add_stmt_list(stmt_list, last, declaration, AST_VAR_DECL);
                 continue;
             }
         }
         if(tokenList[i].type == TOK_IF){
             ASTnode *if_stat = ifStatParse(tokenList, &i);
-            add_stmt_list(stmt_list, if_stat);
+            add_stmt_list(stmt_list, last, if_stat, AST_IF_STMT);
             continue;
         }
         if(tokenList[i].type == TOK_FOR){
             ASTnode *for_stat = forStatParse(tokenList, &i);
-            add_stmt_list(stmt_list, for_stat);
+            add_stmt_list(stmt_list, last, for_stat, AST_FOR_STMT);
             continue;
         }
         if(tokenList[i].type == TOK_WHILE){
             ASTnode *while_stat = whileStatParse(tokenList, &i);
-            add_stmt_list(stmt_list, while_stat);
+            add_stmt_list(stmt_list, last, while_stat, AST_WHILE_STMT);
             continue;
         }  
         if(tokenList[i].type == TOK_RETURN){
             ASTnode *return_stat = returnStatParse(tokenList, &i);
-            add_stmt_list(stmt_list, return_stat);
+            add_stmt_list(stmt_list, last, return_stat, AST_RETURN);
             continue;
         }  
         if (i == start_i) {

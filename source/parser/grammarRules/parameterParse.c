@@ -5,7 +5,7 @@
 ParameterNode *parameterParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int count = 0;
-    ASTnode *param_list = NULL;
+    ParameterNode *param_list = NULL;
 
     while(true){
         if(!isTOKType(tokenList[i].type)){
@@ -23,7 +23,7 @@ ParameterNode *parameterParse(Tokenstruct *tokenList, int *index){
         ++i;
 
         ParameterNode *tmp = create_param_tree(name, type, count++);
-        param_list_add(param_list, tmp);
+        param_list_add(&param_list, tmp);
 
         if(tokenList[i].type == TOK_COMMA){
             ++i;
