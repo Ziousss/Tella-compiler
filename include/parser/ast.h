@@ -73,6 +73,12 @@ typedef struct ASTnode {
             ASTnode *target; 
             ASTnode *value; 
         } assign;
+
+        struct {
+            Tokentype type;
+            char *identifier;
+            ASTnode *expression;
+        } declaration;
         
         struct { 
             ASTnode *stmts; 
