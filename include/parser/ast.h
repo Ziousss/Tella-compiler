@@ -101,6 +101,11 @@ typedef struct ASTnode {
             ASTnode *block;
         } for_node;
 
+        struct {
+            ASTnode *block;
+            ASTnode *condition;
+        } while_node;
+        
         struct { 
             char *name; 
             Tokentype return_type; 
