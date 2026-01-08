@@ -87,6 +87,12 @@ typedef struct ASTnode {
         struct { 
             ASTnode *expr; 
         } return_node;
+
+        struct {
+            ASTnode *condition;
+            ASTnode *if_branch;
+            ASTnode *else_branch;
+        } if_node;
         
         struct { 
             char *name; 
