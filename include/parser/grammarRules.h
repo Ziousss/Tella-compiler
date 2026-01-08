@@ -9,7 +9,7 @@
 #include "ast.h"
 #include "../lexer/tokenizer.h"
 
-ASTnode *funcDefparse(Tokenstruct *tokenList, int *index);
+ASTnode *funcDefParse(Tokenstruct *tokenList, int *index);
 ParameterNode *parameterParse(Tokenstruct *tokenList, int *index);
 ASTnode *blockParse(Tokenstruct *tokenList, int *index);
 ASTnode *funcCallParse(Tokenstruct *tokenList, int *index);
@@ -20,5 +20,6 @@ ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *forStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *whileStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index);
+ASTnode *programParse(Tokenstruct *tokenList, int *index);
 
 #endif

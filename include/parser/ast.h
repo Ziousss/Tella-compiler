@@ -112,6 +112,10 @@ typedef struct ASTnode {
             ParameterNode *parameters; 
             ASTnode *body; 
         } func_def;
+
+        struct {
+            ASTnode *func_def;
+        } program_node;
     } data;
 
     struct ASTnode *next; 
