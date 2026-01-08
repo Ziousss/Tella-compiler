@@ -16,5 +16,7 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index);
 ASTnode *declarationParse(Tokenstruct *tokenlist, int *index);
 ASTnode *assignParse(Tokenstruct *tokenList, int *index);
 ASTnode *expressionParse(Tokenstruct *tokenList, int *index);
+ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index);
+ASTnode *forStmtParse(Tokenstruct *tokenList, int *index);
 
 #endif

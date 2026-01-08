@@ -28,7 +28,7 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
             }
         } 
         if(isTOKType(tokenList[i].type)){
-            ASTnode *declaration = declaParse(tokenList, &i);
+            ASTnode *declaration = declarationParse(tokenList, &i);
             if(declaration != NULL){
                 add_stmt_list(stmt_list, last, declaration, AST_VAR_DECL);
                 continue;
@@ -43,7 +43,7 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
             continue;
         }
         if(tokenList[i].type == TOK_FOR){
-            ASTnode *for_stmt = forStmParse(tokenList, &i);
+            ASTnode *for_stmt = forStmtParse(tokenList, &i);
             if(for_stmt == NULL){
                 return NULL;
             }

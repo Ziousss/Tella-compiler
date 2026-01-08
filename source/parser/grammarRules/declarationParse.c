@@ -18,7 +18,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type == TOK_EQ){
         ++i;
-        expression = expresisonParse(tokenList, &i);
+        expression = expressionParse(tokenList, &i);
         if (expression == NULL){
             printf("expression expected after '=' line %d", tokenList[i].line);
             return NULL;

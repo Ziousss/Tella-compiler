@@ -94,6 +94,13 @@ typedef struct ASTnode {
             ASTnode *else_branch;
         } if_node;
         
+        struct {
+            ASTnode *initialisation;
+            ASTnode *condition;
+            ASTnode *incrementation;
+            ASTnode *block;
+        } for_node;
+
         struct { 
             char *name; 
             Tokentype return_type; 
