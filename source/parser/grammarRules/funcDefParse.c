@@ -5,7 +5,6 @@
 ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     
-    
     if(!isTOKType(tokenList[i].type)){
         printf("type expected in the function definitionn, line %d", tokenList[i].line);
         return NULL;
