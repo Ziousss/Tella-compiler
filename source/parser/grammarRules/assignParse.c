@@ -21,14 +21,17 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
         return NULL;
     }
 
-    *index = i;
-
+    if(tokenList[i].type != TOK_SEMICOLON){
+        printf("Semicolon expected line %d\n", tokenList[i].line);
+        return NULL;
+    }
+    
     ASTnode *assigneNode = malloc(sizeof(ASTnode));
     if(assigneNode == NULL){
         printf("Malloc error in assignParse.\n");
         return NULL;
     }
-    
+    *index = i;
     assigneNode->ast_type = AST_ASSIGN_EXPR;
     assigneNode->data.assign.target = target;
     assigneNode->data.assign.value = value;
