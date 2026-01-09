@@ -6,21 +6,21 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     
     if(!isTOKType(tokenList[i].type)){
-        printf("type expected in the function definition, line %d", tokenList[i].line);
+        printf("type expected in the function definition, line %d\n", tokenList[i].line);
         return NULL;
     }
     Tokentype return_type = tokenList[i].type; 
     ++i;
 
     if(tokenList[i].type != TOK_IDENTIFIER){
-        printf("indentifier expected in the function definition, line %d", tokenList[i].line);
+        printf("indentifier expected in the function definition, line %d\n", tokenList[i].line);
         return NULL;
     } 
     char *name = strdup(tokenList[i].lexeme);
     ++i;
 
     if(tokenList[i].type != TOK_LPAREN){
-        printf(" \"(\" expected in the function definition, line %d", tokenList[i].line);
+        printf(" \"(\" expected in the function definition, line %d\n", tokenList[i].line);
         return NULL;     
     } ++i;
     
@@ -28,13 +28,13 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     if(tokenList[i].type == TOK_RPAREN){
         ++i;
     } else {
-        parameters = parameterParse(tokenList, &i);
+        parameters = parameterFuncDefParse(tokenList, &i);
         if (parameters == NULL){
             return NULL;
         }
         if(tokenList[i].type != TOK_RPAREN){
-            printf("Right parenthesis expected, line %d", tokenList[i].line);
-        }
+            printf("Right parenthesis expected, line %d\n", tokenList[i].line);
+        }++i;
     }
 
     ASTnode *block = blockParse(tokenList, &i);

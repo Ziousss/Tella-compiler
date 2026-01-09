@@ -2,21 +2,21 @@
 #include "../include/parser/grammarRules.h"
 #include "../include/parser/helperFunc.h"
 
-ParameterNode *parameterParse(Tokenstruct *tokenList, int *index){
+ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int count = 0;
     ParameterNode *param_list = NULL;
 
     while(true){
         if(!isTOKType(tokenList[i].type)){
-            printf("Type expected in the parameter defenition line %d", tokenList[i].line);
+            printf("Type expected in the parameter definition line %d\n", tokenList[i].line);
             return NULL;
         }
         Tokentype type = tokenList[i].type;
         ++i;
 
         if(tokenList[i].type != TOK_IDENTIFIER){
-            printf("Identifier requiered line %d", tokenList[i].line);
+            printf("Identifier requiered line %d\n", tokenList[i].line);
             return NULL;
         } 
         char *name = strdup(tokenList[i].lexeme);
@@ -32,9 +32,14 @@ ParameterNode *parameterParse(Tokenstruct *tokenList, int *index){
         else if(tokenList[i].type == TOK_RPAREN){
             break;
         }
-        
-        printf("Expected ',' or ')' line %d", tokenList[i].line);
-        return NULL;
+
+        if(isTOKType(tokenList[i].type)){
+            printf("Expected ',' between arguments line %d\n", tokenList[i].line);
+        } else {
+            printf("Expected ',' or ')' line %d\n", tokenList[i].line);
+            return NULL;
+        }
+
     }  
     *index = i;
 

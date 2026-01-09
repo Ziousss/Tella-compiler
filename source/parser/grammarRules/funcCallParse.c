@@ -54,6 +54,13 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
                 break;
             }
 
+            if(tokenList[i].type != TOK_COMMA){
+                printf("Comma expected in the parameter of the function call line %d\n", tokenList[i].line);
+                free(arg);
+                free(expression);
+                return NULL;
+            }
+
         }
     }++i;
 
