@@ -8,13 +8,13 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type == TOK_IDENTIFIER){
         char *name = strdup(tokenList[i].lexeme);
-        int tmp = i;
         ASTnode *function_call = funcCallParseExpression(tokenList, &i);
         if(function_call != NULL){
             left = function_call;
         } 
-        else if(tokenList[++tmp].type == TOK_LPAREN){
+        else if(tokenList[i+1].type == TOK_LPAREN){
             //FuncCall NULL but it s not an indentifier
+            free(name);
             return NULL;
         }
         else{

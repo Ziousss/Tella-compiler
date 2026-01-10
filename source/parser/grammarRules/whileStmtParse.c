@@ -36,9 +36,10 @@ ASTnode *whileStmtParse(Tokenstruct *tokenList, int *index){
         printf("Malloc error in while parsing.\n");
         return NULL;
     }
-    *index = i;
     whileStmt->data.while_node.block = block;
     whileStmt->data.while_node.condition = condition;
     whileStmt->ast_type = AST_WHILE_STMT;
+
+    *index = i;
     return whileStmt;
 }

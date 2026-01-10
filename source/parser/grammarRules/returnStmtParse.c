@@ -27,8 +27,9 @@ ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index){
         printf("Malloc error in the return parsign.\n");
         return NULL;
     }
-    *index = i;
     returnStmt->data.return_node.expr = expression;
     returnStmt->ast_type = AST_RETURN;
+
+    *index = i;
     return returnStmt;
 }

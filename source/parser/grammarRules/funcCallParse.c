@@ -6,12 +6,9 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     ArgNode *args = NULL;
     ArgNode *last = NULL;
-    char *name = strdup(tokenList[i].lexeme);
-    ASTnode *funcCall = malloc(sizeof(ASTnode));
-    if (funcCall == NULL){
-        printf("Malloc error in funcCall");
-        return NULL;
-    }
+    int name_index = i;
+    ASTnode *funcCall = NULL;
+
     ++i;
     if(tokenList[i].type != TOK_LPAREN){
         return NULL;
@@ -23,6 +20,12 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
     }
     if (tokenList[i].type == TOK_RPAREN)
     {
+        funcCall = malloc(sizeof(ASTnode));
+        if (funcCall == NULL){
+            printf("Malloc error in funcCall");
+            return NULL;
+        }
+        char *name = strdup(tokenList[name_index].lexeme);
         funcCall->data.func_call.name = name;
         funcCall->ast_type = AST_FUNC_CALL;
         funcCall->data.func_call.args = args;
@@ -69,10 +72,17 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
         printf("Missing semi colon line %d after the function call\n", tokenList[i].line);
     } ++i;
 
-    *index = i;
+    funcCall = malloc(sizeof(ASTnode));
+    if (funcCall == NULL){
+        printf("Malloc error in funcCall");
+        return NULL;
+    }
+    char *name = strdup(tokenList[name_index].lexeme);
+
     funcCall->data.func_call.args = args;
     funcCall->ast_type = AST_FUNC_CALL;
     funcCall->data.func_call.name = name;
 
+    *index = i;
     return funcCall;
 }

@@ -64,10 +64,10 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
         }
     }++i;
 
-    *index = i;
     funcCall->data.func_call.args = args;
     funcCall->ast_type = AST_FUNC_CALL;
     funcCall->data.func_call.name = name;
 
+    *index = i;
     return funcCall;
 }

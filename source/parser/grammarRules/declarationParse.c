@@ -31,12 +31,17 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     } ++i;
     char *name = strdup(tokenList[name_i].lexeme);
 
-    *index = i;
     declaration = malloc(sizeof(ASTnode));
+    if(declaration == NULL){
+        printf("Malloc error in declarationParse.\n");
+        free(name);
+        return NULL;
+    }
     declaration->ast_type = AST_VAR_DECL;
     declaration->data.declaration.expression = expression;
     declaration->data.declaration.identifier = name;
     declaration->data.declaration.type = decla_type;
 
+    *index = i;
     return declaration;
 }

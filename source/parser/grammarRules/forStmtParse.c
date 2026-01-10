@@ -58,11 +58,12 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
         printf("Malloc error in the forStmt parser.\n");
         return NULL;
     }
-    *index = i;
     forStmt->ast_type = AST_FOR_STMT;
     forStmt->data.for_node.block = block;
     forStmt->data.for_node.condition = condition;
     forStmt->data.for_node.incrementation = incrementation;
     forStmt->data.for_node.initialisation = initialisation;
+
+    *index = i;
     return forStmt;
 }

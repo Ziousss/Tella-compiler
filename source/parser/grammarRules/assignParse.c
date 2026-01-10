@@ -31,10 +31,11 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
         printf("Malloc error in assignParse.\n");
         return NULL;
     }
-    *index = i;
+
     assigneNode->ast_type = AST_ASSIGN_EXPR;
     assigneNode->data.assign.target = target;
     assigneNode->data.assign.value = value;
 
+    *index = i;
     return assigneNode;
 }
