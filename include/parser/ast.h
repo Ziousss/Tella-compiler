@@ -122,5 +122,4 @@ typedef struct ASTnode {
     struct ASTnode *next; 
 } ASTnode;
 
-
 #endif

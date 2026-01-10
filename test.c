@@ -1,7 +1,5 @@
-int main(int i, char character){
-    char call <= foo();
-}
-
-char foo(){
-    int call = aka();
+int main (){
+    //comment test
+    int ch = 5/5;
+    //token slash still usable and comment not tokenize == success
 }
