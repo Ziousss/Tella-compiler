@@ -4,7 +4,8 @@ bool isDelimiter (char chr) {
     return (chr == ',' || chr == ',' || chr == '.'
             || chr == ';' || chr == '%' || chr == '(' 
             || chr == ')' || chr == '[' || chr == ']'
-            || chr == '{' || chr == '}' || chr == ':');
+            || chr == '{' || chr == '}' || chr == ':'
+            || chr == '#');
 }
 
 bool isOperation (char chr) {
@@ -44,7 +45,7 @@ bool validIdentitfier (char *str) {
 
 bool isKeyword (char *str) {
     const char *keyword[] = 
-        {"auto", "for", "while", "if", "else", "char", 
+        {"auto", "for", "while", "if", "else", "char", "include",
           "int", "float", "double", "struct", "const", 
           "long", "break", "case", "do", "return", "static",
           "sizeof", "void", "unsigned", "continue", "true", "false"};

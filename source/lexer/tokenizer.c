@@ -18,8 +18,9 @@ Tokenstruct *lexicalAnalyzer(char *input){
             while(input[right] != '\n'){
                 ++right;
             }
-
-            left == right; 
+            ++right;
+            ++line;
+            left = right; 
             continue;
         }
 
@@ -45,6 +46,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
                 switch (input[right])
                 {
+                    case '#': maketokenChar(tokenList, tokencount, TOK_HASHTAG, input[right], 1, line); break;
                     case ';': maketokenChar(tokenList, tokencount, TOK_SEMICOLON, input[right], 1, line); break;
                     case ',': maketokenChar(tokenList, tokencount, TOK_COMMA, input[right], 1, line);break;
                     case '(': maketokenChar(tokenList, tokencount, TOK_LPAREN, input[right], 1, line);break;
@@ -66,7 +68,6 @@ Tokenstruct *lexicalAnalyzer(char *input){
             //Operator token
             //need to add <, > <=, >=
             if(isOperation(input[right])){
-                printf("%c\n", input[right]);
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
                 switch (input[right])
                 {
@@ -166,41 +167,72 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 tokencount++;
                 continue;
             }
-            
             if (input[right] == '\"')
             {
                 right++;
                 int start = right;
                 while (input[right] != '\"')
                 {
+                    if(input[right] == '\n'){
+                        printf("Missing second of quote on this line, check for missing quote on line %d.\n", line);
+                        break;
+                    }
                     right++;
                 }
-                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+
                 char *sub = getSubstring(input,start,right-1);
                 int sublen = strlen(sub);
-                maketokenString(tokenList,tokencount,TOK_STRING_LITERAL, sub,sublen, line);
+
+                if(sub[sublen-2] == '.' && sub[sublen-1] == 'h'){
+                    if(input[start - 1] == '\"' && input[right] == '\"'){
+                        tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+3));
+                        maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
+                        maketokenString(tokenList,tokencount++,TOK_LOCAL_INCLUDE, sub,sublen, line);
+                        maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
+                    } else {
+                        printf("Missing quotes in the local include statement line %d.\n", line);
+                        return NULL;
+                    }
+                }
+                else if (sub[sublen-2] != '.' && sub[sublen-1] == 'h') {
+                    printf("Missing the '.' in the include statement line %d.\n", line);
+                    return NULL;
+                }
+                else if (sub[sublen-1] == '.' && sub[sublen] != 'h') {
+                    printf("Missing the 'h' after the '.' in the include statement line %d.\n", line);
+                    return NULL;
+                }
+                else {
+                    tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                    maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub,sublen, line);
+                    
+                }
                 right++;
                 left = right;
-                tokencount++;
                 continue;
             }
             if (isalpha(input[right]) || input[right] == '_') {
                 int start = right;
                 right++;
 
-                while (isalnum(input[right]) || input[right] == '_')
+                while (isalnum(input[right]) || input[right] == '_'){
                     right++;
+                }
 
-                char *sub = getSubstring(input, start, right - 1);
-                int sublen = strlen(sub);
                 tokenList = realloc(tokenList, sizeof(Tokenstruct) * (tokencount + 1)); 
 
-                if(isKeyword(sub)){
+                if(right + 1 < len && input[right] == '.' && input[right+1] == 'h'){
+                    char *sub = getSubstring(input, start, right + 1);
+                    int sublen = strlen(sub);
+                    maketokenString(tokenList, tokencount, TOK_INCLUDE_NAME, sub, sublen, line);
+                    right = right + 2;
+                    left = right;
+                }
+                else{
+                    char *sub = getSubstring(input, start, right - 1);
+                    int sublen = strlen(sub);
                     Tokentype type = keyword_type(sub);
                     maketokenString(tokenList, tokencount, type, sub, sublen, line);
-                }
-                else {
-                    maketokenString(tokenList, tokencount, TOK_IDENTIFIER, sub, sublen, line);
                 }
 
                 tokencount++;

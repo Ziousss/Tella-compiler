@@ -15,6 +15,7 @@ typedef enum {
 
     AST_FUNC_DEF,
     AST_FUNC_DEF_MAIN,
+    AST_INCLUDE,
     AST_FUNC_CALL,
     AST_VAR_DECL,
     AST_PARAM_DECL,
@@ -80,6 +81,10 @@ typedef struct ASTnode {
             char *identifier;
             ASTnode *expression;
         } declaration;
+
+        struct {
+            char *name;
+        } include_node;
         
         struct { 
             ASTnode *stmts; 
@@ -116,10 +121,11 @@ typedef struct ASTnode {
 
         struct {
             ASTnode *func_def;
+            ASTnode *include;
         } program_node;
     } data;
 
-    struct ASTnode *next; 
+    ASTnode *next; 
 } ASTnode;
 
 #endif

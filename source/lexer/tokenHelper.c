@@ -34,6 +34,8 @@ const char* tokenTypeToString(int type) {
         case TOK_DOUBLEPOINT:       return "DOOUBLEPOINT";
         case TOK_EXCLAMATION:       return "EXCLAMATION";
         case TOK_DOT:               return "DOT";
+        case TOK_HASHTAG:           return "HASHTAG";
+        case TOK_QUOTE:             return "QUOTE";
         
         case TOK_IF:                return "IF";
         case TOK_WHILE:             return "WHILE";
@@ -42,6 +44,9 @@ const char* tokenTypeToString(int type) {
         case TOK_FOR:               return "FOR";
         case TOK_CASE:              return "CASE";
         case TOK_ELSE:              return "ELSE";
+        case TOK_INCLUDE:           return "INCLUDE";
+        case TOK_INCLUDE_NAME:      return "INCLUDE_NAME";
+        case TOK_LOCAL_INCLUDE:     return "INCLUDE_LOCAL";
         
         case TOK_INT:               return "INT_TYPE";
         case TOK_CHAR:              return "CHAR_TYPE";
@@ -88,6 +93,7 @@ Keyword keywords[] = {
     {"return", TOK_RETURN},
     {"int", TOK_INT},
     {"char", TOK_CHAR},
+    {"include", TOK_INCLUDE},
     {"void", TOK_VOID},
     {"true", TOK_TRUE},
     {"false", TOK_FALSE},
@@ -96,10 +102,8 @@ Keyword keywords[] = {
 };
 
 Tokentype keyword_type(char *sub){
-
-
     for (int i = 0; keywords[i].lexeme != NULL; i++){
-        if (strcmp(keywords[i].lexeme,sub) == 0) {
+        if (strcmp(keywords[i].lexeme, sub) == 0) {
             return keywords[i].type;
         }
     }

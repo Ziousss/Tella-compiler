@@ -22,5 +22,6 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *whileStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *programParse(Tokenstruct *tokenList, int *index);
+ASTnode *includeParse(Tokenstruct *tokenList, int *index);
 
 #endif
