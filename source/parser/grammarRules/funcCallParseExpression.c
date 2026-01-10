@@ -2,7 +2,7 @@
 #include "../include/parser/grammarRules.h"
 #include "../include/parser/helperFunc.h"
 
-ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
+ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
     int i = *index;
     ArgNode *args = NULL;
     ArgNode *last = NULL;
@@ -63,11 +63,6 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
 
         }
     }++i;
-
-    if(tokenList[i].type != TOK_SEMICOLON){
-        free(funcCall);
-        printf("Missing semi colon line %d after the function call\n", tokenList[i].line);
-    } ++i;
 
     *index = i;
     funcCall->data.func_call.args = args;
