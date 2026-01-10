@@ -10,7 +10,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     ++i;
 
     if(tokenList[i].type != TOK_IDENTIFIER){
-        printf("Identifier expected line %d\n", tokenList[i].line);
+        printf("Identifier expected line %d after type %s.\n", tokenList[i].line,tokenTypeToString(tokenList[i-1].type));
         return NULL;
     }
     int name_i = i;

@@ -1,4 +1,7 @@
 int main(int i, char character){
-    cool = foo() + 5;
+    char call <= foo();
 }
 
+char foo(){
+    int call = aka();
+}

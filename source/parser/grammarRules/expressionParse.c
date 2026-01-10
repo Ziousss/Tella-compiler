@@ -77,7 +77,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         tmp->data.binary.op = op;
         
         left = tmp;
-    } 
+    }
 
     *index = i;
     return left;
