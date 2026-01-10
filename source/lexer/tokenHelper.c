@@ -16,6 +16,10 @@ const char* tokenTypeToString(int type) {
         case TOK_STAR:              return "STAR";
         case TOK_SLASH:             return "SLASH";
         case TOK_UNEQ:              return "UNEQ";
+        case TOK_GREQ:              return "GREQ";
+        case TOK_GR:                return "GR";
+        case TOK_LESSEQ:            return "LESSEQ";
+        case TOK_LESS:              return "LESS";
         
         case TOK_EQ:                return "EQUAL";
         case TOK_EQEQ:              return "EQUAL_EQUAL";

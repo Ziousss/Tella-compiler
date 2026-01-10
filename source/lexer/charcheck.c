@@ -1,12 +1,10 @@
 #include "../include/lexer/charcheck.h"
 
-
 bool isDelimiter (char chr) {
     return (chr == ',' || chr == ',' || chr == '.'
-            || chr == ';' || chr == '%' || chr == '>'
-            || chr == '<' || chr == '(' || chr == ':'
+            || chr == ';' || chr == '%' || chr == '(' 
             || chr == ')' || chr == '[' || chr == ']'
-            || chr == '{' || chr == '}');
+            || chr == '{' || chr == '}' || chr == ':');
 }
 
 bool isOperation (char chr) {

@@ -57,9 +57,26 @@ Tokenstruct *lexicalAnalyzer(char *input){
             //Operator token
             //need to add <, > <=, >=
             if(isOperation(input[right])){
+                printf("%c\n", input[right]);
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
                 switch (input[right])
                 {
+                    case '>':
+                        if (right+1 >= len || input[right+1] != '=') {
+                            maketokenChar(tokenList, tokencount, TOK_GR, input[right], 1, line); break;
+                        } else {
+                            maketokenString(tokenList, tokencount, TOK_GREQ, ">=", 2, line); 
+                            right++;
+                            break; 
+                        }
+                    case '<':
+                        if (right+1 >= len || input[right+1] != '=') {
+                            maketokenChar(tokenList, tokencount, TOK_LESS, input[right], 1, line); break;
+                        } else {
+                            maketokenString(tokenList, tokencount, TOK_LESSEQ, "<=", 2, line); 
+                            right++;
+                            break; 
+                        }
                     case '+': 
                         if (right+1 >= len || input[right+1] != '=') {
                             maketokenChar(tokenList, tokencount, TOK_PLUS, input[right], 1, line); break;
