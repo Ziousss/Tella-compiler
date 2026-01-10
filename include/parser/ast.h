@@ -14,6 +14,7 @@ typedef enum {
     AST_PROGRAM,
 
     AST_FUNC_DEF,
+    AST_FUNC_DEF_MAIN,
     AST_FUNC_CALL,
     AST_VAR_DECL,
     AST_PARAM_DECL,
