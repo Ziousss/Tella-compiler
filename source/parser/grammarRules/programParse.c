@@ -11,9 +11,13 @@ ASTnode *programParse(Tokenstruct *tokenList, int *index){
     }
     program->ast_type = AST_PROGRAM;
     program->data.program_node.func_def = NULL;
-    program->data.program_node.include = NULL;
-    ASTnode **tail_include = &program->data.program_node.include;
+    //Include is just for fun not actually doing it for now
+    //program->data.program_node.include = NULL;
+    //ASTnode **tail_include = &program->data.program_node.include;
     ASTnode **tail_funcDef = &program->data.program_node.func_def;
+    bool main = false;
+    /*
+    This is old design as well xD
     while(!isTOKType(tokenList[i].type)){
         ASTnode *include = includeParse(tokenList, &i);
         if(include == NULL){
@@ -31,26 +35,27 @@ ASTnode *programParse(Tokenstruct *tokenList, int *index){
         *tail_include = node_include;
         tail_include = &node_include->next;
     }
-
+    */
 
     while(tokenList[i].type != TOK_EOF){
         ASTnode *func_def = funcDefParse(tokenList, &i);
         if(func_def == NULL){
             return NULL;
         }
-
-        ASTnode *node_funcDef = malloc(sizeof(ASTnode));
-        if(node_funcDef == NULL){
-            printf("Malloc error in node funcDef, programParse.\n");
-            return NULL;
+        if(func_def->ast_type == AST_FUNC_DEF_MAIN){
+            main = true;
         }
-        node_funcDef->data.program_node.func_def = func_def;
-        node_funcDef->next = NULL;
+        func_def->next = NULL;
 
-        *tail_funcDef = node_funcDef;
-        tail_funcDef = &node_funcDef->next;
+        *tail_funcDef = func_def;
+        tail_funcDef = &func_def->next;
     }
 
+    if(!main){
+        printf("No main function found in the file.\n");
+        return NULL;
+    }
+    
     *index = i;
     prinast(program);
     return program;

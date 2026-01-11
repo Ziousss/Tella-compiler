@@ -12,6 +12,10 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
     }
 
     if(tokenList[i].type != TOK_EQ){
+        if(tokenList[i].line != tokenList[i-1].line){
+            printf("Equal sign expected in assignment line %d\n", tokenList[i-1].line);
+            return NULL;
+        } 
         printf("Equal sign expected in assignment line %d\n", tokenList[i].line);
         return NULL;
     } ++i;
@@ -23,7 +27,11 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type != TOK_SEMICOLON){
         // -1 so it does not do +1 in case the ith token is on  a new line, this expects people to write the assignement on the same line. 
-        printf("Semicolon expected line %d after the assignement\n", tokenList[i-1].line);
+        if(tokenList[i].line != tokenList[i-1].line){
+            printf("Equal sign expected in assignment line %d\n", tokenList[i-1].line);
+            return NULL;
+        } 
+        printf("Equal sign expected in assignment line %d\n", tokenList[i].line);
         return NULL;
     }++i;
 

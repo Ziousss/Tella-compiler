@@ -140,6 +140,9 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 int start = right;
                 if(input[right] == '\\'){
                     ++right;
+                } else if (input[right] == '\'' || input[right] == ' '){
+                    printf("The two ' are empty or have a space between them line %d.\n",line);
+                    return NULL;
                 }
 
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));

@@ -57,6 +57,7 @@ void prinast(ASTnode *node){
 
 const char* astTypeToString(int type) {
     switch (type) {
+        case AST_PROGRAM:           return "PROGRAM_AST";
         case AST_ASSIGN_EXPR:       return "ASSIGN_AST";
         case AST_BINARY_EXPR:       return "BINARY_AST";
         case AST_BLOCK:             return "BLOCK_AST";
@@ -66,6 +67,7 @@ const char* astTypeToString(int type) {
 
         case AST_FUNC_CALL:         return "FUNC_CALL_AST";
         case AST_FUNC_DEF:          return "FUNC_DEF_AST";
+        case AST_FUNC_DEF_MAIN:     return "FUNC_DEF_MAIN_AST";
         case AST_IDENTIFIER:        return "IDENTIFIER_AST";
         case AST_IF_STMT:           return "IF_STMT_AST";
         case AST_NUMBER:            return "NUMBER_AST";
