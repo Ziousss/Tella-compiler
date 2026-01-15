@@ -85,7 +85,7 @@ typedef struct ASTnode {
         } func_call;
         
         struct { 
-            ASTnode *target; 
+            char *target; 
             ASTnode *value; 
         } assign;
 

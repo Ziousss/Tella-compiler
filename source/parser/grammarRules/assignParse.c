@@ -4,11 +4,12 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int start = *index;
 
-    //not every expression must be accepted later on
-    ASTnode *target = expressionParse(tokenList, &i);
-    if(target == NULL){
+    if(tokenList[i].type != TOK_IDENTIFIER){
+        printf("Left side of the assignment line %d must be a defined identifier.\n", tokenList[i].line);
         return NULL;
     }
+    int identifier_name = i;
+    ++i;
 
     if(tokenList[i].type != TOK_EQ){
         if(tokenList[i].line != tokenList[i-1].line){
@@ -40,8 +41,9 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
         return NULL;
     }
 
+    char *name = strdup(tokenList[identifier_name].lexeme); 
     assigneNode->ast_type = AST_ASSIGN_EXPR;
-    assigneNode->data.assign.target = target;
+    assigneNode->data.assign.target = name;
     assigneNode->data.assign.value = value;
     assigneNode->line = tokenList[start].line;
     *index = i;
