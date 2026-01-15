@@ -1,6 +1,6 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
-void stmtAnalyser(ASTnode *stmtAst, int *count){
+void stmtAnalyser(ASTnode *stmtAst, int *count, SemContext *context){
     NodeType ast_type = stmtAst->ast_type;
     switch (ast_type){
         case AST_VAR_DECL: {
@@ -9,7 +9,7 @@ void stmtAnalyser(ASTnode *stmtAst, int *count){
                 return;
             }
 
-            symbolNode *sym = malloc(sizeof(symbolNode));
+            SymbolNode *sym = malloc(sizeof(SymbolNode));
             sym->kind = SEM_VAR;
             sym->name = strdup(stmtAst->data.declaration.identifier);
             sym->type = fromTokToSem(stmtAst->data.declaration.type);
@@ -19,38 +19,25 @@ void stmtAnalyser(ASTnode *stmtAst, int *count){
             (*count)++;
 
             if(stmtAst->data.declaration.expression != NULL){
-                expressionAnalyser(stmtAst->data.declaration.expression);
+                expressionAnalyser(stmtAst->data.declaration.expression, context);
             }
             break;
         }
         case AST_RETURN: {
-            expressionAnalyser(stmtAst->data.return_node.expr);   
+            returnAnalyser(stmtAst->data.return_node.expr, context);
             break;
         }
         case AST_ASSIGN_EXPR: {
-            expressionAnalyser(stmtAst->data.assign.target);
-            expressionAnalyser(stmtAst->data.assign.value);
+            assignAnalyser(stmtAst, context);
             break;
         }
         case AST_IF_STMT: {
-            expressionAnalyser(stmtAst->data.if_node.condition);
+            SemanticType condition_type = expressionAnalyser(stmtAst->data.if_node.condition, context);
             
-            blockAnalyser(stmtAst->data.if_node.if_branch);
-            if(stmtAst->data.if_node.else_branch){
-                blockAnalyser(stmtAst->data.if_node.else_branch);
+            blockAnalyser(stmtAst->data.if_node.if_branch, context);
+            if(stmtAst->data.if_node.else_branch, context){
+                blockAnalyser(stmtAst->data.if_node.else_branch, context);
             }
-            break;
-        }
-        case AST_WHILE_STMT: {
-            expressionAnalyser(stmtAst->data.while_node.condition);
-            blockAnalyser(stmtAst->data.while_node.block);
-            break;
-        }
-        case AST_FOR_STMT: {
-            expressionAnalyser(stmtAst->data.for_node.initialisation);
-            expressionAnalyser(stmtAst->data.for_node.condition);
-            expressionAnalyser(stmtAst->data.for_node.incrementation);
-            blockAnalyser(stmtAst->data.for_node.block);
             break;
         }
     }

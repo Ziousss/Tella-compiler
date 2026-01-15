@@ -1,23 +1,25 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
-bool programAnalyser(ASTnode *program){
+bool programAnalyser(ASTnode *program) {
     if(program == NULL || program->ast_type != AST_PROGRAM){
         printf("This is not a program ast, check the given ast.\n");
-        return;
+        return false;
     }
 
-    int analyser_error = 0;
+    SemContext *context;
+    context->error_count = 0;
+    context->current_node = NULL;
 
     ASTnode *func_def_node = program->data.program_node.func_def;
-    ASTnode *tmp = program->data.program_node.func_def;
     while (func_def_node != 0)
     {
-        funcDefAnalyser(func_def_node);
+        funcDefAnalyser(func_def_node, context);
         func_def_node = func_def_node->next;
     } 
 
-    if(analyser_error == 0){
+    if(context->error_count == 0){
         return true;
     }
     return false;
+
 }

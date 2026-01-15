@@ -1,14 +1,15 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
-void funcDefAnalyser(ASTnode *funcDefAst){
+void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     if(funcDefAst == NULL){
         return;
     }
 
-    symbolNode *funcDefSem = malloc(sizeof(symbolNode));
-    semanticType type = fromTokToSem(funcDefAst->data.func_def.return_type);
+    SymbolNode *funcDefSem = malloc(sizeof(SymbolNode));
+    SemanticType type = fromTokToSem(funcDefAst->data.func_def.return_type);
     if(type == SEM_ERROR){
         printf("the return type of the function %s is not supported yet.\n", funcDefAst->data.func_def.name);
+        context->error_count += 1;
         return;
     }
     funcDefSem->name = strdup(funcDefAst->data.func_def.name);
@@ -17,11 +18,12 @@ void funcDefAnalyser(ASTnode *funcDefAst){
     funcDefSem->next = NULL;
 
     push_to_scope(funcDefSem);
+    context->current_function = funcDefSem;
 
     int count = 0;
     ParameterNode *paramAst = funcDefAst->data.func_def.parameters;
     while(paramAst){
-        symbolNode *paramSem = malloc(sizeof(symbolNode));
+        SymbolNode *paramSem = malloc(sizeof(SymbolNode));
 
         paramSem->kind = SEM_PARAM;
         paramSem->name = strdup(paramAst->name);
@@ -32,7 +34,8 @@ void funcDefAnalyser(ASTnode *funcDefAst){
         paramAst = paramAst->next;
     }
 
-    blockAnalyser(funcDefAst->data.func_def.body);
-
+    blockAnalyser(funcDefAst->data.func_def.body, context);
+    
+    context->current_function = NULL;
     pop_out_scope(count);
 }
