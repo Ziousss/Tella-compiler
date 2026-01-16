@@ -43,5 +43,4 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
     printf("Unknown binary operator %s at line %d.\n", tokenTypeToString(op), binary->line);
     context->error_count++;
     return SEM_ERROR;
-
 }

@@ -9,9 +9,10 @@
 #include "../include/parser/helperFunc.h"
 #include "../include/lexer/tokenizer.h"
 
-void push_to_scope(SymbolNode *sym);
-void pop_out_scope(int count);
-SymbolNode *find_in_scope(char *name);
+void push_scope(SemContext *context);
+void pop_scope(SemContext *context);
+void push_variables(SymbolNode *sym, SemContext *context);
+SymbolNode *find_in_scope(char *name, SemContext *context);
 SemanticType fromTokToSem(Tokentype type);
 char *fromSemToString(SemanticType type);
 bool isBool(Tokentype op);

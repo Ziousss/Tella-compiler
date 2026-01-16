@@ -29,7 +29,8 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
         param = param->next;
     }
     
-    push_to_scope(funcDefSem);
+    push_scope(context);
+    push_variables(funcDefSem, context);
 
     context->current_function = funcDefSem;
 
@@ -42,11 +43,11 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
         paramSem->type = fromTokToSem(paramAst->ret_type);
         paramSem->next = NULL;
 
-        push_to_scope(paramSem);
+        push_variables(paramSem, context);
         paramAst = paramAst->next;
     }
 
-    blockAnalyser(funcDefAst->data.func_def.body, context);
+    blockAnalyser(funcDefAst->data.func_def.body, context, false);
     
     if(context->current_function->type != SEM_VOID){
         if(!(context->saw_return)){
@@ -57,5 +58,5 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     }
 
     context->current_function = NULL;
-    pop_out_scope(param_count);
+    pop_scope(context);
 }

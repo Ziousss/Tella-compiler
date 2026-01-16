@@ -11,9 +11,9 @@ void ifAnalyser(ASTnode *ifStmtAst, SemContext *context){
         return;
     }
 
-    blockAnalyser(ifStmtAst->data.if_node.if_branch, context);
+    blockAnalyser(ifStmtAst->data.if_node.if_branch, context, true);
     if(ifStmtAst->data.if_node.else_branch != NULL){
-        blockAnalyser(ifStmtAst->data.if_node.else_branch, context);
+        blockAnalyser(ifStmtAst->data.if_node.else_branch, context, true);
     }
     return;
 }

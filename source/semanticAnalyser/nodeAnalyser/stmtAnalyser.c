@@ -1,11 +1,11 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
-void stmtAnalyser(ASTnode *stmtAst, int *count, SemContext *context){
+void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
     NodeType ast_type = stmtAst->ast_type;
     switch (ast_type){
         //Forbids shadowing in different scope, will change it later.
         case AST_VAR_DECL: {
-            if(find_in_scope(stmtAst->data.declaration.identifier)){
+            if(find_in_scope(stmtAst->data.declaration.identifier, context)){
                 printf("Redefinition of the %s identifier.\n", stmtAst->data.declaration.identifier);
                 context->error_count++;
                 return;
@@ -27,8 +27,7 @@ void stmtAnalyser(ASTnode *stmtAst, int *count, SemContext *context){
             sym->type = left_type;
             sym->next = NULL;
 
-            push_to_scope(sym);
-            (*count)++;
+            push_variables(sym, context);
             break;
         }
         case AST_RETURN: {
@@ -41,6 +40,10 @@ void stmtAnalyser(ASTnode *stmtAst, int *count, SemContext *context){
         }
         case AST_IF_STMT: {
             ifAnalyser(stmtAst, context);
+            break;
+        }
+        case AST_WHILE_STMT: {
+            whileAnalyser(stmtAst, context);
             break;
         }
     }

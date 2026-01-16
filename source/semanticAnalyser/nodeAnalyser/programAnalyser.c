@@ -8,7 +8,7 @@ bool programAnalyser(ASTnode *program) {
 
     SemContext *context;
     context->error_count = 0;
-    context->current_node = NULL;
+    context->current_scope = NULL;
 
     ASTnode *func_def_node = program->data.program_node.func_def;
     while (func_def_node != NULL)

@@ -4,7 +4,7 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
     Tokentype type = expressionAst->ast_type;
     switch (type){
         case AST_IDENTIFIER: {
-            SymbolNode *identifier =  find_in_scope(expressionAst->data.identifier.name);
+            SymbolNode *identifier =  find_in_scope(expressionAst->data.identifier.name, context);
             if (identifier == NULL){
                 printf("Identifier %s line %d not defined yet.\n", expressionAst->data.identifier.name, expressionAst->line);
                 context->error_count += 1;
@@ -20,7 +20,7 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
         case AST_BOOLEAN:           return SEM_BOOL;
 
         case AST_BINARY_EXPR: {
-            SemanticType binary_type = binaryExprAnalyser(expressionAst);
+            SemanticType binary_type = binaryExprAnalyser(expressionAst, context);
             return binary_type;
         }
 
