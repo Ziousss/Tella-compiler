@@ -51,12 +51,11 @@ char *fromSemToString(SemanticType type){
 }
 
 bool isCalculus(Tokentype op){
-    return (op == TOK_PLUS || op == TOK_MINUS || op == TOK_STAR 
-        || op == TOK_SLASH);
+    return (op == TOK_PLUS || op == TOK_MINUS
+        || op == TOK_SLASH || op == TOK_STAR );
 }
 
 bool isBool(Tokentype op) {
-    return (op == TOK_EQEQ || op == TOK_PLUSEQ || op == TOK_GREQ
-        || op == TOK_MINUSEQ || op == TOK_UNEQ || op == TOK_LESS
+    return (op == TOK_GREQ || op == TOK_LESS
         || op == TOK_LESSEQ || op == TOK_GR);
 }

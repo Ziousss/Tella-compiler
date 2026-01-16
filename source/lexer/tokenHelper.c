@@ -54,6 +54,9 @@ const char* tokenTypeToString(int type) {
         
         case TOK_TRUE:              return "TRUE";
         case TOK_FALSE:             return "FALSE";
+        case TOK_NULL:              return "NULL";
+        case TOK_AND:               return "AND";
+        case TOK_OR:                return "OR";
         
         case TOK_EOF:               return "EOF";
         case TOK_ERROR:             return "ERROR";

@@ -46,6 +46,26 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
                 switch (input[right])
                 {
+                    case '|': 
+                        if(input[right+1] == '|'){
+                            maketokenString(tokenList, tokencount, TOK_OR, "||", 2, line);
+                            right++;
+                            break;
+                        }
+                        else{
+                            printf("The character '|' cannot stand alone, maybe you meant ||?\n");
+                            break;
+                        }
+                    case '&':
+                        if(input[right+1] == '&'){
+                            maketokenString(tokenList, tokencount, TOK_AND, "&&", 2, line);
+                            right++;
+                            break;
+                        }
+                        else{
+                            printf("The character '&' cannot stand alone, maybe you meant &&?\n");
+                            break;
+                        }
                     case '#': maketokenChar(tokenList, tokencount, TOK_HASHTAG, input[right], 1, line); break;
                     case ';': maketokenChar(tokenList, tokencount, TOK_SEMICOLON, input[right], 1, line); break;
                     case ',': maketokenChar(tokenList, tokencount, TOK_COMMA, input[right], 1, line);break;

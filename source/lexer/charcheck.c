@@ -5,7 +5,7 @@ bool isDelimiter (char chr) {
             || chr == ';' || chr == '%' || chr == '(' 
             || chr == ')' || chr == '[' || chr == ']'
             || chr == '{' || chr == '}' || chr == ':'
-            || chr == '#');
+            || chr == '#' || chr == '|' || chr == '&');
 }
 
 bool isOperation (char chr) {
