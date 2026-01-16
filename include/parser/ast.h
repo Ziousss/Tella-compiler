@@ -34,6 +34,7 @@ typedef enum {
     AST_CALL_EXPR,
 
     AST_IDENTIFIER,
+    AST_BOOLEAN,
     AST_NUMBER,
     AST_CHAR_LITERAL,
     AST_STRING_LITERAL,
@@ -62,6 +63,10 @@ typedef struct ASTnode {
         struct {
             char character;
         } character_literal;
+
+        struct {
+            bool boolean;
+        } boolean_literal;
 
         struct 
         {

@@ -75,9 +75,21 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left->data.string_literal.string = string;
         left->line = tokenList[start].line;
         ++i;
-        if(left == NULL){
-            printf("NULL");
+    }
+    else if(tokenList[i].type == TOK_TRUE || tokenList[i].type == TOK_FALSE){
+        left = malloc(sizeof(ASTnode));
+            if(left == NULL){
+                printf("Malloc error in expression parser (string_literal)\n");
+                return NULL;
+            }
+        left->ast_type = AST_BOOLEAN;
+        if(tokenList[i].type == TOK_TRUE){
+            left->data.boolean_literal.boolean = true;
+        } else {
+            left->data.boolean_literal.boolean = false;
         }
+        left->line = tokenList[start].line;
+        ++i;
     }
     else {
         printf("expression expected line %d\n", tokenList[i].line);
