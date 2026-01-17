@@ -13,6 +13,9 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             SemanticType left_type = fromTokToSem(stmtAst->data.declaration.type);
             if(stmtAst->data.declaration.expression != NULL){
                 SemanticType right_type = expressionAnalyser(stmtAst->data.declaration.expression, context);
+                if(right_type == SEM_ERROR){
+                    return;
+                }
                 if(right_type != left_type){
                     printf("On declaration line %d, the right side has %s type but the left is defined as %s type.\n", stmtAst->line, fromSemToString(right_type), fromSemToString(left_type));
                     context->error_count++;
@@ -30,7 +33,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             break;
         }
         case AST_RETURN: {
-            returnAnalyser(stmtAst->data.return_node.expr, context);
+            returnAnalyser(stmtAst, context);
             break;
         }
         case AST_ASSIGN_EXPR: {

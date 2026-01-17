@@ -15,7 +15,6 @@ void assignAnalyser(ASTnode *assignment, SemContext *context){
 
     SemanticType target_type = target->type;
     SemanticType value_type = expressionAnalyser(assignment->data.assign.value,context);
-
     if(value_type == SEM_ERROR){
         return;
     }

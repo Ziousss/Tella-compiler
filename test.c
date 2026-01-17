@@ -1,9 +1,11 @@
-void main(){
-    int i;
-    while(i < 0){
-        int c = 0;
-        i = 5;
-    }
+char main(int i, int j, char h){
+    i = 4;
+    return 'g';
+}
 
-    c = 1 + 5;
+void foo(){
+    int i = 5;
+    int j =7;
+    char f = main(i,j, 'g');
+    i = 5;
 }

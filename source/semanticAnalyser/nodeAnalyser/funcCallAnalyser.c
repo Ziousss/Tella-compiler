@@ -17,7 +17,7 @@ SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
     }
 
     if(param_call_count != funcCallNode->param_count){
-        printf("Number of arguments different from function definition %s and function call line %d.\n", funcCallNode->name, funcCallAst->line);
+        printf("Number of arguments different from function definition %s and function call line %d, expected %d but found %d.\n", funcCallNode->name, funcCallAst->line, funcCallNode->param_count, param_call_count);
         context->error_count++;
         return SEM_ERROR;
     }
@@ -25,13 +25,13 @@ SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
     ArgNode *arg = funcCallAst->data.func_call.args;
 
     for(int i = 0; i < param_call_count; i++){
-        SemanticType type = expressionAnalyser(arg->expression, context);
+        SemanticType param_type = expressionAnalyser(arg->expression, context);
 
-        if(type == SEM_ERROR){
+        if(param_type == SEM_ERROR){
             return SEM_ERROR;
         }
-        if(type != funcCallNode->param[i]){
-            printf("Type mismatch in call to '%s' at line %d: argument %d is %s but expected %s.\n",funcCallNode->name,  funcCallAst->line,  i + 1,   fromSemToString(type), fromSemToString(funcCallNode->param[i]));
+        if(param_type != funcCallNode->param[i]){
+            printf("Type mismatch in call to '%s' at line %d: argument %d is %s but expected %s.\n",funcCallNode->name,  funcCallAst->line,  i + 1,   fromSemToString(param_type), fromSemToString(funcCallNode->param[i]));
             context->error_count++;
             return SEM_ERROR;
         }

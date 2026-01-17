@@ -31,7 +31,7 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     ParameterNode *param = funcDefAst->data.func_def.parameters;
 
     for(int i = 0; i < param_count; i++){
-        funcDefSem->param[i++] = param->ret_type;
+        funcDefSem->param[i] = fromTokToSem(param->ret_type);
         param = param->next;
     }
 
@@ -50,7 +50,6 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     ParameterNode *paramAst = funcDefAst->data.func_def.parameters;
 
     for(int i = 0; i < param_count; i++){
-
         SymbolNode *paramSem = malloc(sizeof(SymbolNode));
 
         paramSem->kind = SEM_PARAM;

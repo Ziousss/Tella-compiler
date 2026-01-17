@@ -30,7 +30,7 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
         }
 
         default:{
-            printf("Unsupported expression type %s at line %d\n", astTypeToString(expressionAst->ast_type), expressionAst->line);
+            printf("Unsupported expression in the %s at line %d\n", astTypeToString(expressionAst->ast_type), expressionAst->line);
             context->error_count++;
             return SEM_ERROR;
         }

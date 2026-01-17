@@ -42,9 +42,11 @@ SymbolNode *find_in_current_scope(char *name, SemContext *context){
 SemanticType fromTokToSem(Tokentype type){
     switch (type){
         case TOK_CHAR:              return SEM_CHAR;
-        case TOK_STRING_LITERAL:    return SEM_STRING;
         case TOK_INT:               return SEM_INT;
+        case TOK_TRUE:              return SEM_BOOL;
+        case TOK_FALSE:             return SEM_BOOL;
         case TOK_VOID:              return SEM_VOID;
+        case TOK_STRING:            return SEM_STRING;
         
         default:                    return SEM_ERROR;
     }
@@ -53,10 +55,11 @@ SemanticType fromTokToSem(Tokentype type){
 char *fromSemToString(SemanticType type){
     switch (type){
         case SEM_INT:       return "Int";
+        case SEM_STRING:    return "Char *";
         case SEM_CHAR:      return "Char";
         case SEM_BOOL:      return "Bool";
-        case SEM_STRING:    return "String";
         case SEM_VOID:      return "Void";
+        case SEM_ERROR:     return "Error";
 
         default:            return "Not named yet";
     }

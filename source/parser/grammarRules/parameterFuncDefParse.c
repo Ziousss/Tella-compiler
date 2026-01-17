@@ -2,7 +2,7 @@
 
 ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index){
     int i = *index;
-    int count = 0;
+    int count = 1;
     ParameterNode *param_list = NULL;
 
     while(true){
@@ -40,6 +40,11 @@ ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index){
 
     }  
     *index = i;
+    ParameterNode *cur = param_list;
+    while(cur->next != NULL){
+        cur = cur->next;
+    }
 
+    param_list->count = cur->count;
     return param_list;
 }
