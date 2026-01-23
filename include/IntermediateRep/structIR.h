@@ -60,7 +60,7 @@ typedef struct IRstruct {
     IRoperation op;
     union {
         struct {
-            Operand *dst, *src1, *src2;
+            Operand dst, src1, src2;
         } binary;
         struct {
             int label_id;
@@ -69,7 +69,7 @@ typedef struct IRstruct {
             int target_label;
         } jump;
         struct {
-            Operand *return_value;
+            Operand return_value;
         } ret;
     } data;
     struct IRstruct *next;

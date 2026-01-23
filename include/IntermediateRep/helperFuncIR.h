@@ -8,8 +8,9 @@
 
 void emit(IRstruct *to_add, IRContext *context);
 IRstruct *newLabel(IRContext *context);
-IRstruct *newBinary(IRContext *context, Operand *dst, Operand *src1, Operand *src2, IRoperation op);
+IRstruct *newBinary(IRContext *context, Operand dst, Operand src1, Operand src2, IRoperation op);
 IRstruct *newJmp(IRContext *context, int target);
-IRstruct *newReturn(IRContext *context, Operand *target);
+IRstruct *newReturn(IRContext *context, Operand target);
+IRstruct *newAssign(IRContext *context, Operand dst, Operand src);
 
 #endif

@@ -28,7 +28,7 @@ IRstruct *newLabel(IRContext *context){
     return new;
 }
 
-IRstruct *newBinary(IRContext *context, Operand *dst, Operand *src1, Operand *src2, IRoperation op){
+IRstruct *newBinary(IRContext *context, Operand dst, Operand src1, Operand src2, IRoperation op){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
         printf("Malloc error in newBinary.\n");
@@ -60,10 +60,10 @@ IRstruct *newJmp(IRContext *context, int target){
     return new;
 }
 
-IRstruct *newReturn(IRContext *context, Operand *target){
+IRstruct *newReturn(IRContext *context, Operand target){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
-        printf("Malloc error in newReturn to taget %d.\n", target);
+        printf("Malloc error in newReturn.\n");
         context->errors++;
         return NULL;
     }
@@ -73,4 +73,69 @@ IRstruct *newReturn(IRContext *context, Operand *target){
     new->data.ret.return_value = target;
 
     return new;
+}
+
+IRstruct *newAssign(IRContext *context, Operand dst, Operand src){
+    IRstruct *new = malloc(sizeof(IRstruct));
+    if(new == NULL){
+        printf("Malloc error in newAssign to taget.\n");
+        context->errors++;
+        return NULL;
+    }
+
+    new->op = IR_ASSIGN;
+    new->next = NULL;
+    new->data.binary.dst = dst;
+    new->data.binary.src1 = src;
+    new->data.binary.src2 = (Operand){0};
+
+    return new;
+}
+
+Operand newString(char *value){
+    Operand op;
+
+    op.IR_type = IR_CONST;
+    op.data.IR_constant.cst_type = IR_STRING;
+    op.data.IR_constant.value.string.string = value;
+
+    return op;
+}
+
+Operand newChar(char value){
+    Operand op;
+
+    op.IR_type = IR_CONST;
+    op.data.IR_constant.cst_type = IR_CHAR;
+    op.data.IR_constant.value.chr.chr = value;
+
+    return op;
+}
+
+Operand newBool(bool value){
+    Operand op;
+
+    op.IR_type = IR_CONST;
+    op.data.IR_constant.cst_type = IR_BOOL;
+    op.data.IR_constant.value.boolean.boolean = value;
+
+    return op;
+}
+
+Operand newInt(int value){
+    Operand op;
+
+    op.IR_type = IR_CONST;
+    op.data.IR_constant.cst_type = IR_INT;
+    op.data.IR_constant.value.number.number = value;
+
+    return op;
+}
+
+Operand newTmp(IRContext *context){
+    Operand tmp;
+    tmp.IR_type = IR_TMP;
+    tmp.data.IR_tmp.id_tmp = context->current_tmp++;
+
+    return tmp;
 }
