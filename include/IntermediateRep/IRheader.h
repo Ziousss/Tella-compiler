@@ -7,6 +7,7 @@
 #include "structIR.h"
 #include "../include/parser/ast.h"
 #include "helperFuncIR.h"
+#include "helperFunc.h"
 
 IRstruct *programIR(ASTnode *program);
 void funcDefIR(ASTnode *funcdef, IRContext *context);

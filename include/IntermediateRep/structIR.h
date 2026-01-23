@@ -7,7 +7,10 @@ typedef struct Operand Operand;
 typedef struct IRstruct IRstruct;
 
 typedef enum {
-    IR_ADD, IR_SUB, IR_CALL, IR_JMP, IR_LABEL, IR_RET, IR_ASSIGN, 
+    IR_LABEL,
+    IR_ADD, IR_SUB, IR_MULT, IR_DIV,
+    IR_CALL, IR_JMP, IR_RET, IR_ASSIGN, 
+    IR_ERROR,
 } IRoperation;
 
 typedef enum {
@@ -83,6 +86,5 @@ typedef struct {
     int current_label;
     int errors;
 } IRContext;
-
 
 #endif

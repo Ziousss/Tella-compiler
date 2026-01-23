@@ -139,3 +139,14 @@ Operand newTmp(IRContext *context){
 
     return tmp;
 }
+
+IRoperation fromTokToIRtype(Tokentype type){
+    switch (type){
+        case TOK_MINUS:         return IR_SUB;
+        case TOK_PLUS:          return IR_ADD;
+        case TOK_STAR:          return IR_MULT;
+        case TOK_SLASH:         return IR_DIV;
+
+        default:                return IR_ERROR;
+    }
+}
