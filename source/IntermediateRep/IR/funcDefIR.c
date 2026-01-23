@@ -6,17 +6,10 @@ void funcDefIR(ASTnode *funcdef, IRContext *context){
         return;
     }
 
-
-    IRstruct *IRFuncDef = malloc(sizeof(IRstruct));
-    if(IRFuncDef == NULL){
-        printf("Malloc error in IRfunction.\n");
-        context->errors++;
-        return;
+    IRstruct *IRFuncDef = newLabel(context);
+    if(IRFuncDef != NULL){
+        emit(IRFuncDef, context);
     }
-    IRFuncDef->op = IR_LABEL;
-    IRFuncDef->data.label.label_id = context->current_label++;
-
-    emit(IRFuncDef, context);
 
     blockIR(funcdef->data.func_def.body, context);
 }

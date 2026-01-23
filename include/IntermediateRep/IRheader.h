@@ -9,5 +9,6 @@
 
 IRstruct *programIR(ASTnode *program);
 void funcDefIR(ASTnode *funcdef, IRContext *context);
+void blockIR(ASTnode *block, IRContext *context);
 
 #endif

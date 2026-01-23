@@ -7,7 +7,7 @@ typedef struct Operand Operand;
 typedef struct IRstruct IRstruct;
 
 typedef enum {
-    IR_ADD, IR_SUB, IR_CALL, IR_JMP, IR_LABEL, IR_RET
+    IR_ADD, IR_SUB, IR_CALL, IR_JMP, IR_LABEL, IR_RET, IR_ASSIGN, 
 } IRoperation;
 
 typedef enum {
@@ -60,7 +60,7 @@ typedef struct IRstruct {
     IRoperation op;
     union {
         struct {
-            Operand dst, src1, src2;
+            Operand *dst, *src1, *src2;
         } binary;
         struct {
             int label_id;
@@ -69,7 +69,7 @@ typedef struct IRstruct {
             int target_label;
         } jump;
         struct {
-            Operand return_value;
+            Operand *return_value;
         } ret;
     } data;
     struct IRstruct *next;
