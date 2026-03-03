@@ -3,10 +3,15 @@ char * foo(){
     return name;
 }
 
-char *main(){
-    int i = 5;
-    int j = i + 4;
+int main(){
+    int j = 4;
+    int i = 0;
+    while(i != 1){
+        while(j == 4){
+            j = j - 1;
+        }
+        
+    }
 
-    char *name = foo();
-    return name;
+    return j;
 }

@@ -2,7 +2,7 @@
 
 Welcome to the **TELLA Compiler**, a basic **C compiler written in C**.
 
-This project is an educational compiler developed to improve my practical knowledge of the C language and to deepen my understanding of fundamental concepts such as **pointers**, **parsing**, and **semantic analysis**.
+This project is an educational compiler developed to improve my practical knowledge of the C language and to deepen my understanding of fundamental concepts such as **parsing**, and **semantic analysis**.  It also provides hands-on experience with the inner workings of a computer, including x86-64 assembly and low-level code generation.
 
 ---
 
@@ -27,7 +27,8 @@ This project is primarily focused on learning compiler design concepts rather th
 - Lexer  
 - Parser  
 - Semantic Analyzer  
-- IR (Ongoing)
+- IR 
+- Machine code x86_64 (Ongoing)
 
 ---
 
