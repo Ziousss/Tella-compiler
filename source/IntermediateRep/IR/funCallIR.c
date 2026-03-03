@@ -1,6 +1,5 @@
 #include "../include/IntermediateRep/IRheader.h"
 
-//Returns the type of the func definition. if func should return int it will return operand Int.
 Operand funcCallIR(ASTnode *funcCall, IRContext *context){
     char *funcName = funcCall->data.func_call.name;
     const GlobalFunc *function = findFuncDef(funcName);

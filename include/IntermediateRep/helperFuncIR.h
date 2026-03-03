@@ -26,5 +26,6 @@ GlobalFunc *findFuncDef(char *name);
 CstTypes fromSemToIRTypes(SemanticType type);
 IRstruct *newArg(IRContext *context, Operand arg);
 IRstruct *newCall(IRContext *context, char *name, int count, Operand dst);
+char *printCstType(CstTypes type);
 
 #endif

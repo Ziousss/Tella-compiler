@@ -14,11 +14,11 @@ typedef enum {
 } IRoperation;
 
 typedef enum {
-    IR_VAR, IR_CONST, IR_TMP, IR_VOID,
+    IR_VAR, IR_CONST, IR_TMP, 
 } IRtype;
 
 typedef enum {
-    IR_INT, IR_STRING, IR_CHAR, IR_BOOL, 
+    IR_INT, IR_STRING, IR_CHAR, IR_BOOL, IR_VOID
 } CstTypes;
 
 typedef struct Operand {
@@ -97,7 +97,7 @@ typedef struct IRstruct {
     struct IRstruct *next;
 } IRstruct;
 
-//Instead of passing everyone of those in each function and having 5 arguments, I only pass one struct.
+//Instead of passing every one of those in each function and having 6 arguments, I only pass one struct.
 typedef struct {
     IRstruct *head;
     IRstruct *tail;

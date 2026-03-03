@@ -3,7 +3,7 @@
 IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
     if(program->ast_type != AST_PROGRAM){
         printf("Given AST is not the program AST.\n");
-        return;
+        return NULL;
     }
 
     IRContext *context = malloc(sizeof(IRContext));

@@ -234,3 +234,14 @@ CstTypes fromSemToIRTypes(SemanticType type){
         default:                return IR_ERROR;
     }
 }
+
+char *printCstType(CstTypes type){
+    switch (type){
+        case IR_STRING:     return "IR_string";
+        case IR_INT:        return "IR_int";
+        case IR_CHAR:       return "IR_char";
+        case IR_BOOL:       return "IR_bool";
+
+        default:            return "CSTtype not named yet";
+    }
+}

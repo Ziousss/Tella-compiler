@@ -1,18 +1,12 @@
-void main(int i){
-    i = 4 + 5;
-    for (int j = 0; j < i; j+1){
-        j = i+2;
-        while(1){
-            return j;
-        }
-    }
+char * foo(){
+    char *name = "Name";
+    return name;
 }
 
-int foo(){
-    int i = 2;
-    return i;
-}
+char *main(){
+    int i = 5;
+    int j = i + 4;
 
-void test(){
-    char test = 'c';
+    char *name = foo();
+    return name;
 }
