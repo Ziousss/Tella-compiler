@@ -50,10 +50,12 @@ void blockIR(ASTnode *block, IRContext *context){
                 forIR(stmt, context);
                 break;
             }
+            /*
             case AST_IF_STMT: {
                 ifIR(stmt, context);
                 break;
             }
+            */
             case AST_FUNC_CALL: {
                 funcCallIR(stmt, context);
                 break;

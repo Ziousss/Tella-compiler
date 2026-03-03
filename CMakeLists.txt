@@ -11,7 +11,9 @@ file(GLOB SOURCES
     "source/parser/*.c" 
     "source/parser/grammarRules/*.c" 
     "source/semanticAnalyser/*.c" 
-    "source/semanticAnalyser/nodeAnalyser/*.c")
+    "source/semanticAnalyser/nodeAnalyser/*.c"
+    "source/IntermediateRep/*.c"
+    "source/IntermediateRep/IR/*.c")
 
 add_executable(compiler ${SOURCES})
 

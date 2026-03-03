@@ -7,7 +7,7 @@
 #include "structIR.h"
 #include "../include/parser/ast.h"
 #include "helperFuncIR.h"
-#include "helperFunc.h"
+#include "../include/parser/helperFunc.h"
 #include "../include/semanticAnalyser/struct.h"
 
 IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc);
@@ -18,5 +18,6 @@ void forIR(ASTnode *forStmt, IRContext *context);
 void whileIR(ASTnode *whileStmt, IRContext *context);
 void returnIR(ASTnode *returnNode, IRContext *context);
 Operand funcCallIR(ASTnode *funcCall, IRContext *context);
+void ifStmtIR(ASTnode *ifStmt, IRContext *context);
 
 #endif

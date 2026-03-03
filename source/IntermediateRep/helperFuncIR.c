@@ -1,12 +1,12 @@
 #include "../include/IntermediateRep/helperFuncIR.h"
 
-static const GlobalFunc *definedFunc = NULL;
+static GlobalFunc *definedFunc = NULL;
 
 void initGlobalFunctions(GlobalFunc *funcs) {
     definedFunc = funcs;
 }
 
-const GlobalFunc *findFuncDef(char *name){
+GlobalFunc *findFuncDef(char *name){
     GlobalFunc *tmp = definedFunc;
     while (tmp != NULL) {
         if(strcmp(name, tmp->name) == 0){
@@ -125,7 +125,7 @@ IRstruct *newJmpFalse(IRContext *context, int end_label, Operand condition){
     return new;
 }
 
-IRstruct *newReturn(IRContext *context, Operand target, CstTypes type){
+IRstruct *newReturn(IRContext *context, Operand target){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
         printf("Malloc error in newReturn.\n");
@@ -136,7 +136,6 @@ IRstruct *newReturn(IRContext *context, Operand target, CstTypes type){
     new->next = NULL;
     new->op = IR_RET;
     new->data.ret.return_value = target;
-    new->data.ret.type = type;
 
     return new;
 }

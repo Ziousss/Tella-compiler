@@ -14,8 +14,12 @@ Operand funcCallIR(ASTnode *funcCall, IRContext *context){
     int argNumber = 0;
 
     while(arg != NULL){
-        Operand type = expressionIR(arg, context);
-
+        int error = context->errors;
+        Operand type = expressionIR(arg->expression, context);
+        if(context->errors != error){
+            return(Operand){0};
+        
+        }
         IRstruct *argument = newArg(context, type);
         if(argument == NULL){
             return (Operand){0};

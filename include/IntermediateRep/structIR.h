@@ -21,7 +21,7 @@ typedef enum {
     IR_INT, IR_STRING, IR_CHAR, IR_BOOL, 
 } CstTypes;
 
-typedef struct {
+typedef struct Operand {
     IRtype IR_type;
     union {
         struct {
