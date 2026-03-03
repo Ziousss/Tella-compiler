@@ -5,5 +5,6 @@
 #include "../include/lexer/readFile.h"
 #include "../include/parser/grammarRules.h"
 #include "../include/semanticAnalyser/nodeAnalyser.h"
+#include "../include/IntermediateRep/IRheader.h"
 
 #endif

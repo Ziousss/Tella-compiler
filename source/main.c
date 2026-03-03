@@ -34,5 +34,8 @@ int main (int argc, char **argv) {
     printf("Semantic is good.\n");  
 
     //now all good for compilation
+    IRstruct *IR = programIR(programNode, functions);
+    printIR(IR);
+
     return 0;
 }
