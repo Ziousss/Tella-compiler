@@ -1,4 +1,4 @@
-#include "../include/machineCode/machineCodeHeader.h"
+#include "../include/assemblyInstr/assemblyInstrHeader.h"
 
 //return a bool to know whether it worked or not.
 bool machineCode(IRstruct *IRlist){

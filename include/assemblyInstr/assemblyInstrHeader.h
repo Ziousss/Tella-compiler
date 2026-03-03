@@ -1,5 +1,5 @@
-#ifndef MACHINECODEHEADER_H
-#define MACHINECODEHEADER_H
+#ifndef ASSEMBLYINSTRHEADER_H
+#define ASSEMBLYINSTRHEADER_H
 
 #include "../include/IntermediateRep/IRheader.h"
 
