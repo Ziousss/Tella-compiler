@@ -31,7 +31,6 @@ int main (int argc, char **argv) {
         printf("Semantics error.\n");
         return 1;
     }
-    printf("Semantic is good.\n");  
 
     //now all good for compilation
     IRstruct *IR = programIR(programNode, functions);

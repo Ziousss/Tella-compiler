@@ -55,6 +55,6 @@ ASTnode *programParse(Tokenstruct *tokenList, int *index){
     }
 
     *index = i;
-    prinast(program);
+    //prinast(program);
     return program;
 }

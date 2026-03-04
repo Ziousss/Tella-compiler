@@ -9,9 +9,7 @@ int main(){
     while(i != 1){
         while(j == 4){
             j = j - 1;
-        }
-        
+        }   
     }
-
     return j;
 }
