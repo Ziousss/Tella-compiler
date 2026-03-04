@@ -33,7 +33,7 @@ void emit(IRstruct *to_add, IRContext *context){
 IRstruct *newArg(IRContext *context, Operand arg){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
-        printf("Malloc error in newLabel.\n");
+        printf("Malloc error in newArg.\n");
         context->errors++;
         return NULL;
     }
@@ -48,7 +48,7 @@ IRstruct *newArg(IRContext *context, Operand arg){
 IRstruct *newCall(IRContext *context, char *name, int count, Operand dst){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
-        printf("Malloc error in newLabel.\n");
+        printf("Malloc error in newCall.\n");
         context->errors++;
         return NULL;
     }
@@ -73,6 +73,21 @@ IRstruct *newLabel(IRContext *context, int label){
     new->next = NULL;
     new->op = IR_LABEL;
     new->data.label.label_id = label;
+
+    return new;
+}
+
+IRstruct *newFunc(IRContext *context, char *name_func){
+    IRstruct *new = malloc(sizeof(IRstruct));
+    if(new == NULL){
+        printf("Malloc error in newFunc.\n");
+        context->errors++;
+        return NULL;
+    }
+
+    new->data.function.name_func = name_func;
+    new->next = NULL;
+    new->op = IR_FUNC;
 
     return new;
 }
@@ -112,7 +127,7 @@ IRstruct *newJmp(IRContext *context, int target){
 IRstruct *newJmpFalse(IRContext *context, int end_label, Operand condition){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
-        printf("Malloc error in newJmp to taget %d.\n", end_label);
+        printf("Malloc error in newJmpFalse to taget %d.\n", end_label);
         context->errors++;
         return NULL;
     }

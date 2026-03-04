@@ -7,7 +7,7 @@ typedef struct Operand Operand;
 typedef struct IRstruct IRstruct;
 
 typedef enum {
-    IR_LABEL,
+    IR_LABEL, IR_FUNC,
     IR_ADD, IR_SUB, IR_MULT, IR_DIV, IR_GR, IR_GREQ, IR_LESS, IR_LESSEQ, IR_EQEQ, IR_UNEQ, 
     IR_CALL, IR_JMP, IR_JMP_FALSE, IR_RET, IR_ASSIGN, IR_ARG,
     IR_ERROR,
@@ -93,6 +93,10 @@ typedef struct IRstruct {
         struct {
             Operand value;
         } arg;
+
+        struct {
+            char *name_func;
+        } function;
     } data;
     struct IRstruct *next;
 } IRstruct;

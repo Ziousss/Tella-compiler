@@ -7,8 +7,7 @@ void funcDefIR(ASTnode *funcdef, IRContext *context){
     }
 
     context->returned = false;
-    int label = context->current_label++;
-    IRstruct *IRFuncDef = newLabel(context, label);
+    IRstruct *IRFuncDef = newFunc(context, funcdef->data.func_def.name);
     if(IRFuncDef != NULL){
         emit(IRFuncDef, context);
     }

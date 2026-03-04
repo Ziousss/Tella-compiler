@@ -10,6 +10,7 @@
 
 void emit(IRstruct *to_add, IRContext *context);
 IRstruct *newLabel(IRContext *context, int label);
+IRstruct *newFunc(IRContext *context, char *name_func);
 IRstruct *newBinary(IRContext *context, Operand dst, Operand src1, Operand src2, IRoperation op);
 IRstruct *newJmp(IRContext *context, int target);
 IRstruct *newReturn(IRContext *context, Operand target);
@@ -27,5 +28,6 @@ CstTypes fromSemToIRTypes(SemanticType type);
 IRstruct *newArg(IRContext *context, Operand arg);
 IRstruct *newCall(IRContext *context, char *name, int count, Operand dst);
 char *printCstType(CstTypes type);
+
 
 #endif

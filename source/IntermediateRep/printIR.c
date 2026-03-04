@@ -11,6 +11,10 @@ void printIR(IRstruct *IR){
                 printf("\n");
                 break;
 
+            case IR_FUNC:
+                printf("FUNC %s\n", tmp->data.function.name_func);
+                break;
+
             case IR_CALL:
                 if(tmp->data.call.dst.IR_type == IR_TMP){
                     printOperand(tmp->data.call.dst);
