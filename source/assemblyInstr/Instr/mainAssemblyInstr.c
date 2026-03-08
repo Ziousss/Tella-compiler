@@ -1,7 +1,7 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
 //return a bool to know whether it worked or not.
-bool machineCode(IRstruct *IRlist){
+bool assemblyInstr(IRstruct *IRlist){
     bool opened = false;
     FILE *output = fopen("ASoutput.s", "w");
     if(output == NULL){

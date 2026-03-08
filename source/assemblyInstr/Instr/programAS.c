@@ -1,24 +1,29 @@
-#include "../include/machineCode/machineCodeHeader.h"
+#include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-void programMC(IRstruct *IRlist, FILE *output){
+void programAS(IRstruct *IRlist, FILE *output){
     IRstruct *tmp = IRlist;
+    StackLayout *stack = functionsAS(IRlist);
+    if(stack == NULL){
+        return;
+    }
+    
     while(tmp != NULL){
         IRoperation op = tmp->op;
         switch (op) {
             case IR_LABEL:
-                labelMC(IRlist->data.label, output);
+                fprintf(output, "L%d:\n", tmp->data.label.label_id);
                 break;
 
             case IR_JMP: 
-                jumpMC(IRlist->data.jump, output);
+                fprintf(output, "jmp L%d\n", tmp->data.jump.target_label);
                 break;
             
             case IR_JMP_FALSE: 
-                condJumpMC(IRlist->data.condition_jump, output);
+                condJumpAS(tmp->data.condition_jump, output);
                 break;
             
             case IR_RET: 
-                returnMC(IRlist->data.ret, output);
+                returnAS(tmp->data.ret, output);
                 break;
             
             case IR_ADD:
@@ -31,7 +36,7 @@ void programMC(IRstruct *IRlist, FILE *output){
             case IR_GREQ:
             case IR_LESS:
             case IR_LESSEQ:
-                binaryMC(IRlist->data.binary, output);
+                binaryAS(tmp, output);
                 break;
         }
 

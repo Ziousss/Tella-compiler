@@ -1,0 +1,50 @@
+#include "../include/assemblyInstr/assemblyInstrHeader.h"
+
+StackLayout *functionsAS(IRstruct *IRlist){
+    IRstruct *tmp = IRlist;
+    if(tmp->op != IR_FUNC){
+        printf("Wrong token given to functionAS.\n");
+        return NULL;
+    }
+
+    StackLayout *stack = malloc(sizeof(StackLayout));
+    if(stack == NULL){
+        printf("StackLayout failed to malloc.\n");
+        return NULL;
+    }
+    stack->count = 0;
+    stack->current_offset_count = 0;
+    
+    for(int i = 0; i < 256; i++){
+        stack->tmp[i] = 0;
+        stack->var[i].offset = 0;
+        stack->var[i].name_var = NULL;
+    }
+
+    tmp = tmp->next;
+    while(tmp->op != IR_FUNC){
+        switch(tmp->op){
+            case IR_ADD:
+            case IR_SUB:
+            case IR_MULT:
+            case IR_DIV:
+            case IR_EQEQ:
+            case IR_UNEQ:
+            case IR_GR:
+            case IR_GREQ:
+            case IR_LESS:
+            case IR_LESSEQ:
+                Operand dst = tmp->data.binary.dst;
+                Operand src1 = tmp->data.binary.src1;
+                Operand src2 = tmp->data.binary.src2;
+
+                //check if null in the function itself
+                setStackLayout(dst, stack);
+                setStackLayout(src1, stack);
+                setStackLayout(dst, stack);
+        }
+
+
+        tmp = tmp->next;
+    }
+}
