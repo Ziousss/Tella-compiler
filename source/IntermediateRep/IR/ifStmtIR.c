@@ -11,6 +11,4 @@ void ifStmtIR(ASTnode *ifStmt, IRContext *context){
     if(context->errors != error){
         return;
     }
-
-    
 }

@@ -6,5 +6,6 @@
 #include "../include/parser/grammarRules.h"
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 #include "../include/IntermediateRep/IRheader.h"
+#include "../include/assemblyInstr/assemblyInstrHeader.h"
 
 #endif

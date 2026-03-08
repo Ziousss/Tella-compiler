@@ -32,8 +32,8 @@ void blockIR(ASTnode *block, IRContext *context){
 
                 Operand src = expressionIR(stmt->data.assign.value, context);
 
-                IRstruct *declaration = newAssign(context, dst, src);
-                emit(declaration, context);
+                IRstruct *assign = newAssign(context, dst, src);
+                emit(assign, context);
 
                 break;
             }
