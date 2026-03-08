@@ -23,6 +23,9 @@ typedef enum {
 
 typedef struct Operand {
     IRtype IR_type;
+
+    //for returns etc to know if void or not
+    bool ret_void;
     union {
         struct {
             char *identifier;

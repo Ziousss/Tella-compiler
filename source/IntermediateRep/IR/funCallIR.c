@@ -34,6 +34,9 @@ Operand funcCallIR(ASTnode *funcCall, IRContext *context){
 
     if(ret_type != IR_VOID){
         ret = newTmp(ret_type, context);
+        ret.ret_void = false;
+    } else {
+        ret.ret_void = true;
     }
 
     IRstruct *call = newCall(context, funcName, argNumber, ret);

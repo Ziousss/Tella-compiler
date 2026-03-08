@@ -31,7 +31,12 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
             Operand right = expressionIR(expression->data.binary.right, context);
             IRoperation op = fromTokToIRtype(expression->data.binary.op);
 
-            Operand tmp = newTmp(IR_INT, context);
+            Operand tmp;
+            if(isbool(op)){
+                tmp = newTmp(IR_BOOL, context);
+            } else {
+                tmp = newTmp(IR_INT, context);
+            }
 
             IRstruct *binary = newBinary(context, tmp, left, right, op);
             emit(binary, context);

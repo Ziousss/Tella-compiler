@@ -32,9 +32,13 @@ int main (int argc, char **argv) {
         return 1;
     }
 
-    //now all good for compilation
+    //now all good for compilation.
+    //Starting with the IR.
     IRstruct *IR = programIR(programNode, functions);
     printIR(IR);
+
+    //Now go on to the assembly code.
+    
 
     return 0;
 }
