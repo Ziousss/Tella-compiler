@@ -28,6 +28,7 @@ CstTypes fromSemToIRTypes(SemanticType type);
 IRstruct *newArg(IRContext *context, Operand arg);
 IRstruct *newCall(IRContext *context, char *name, int count, Operand dst);
 char *printCstType(CstTypes type);
+bool isbool(IRoperation op);
 
 
 #endif

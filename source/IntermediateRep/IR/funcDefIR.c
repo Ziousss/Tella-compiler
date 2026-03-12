@@ -6,6 +6,11 @@ void funcDefIR(ASTnode *funcdef, IRContext *context){
         return;
     }
 
+    //Forgot to handle parameters
+    ParameterNode *paramTree = funcdef->data.func_def.parameters;
+    int param = 0;
+    
+
     context->returned = false;
     IRstruct *IRFuncDef = newFunc(context, funcdef->data.func_def.name);
     if(IRFuncDef != NULL){

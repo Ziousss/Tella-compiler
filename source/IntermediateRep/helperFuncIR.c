@@ -256,6 +256,7 @@ char *printCstType(CstTypes type){
         case IR_INT:        return "IR_int";
         case IR_CHAR:       return "IR_char";
         case IR_BOOL:       return "IR_bool";
+        case IR_VOID:       return "IR_void";
 
         default:            return "CSTtype not named yet";
     }

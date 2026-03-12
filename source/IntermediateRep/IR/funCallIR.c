@@ -29,14 +29,13 @@ Operand funcCallIR(ASTnode *funcCall, IRContext *context){
         arg = arg->next;
     }
 
-    Operand ret = {0};
+    Operand ret;
     CstTypes ret_type = fromSemToIRTypes(function->type);
 
     if(ret_type != IR_VOID){
         ret = newTmp(ret_type, context);
-        ret.ret_void = false;
     } else {
-        ret.ret_void = true;
+        ret = (Operand){.IR_type = IR_VOID_OPERAND};
     }
 
     IRstruct *call = newCall(context, funcName, argNumber, ret);

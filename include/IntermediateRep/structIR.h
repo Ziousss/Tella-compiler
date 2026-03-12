@@ -9,12 +9,12 @@ typedef struct IRstruct IRstruct;
 typedef enum {
     IR_LABEL, IR_FUNC,
     IR_ADD, IR_SUB, IR_MULT, IR_DIV, IR_GR, IR_GREQ, IR_LESS, IR_LESSEQ, IR_EQEQ, IR_UNEQ, 
-    IR_CALL, IR_JMP, IR_JMP_FALSE, IR_RET, IR_ASSIGN, IR_ARG,
+    IR_CALL, IR_JMP, IR_JMP_FALSE, IR_RET, IR_ASSIGN, IR_ARG, IR_PARAM,
     IR_ERROR,
 } IRoperation;
 
 typedef enum {
-    IR_VAR, IR_CONST, IR_TMP, 
+    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND
 } IRtype;
 
 typedef enum {
@@ -25,7 +25,6 @@ typedef struct Operand {
     IRtype IR_type;
 
     //for returns etc to know if void or not
-    bool ret_void;
     union {
         struct {
             char *identifier;
@@ -100,6 +99,12 @@ typedef struct IRstruct {
         struct {
             char *name_func;
         } function;
+
+        struct {
+            int param_index;
+            Operand parameter;
+        };
+        
     } data;
     struct IRstruct *next;
 } IRstruct;
