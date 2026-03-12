@@ -29,6 +29,7 @@ IRstruct *newArg(IRContext *context, Operand arg);
 IRstruct *newCall(IRContext *context, char *name, int count, Operand dst);
 char *printCstType(CstTypes type);
 bool isbool(IRoperation op);
-
+IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type);
+CstTypes fromTokToCstType(Tokentype type);
 
 #endif

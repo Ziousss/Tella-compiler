@@ -86,6 +86,10 @@ void printIR(IRstruct *IR){
                 printf(" L%d\n", tmp->data.condition_jump.target_label);
                 break;
 
+            case IR_PARAM:
+                printf("PARAM %s.\n", tmp->data.parameters.parameter.data.IR_Variable.identifier);
+                break;
+
             default:
                 printf("UNKNOWN IR OP\n");
                 break;

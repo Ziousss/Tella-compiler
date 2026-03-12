@@ -28,7 +28,7 @@ int main (int argc, char **argv) {
 
     GlobalFunc *functions = programAnalyser(programNode);
     if(functions == NULL){
-        printf("Semantics error.\n");
+        printf("Semantic error(s).\n");
         return 1;
     }
 

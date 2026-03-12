@@ -55,8 +55,7 @@ typedef struct Operand {
         struct {
             CstTypes type;
             int id_tmp;
-        } IR_tmp;
-        
+        } IR_tmp;      
     }data; 
 } Operand;
 
@@ -102,10 +101,11 @@ typedef struct IRstruct {
 
         struct {
             int param_index;
+            CstTypes type;
             Operand parameter;
-        };
-        
+        } parameters;
     } data;
+
     struct IRstruct *next;
 } IRstruct;
 

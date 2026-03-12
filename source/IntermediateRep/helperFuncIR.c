@@ -140,6 +140,23 @@ IRstruct *newJmpFalse(IRContext *context, int end_label, Operand condition){
     return new;
 }
 
+IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type){
+    IRstruct *new = malloc(sizeof(IRstruct));
+    if(new == NULL){
+        printf("Malloc error in newParam.\n");
+        context->errors++;
+        return NULL;
+    }
+
+    new->data.parameters.param_index = index;
+    new->data.parameters.parameter.IR_type = IR_VAR;
+    new->data.parameters.type = type;
+    new->data.parameters.parameter.data.IR_Variable.identifier = strdup(name);
+    new->next = NULL;
+    new->op = IR_PARAM;
+    return new;
+}
+
 IRstruct *newReturn(IRContext *context, Operand target){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
@@ -223,18 +240,33 @@ Operand newTmp(CstTypes type, IRContext *context){
 
 IRoperation fromTokToIRtype(Tokentype type){
     switch (type){
-        case TOK_MINUS:         return IR_SUB;
-        case TOK_PLUS:          return IR_ADD;
-        case TOK_STAR:          return IR_MULT;
-        case TOK_SLASH:         return IR_DIV;
-        case TOK_GR:            return IR_GR;
-        case TOK_GREQ:          return IR_GREQ;
-        case TOK_LESS:          return IR_LESS;
-        case TOK_LESSEQ:        return IR_LESSEQ;
-        case TOK_EQEQ:          return IR_EQEQ;
-        case TOK_UNEQ:          return IR_UNEQ;
+        case TOK_MINUS:                 return IR_SUB;
+        case TOK_PLUS:                  return IR_ADD;
+        case TOK_STAR:                  return IR_MULT;
+        case TOK_SLASH:                 return IR_DIV;
+        case TOK_GR:                    return IR_GR;
+        case TOK_GREQ:                  return IR_GREQ;
+        case TOK_LESS:                  return IR_LESS;
+        case TOK_LESSEQ:                return IR_LESSEQ;
+        case TOK_EQEQ:                  return IR_EQEQ;
+        case TOK_UNEQ:                  return IR_UNEQ;
 
         default:                return IR_ERROR;
+    }
+}
+
+CstTypes fromTokToCstType(Tokentype type){
+    switch (type){
+        case TOK_INT:
+        case TOK_INTEGER_LITERAL:       return IR_INT;
+        case TOK_CHAR:
+        case TOK_CHAR_LITERAL:          return IR_CHAR;
+        case TOK_STRING:
+        case TOK_STRING_LITERAL:        return IR_STRING;
+        case TOK_TRUE:
+        case TOK_FALSE:                 return IR_BOOL;
+        case TOK_VOID:                  return IR_VOID;
+        default:                        return IR_VOID;
     }
 }
 
