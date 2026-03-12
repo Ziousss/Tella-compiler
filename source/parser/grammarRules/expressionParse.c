@@ -96,10 +96,13 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         return NULL;
     }
 
+    
     if(isOperatorExpression(tokenList[i].type)){
         //wrong for calculation for now but we ll let it be and change it later
         Tokentype op = tokenList[i].type;
-        ++i; 
+        ++i;
+
+        
         ASTnode *right = expressionParse(tokenList, &i);
         if(right == NULL){
             return NULL;

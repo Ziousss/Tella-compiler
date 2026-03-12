@@ -3,7 +3,7 @@
 ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int start = *index;
-
+    
     if(tokenList[i].type != TOK_FOR){
         return NULL;
     } ++i;
@@ -13,14 +13,15 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
         return NULL;
     } ++i;
 
+    int saved = i;
+
     ASTnode *initialisation = declarationParse(tokenList, &i);
     if(initialisation == NULL){
-        ASTnode *initialisation = assignParse(tokenList, &i);
-        {
-            if(initialisation == NULL){
-                printf("initialisation issue in for loop.\n");
-                return NULL;
-            }
+        i = saved;
+        initialisation = assignParse(tokenList, &i);
+        if(initialisation == NULL){
+            printf("initialisation issue in for loop.\n");
+            return NULL;
         }
     }
     
@@ -35,17 +36,17 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
         return NULL;
     } ++i;
 
-    ASTnode *incrementation = expressionParse(tokenList, &i);
+    ASTnode *incrementation = loopAssignParse(tokenList, &i);
     if(incrementation == NULL){
         printf("incrementation issue in for loop.\n");
         return NULL;
-    }
+    } 
 
     if(tokenList[i].type != TOK_RPAREN){
         printf("')' expected in the \"for\" loop line %d\n", tokenList[i].line);
         return NULL;
     } ++i;
-
+    
     ASTnode *block = blockParse(tokenList, &i, "for");
     if(block == NULL){
         printf("block issue in for loop.\n");

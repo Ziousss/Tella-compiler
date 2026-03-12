@@ -4,6 +4,8 @@ void blockIR(ASTnode *block, IRContext *context){
     ASTnode *stmt = block->data.block.stmts;
     while(stmt != NULL){
         NodeType type = stmt->ast_type;
+        printf("type = %d\n", type);
+        fflush(stdout);
         if (context->returned) {
             return;
         }
