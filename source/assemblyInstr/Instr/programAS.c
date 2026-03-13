@@ -1,12 +1,9 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
 void programAS(IRstruct *IRlist, FILE *output){
-    IRstruct *tmp = IRlist;
-    StackLayout *stack = functionsAS(IRlist);
-    if(stack == NULL){
-        return;
-    }
-    
+    IRstruct *tmp = IRlist;  
+    StackLayout *stack;
+
     while(tmp != NULL){
         IRoperation op = tmp->op;
         switch (op) {
@@ -19,12 +16,14 @@ void programAS(IRstruct *IRlist, FILE *output){
                 break;
             
             case IR_JMP_FALSE: 
-                condJumpAS(tmp->data.condition_jump, output);
+                condJumpAS(tmp->data.condition_jump, output, stack);
                 break;
             
             case IR_RET: 
-                returnAS(tmp->data.ret, output);
+                returnAS(tmp->data.ret, output, stack);
                 break;
+
+            
             
             case IR_ADD:
             case IR_SUB:
@@ -36,10 +35,19 @@ void programAS(IRstruct *IRlist, FILE *output){
             case IR_GREQ:
             case IR_LESS:
             case IR_LESSEQ:
-                binaryAS(tmp, output);
+                binaryAS(tmp, output, stack);
+                break;
+            
+            case IR_FUNC:
+                stack = stackFunctionAS(tmp);
+                if(stack == NULL){
+                    return;
+                }
+
+            default:
+                printf("Unhandled op in stackFunctionAS: %d\n", tmp->op);
                 break;
         }
-
         tmp = tmp->next;
     }
 }

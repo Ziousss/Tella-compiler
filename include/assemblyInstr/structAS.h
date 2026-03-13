@@ -7,7 +7,8 @@ typedef struct {
 } StackVar;
 
 typedef struct {
-    int count;
+    int var_count;
+    int param_count;
     int current_offset_count;
     int tmp[256];
     StackVar var[256];

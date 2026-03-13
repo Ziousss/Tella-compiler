@@ -6,5 +6,7 @@
 
 void setStackLayout(Operand op, StackLayout *stack);
 void setVarStack(Operand op, StackLayout *stack);
+void setTmpStack(Operand op, StackLayout *stack);
+void setParamstack(Operand param, StackLayout *stack, int param_offset);
 
 #endif

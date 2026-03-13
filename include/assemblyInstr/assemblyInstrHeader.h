@@ -6,8 +6,8 @@
 
 
 bool assemblyInstr(IRstruct *IRlist);
-void binaryAS(IRstruct *binary, FILE *output);
+void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack);
 void programAS(IRstruct *IRlist, FILE *output);
-StackLayout *functionsAS(IRstruct *IRlist);
+StackLayout *stackFunctionAS(IRstruct *IRlist);
 
 #endif

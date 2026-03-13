@@ -6,7 +6,7 @@ int main(char *name){
     return j;
 }
 
-int foo(){
-  int hello = 4;
-  return hello;
+int foo(int hello){
+    hello = 4;
+    return hello;
 }

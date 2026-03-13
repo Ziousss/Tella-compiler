@@ -19,15 +19,15 @@ void setStackLayout(Operand op, StackLayout *stack){
 }
 
 void setVarStack(Operand op, StackLayout *stack){
-    for(int i = 0; i < stack->count; i++){
+    for(int i = 0; i < stack->var_count; i++){
         if(strcmp(op.data.IR_Variable.identifier, stack->var[i].name_var) == 0){
             return;
         }
     }
 
     stack->current_offset_count -= 8;
-    stack->var[stack->count].name_var = op.data.IR_Variable.identifier;
-    stack->var[stack->count++].offset = stack->current_offset_count;
+    stack->var[stack->var_count].name_var = op.data.IR_Variable.identifier;
+    stack->var[stack->var_count++].offset = stack->current_offset_count;
 }
 
 void setTmpStack(Operand op, StackLayout *stack){   
@@ -36,4 +36,9 @@ void setTmpStack(Operand op, StackLayout *stack){
     }
     stack->current_offset_count -= 8;
     stack->tmp[op.data.IR_tmp.id_tmp] = stack->current_offset_count;
+}
+
+void setParamstack(Operand param, StackLayout *stack, int param_offset){
+    stack->var[stack->param_count].name_var = param.data.IR_Variable.identifier;
+    stack->var[stack->param_count++].offset = param_offset;
 }

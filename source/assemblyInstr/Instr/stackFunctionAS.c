@@ -1,6 +1,6 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-StackLayout *functionsAS(IRstruct *IRlist){
+StackLayout *stackFunctionAS(IRstruct *IRlist){
     IRstruct *tmp = IRlist;
     if(tmp->op != IR_FUNC){
         printf("Wrong token given to functionAS.\n");
@@ -12,8 +12,12 @@ StackLayout *functionsAS(IRstruct *IRlist){
         printf("StackLayout failed to malloc.\n");
         return NULL;
     }
-    stack->count = 0;
+    stack->var_count = 0;
+    stack->param_count = 0;
     stack->current_offset_count = 0;
+
+    //since param are at + from rbp
+    int param_offset = 8;
     
     for(int i = 0; i < 256; i++){
         stack->tmp[i] = -1;
@@ -35,7 +39,6 @@ StackLayout *functionsAS(IRstruct *IRlist){
             case IR_LESS:
             case IR_LESSEQ:
             case IR_ASSIGN: {
-
                 Operand dst = tmp->data.binary.dst;
                 Operand src1 = tmp->data.binary.src1;
                 Operand src2 = tmp->data.binary.src2;
@@ -67,6 +70,13 @@ StackLayout *functionsAS(IRstruct *IRlist){
             case IR_ARG: {
                 Operand arg = tmp->data.arg.value;
                 setStackLayout(arg, stack);
+
+                break;
+            }
+            case IR_PARAM: {
+                Operand param = tmp->data.parameters.parameter;
+                setParamStack(param, stack, param_offset);
+                param_offset += 8;
 
                 break;
             }

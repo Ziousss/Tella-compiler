@@ -24,10 +24,13 @@ typedef enum {
 typedef struct Operand {
     IRtype IR_type;
 
-    //for returns etc to know if void or not
     union {
         struct {
             char *identifier;
+
+            //Only for parameters in IR.
+            CstTypes type;
+            int param_index;
         } IR_Variable;
         
         struct {
@@ -100,8 +103,6 @@ typedef struct IRstruct {
         } function;
 
         struct {
-            int param_index;
-            CstTypes type;
             Operand parameter;
         } parameters;
     } data;

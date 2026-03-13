@@ -14,7 +14,7 @@ int main (int argc, char **argv) {
 
     Tokenstruct *tokenList = lexicalAnalyzer(source);
     if(tokenList == NULL){
-        return 1;
+        return 2;
     }
     free(source);
 
@@ -22,14 +22,14 @@ int main (int argc, char **argv) {
     ASTnode *programNode = programParse(tokenList, &index);
     if(programNode == NULL){
         printf("programNode is NULL\n");
-        return 1;
+        return 3;
     }
     free(tokenList);
 
     GlobalFunc *functions = programAnalyser(programNode);
     if(functions == NULL){
         printf("Semantic error(s).\n");
-        return 1;
+        return 4;
     }
 
     //now all good for compilation.
@@ -37,7 +37,7 @@ int main (int argc, char **argv) {
     IRstruct *IR = programIR(programNode, functions);
     if(IR == NULL){
         printf("Error in the IR creation.\n");
-        return -1;
+        return 5;
     }
     printIR(IR);
 
