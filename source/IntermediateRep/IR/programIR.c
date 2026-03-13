@@ -16,6 +16,7 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
     context->tail = NULL;
     context->current_label = 0;
     context->current_tmp = 0;
+    context->errors = 0;
 
     initGlobalFunctions(definedFunc);
     ASTnode *funcdef = program->data.program_node.func_def;
@@ -28,5 +29,7 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
         return context->head;
     }
 
+    printf("Failed somewhere, %d errors.\n", context->errors);
     return NULL;
+
 }

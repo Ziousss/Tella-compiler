@@ -2,7 +2,6 @@
 
 void printIR(IRstruct *IR){
     IRstruct *tmp = IR;
-
     while(tmp != NULL){
         switch(tmp->op){
             case IR_ARG:
@@ -87,7 +86,7 @@ void printIR(IRstruct *IR){
                 break;
 
             case IR_PARAM:
-                printf("PARAM %s.\n", tmp->data.parameters.parameter.data.IR_Variable.identifier);
+                printf("PARAM %s\n", tmp->data.parameters.parameter.data.IR_Variable.identifier);
                 break;
 
             default:

@@ -134,6 +134,7 @@ typedef struct ASTnode {
             Tokentype return_type; 
             ParameterNode *parameters; 
             ASTnode *body; 
+            bool param;
         } func_def;
 
         struct {

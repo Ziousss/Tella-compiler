@@ -35,6 +35,10 @@ int main (int argc, char **argv) {
     //now all good for compilation.
     //Starting with the IR.
     IRstruct *IR = programIR(programNode, functions);
+    if(IR == NULL){
+        printf("Error in the IR creation.\n");
+        return -1;
+    }
     printIR(IR);
 
     //Now go on to the assembly code.

@@ -5,3 +5,8 @@ int main(char *name){
     }
     return j;
 }
+
+int foo(){
+  int hello = 4;
+  return hello;
+}
