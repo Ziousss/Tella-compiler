@@ -12,6 +12,7 @@ typedef struct {
     int current_offset_count;
     int tmp[256];
     StackVar var[256];
+    int arg_count;
 }StackLayout;
 
 #endif

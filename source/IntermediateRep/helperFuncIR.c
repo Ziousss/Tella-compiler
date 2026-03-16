@@ -266,7 +266,7 @@ CstTypes fromTokToCstType(Tokentype type){
         case TOK_TRUE:
         case TOK_FALSE:                 return IR_BOOL;
         case TOK_VOID:                  return IR_VOID;
-        default:                        return IR_VOID;
+        default:                        return IR_ERROR;
     }
 }
 

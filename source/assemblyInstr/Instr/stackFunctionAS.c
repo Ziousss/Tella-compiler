@@ -1,6 +1,6 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-StackLayout *stackFunctionAS(IRstruct *IRlist){
+StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
     IRstruct *tmp = IRlist;
     if(tmp->op != IR_FUNC){
         printf("Wrong token given to functionAS.\n");
@@ -83,6 +83,10 @@ StackLayout *stackFunctionAS(IRstruct *IRlist){
         }
         tmp = tmp->next;
     }
+
+    fprintf(output, "push rbp\n");
+    fprintf(output, "mov rbp, rsp\n");
+    fprintf(output, "sub rsp, %d\n", -stack->current_offset_count);
 
     return stack;
 }

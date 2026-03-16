@@ -23,9 +23,14 @@ void programAS(IRstruct *IRlist, FILE *output){
                 returnAS(tmp->data.ret, output, stack);
                 break;
 
-            
-            
-            case IR_ADD:
+            case IR_CALL:
+                callAS(tmp, output, stack);
+                break;
+
+            case IR_ARG:
+                argAS(tmp, output, stack);
+                break;
+
             case IR_SUB:
             case IR_MULT:
             case IR_DIV:
