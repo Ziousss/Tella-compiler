@@ -194,7 +194,7 @@ Operand newString(char *value){
 
     op.IR_type = IR_CONST;
     op.data.IR_constant.cst_type = IR_STRING;
-    op.data.IR_constant.value.string.string = value;
+    op.data.IR_constant.value.string = value;
 
     return op;
 }
@@ -204,7 +204,7 @@ Operand newChar(char value){
 
     op.IR_type = IR_CONST;
     op.data.IR_constant.cst_type = IR_CHAR;
-    op.data.IR_constant.value.chr.chr = value;
+    op.data.IR_constant.value.chr = value;
 
     return op;
 }
@@ -214,7 +214,7 @@ Operand newBool(bool value){
 
     op.IR_type = IR_CONST;
     op.data.IR_constant.cst_type = IR_BOOL;
-    op.data.IR_constant.value.boolean.boolean = value;
+    op.data.IR_constant.value.boolean = value;
 
     return op;
 }
@@ -224,7 +224,7 @@ Operand newInt(int value){
 
     op.IR_type = IR_CONST;
     op.data.IR_constant.cst_type = IR_INT;
-    op.data.IR_constant.value.number.number = value;
+    op.data.IR_constant.value.number = value;
 
     return op;
 }

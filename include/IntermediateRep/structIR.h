@@ -36,22 +36,10 @@ typedef struct Operand {
         struct {
             CstTypes cst_type;
             union {
-                struct {
-                    char *string;
-                }string;
-
-                struct {
-                    int number;
-                }number;
-
-                struct {
-                    char chr;
-                }chr;
-
-                struct {
-                    bool boolean;
-                }boolean;
-
+                char *string;
+                int number;
+                char chr;
+                bool boolean;
             }value;
         } IR_constant;
 

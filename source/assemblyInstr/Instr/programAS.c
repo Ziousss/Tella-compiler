@@ -20,7 +20,7 @@ void programAS(IRstruct *IRlist, FILE *output){
                 break;
             
             case IR_RET: 
-                returnAS(tmp->data.ret, output, stack);
+                returnAS(tmp, output, stack);
                 break;
 
             case IR_CALL:

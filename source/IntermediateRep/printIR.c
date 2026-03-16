@@ -111,20 +111,20 @@ void printOperand(Operand op){
         case IR_CONST:
             switch(op.data.IR_constant.cst_type){
                 case IR_INT:
-                    printf("%d", op.data.IR_constant.value.number.number);
+                    printf("%d", op.data.IR_constant.value.number);
                     break;
 
                 case IR_CHAR:
-                    printf("'%c'", op.data.IR_constant.value.chr.chr);
+                    printf("'%c'", op.data.IR_constant.value.chr);
                     break;
 
                 case IR_STRING:
-                    printf("\"%s\"", op.data.IR_constant.value.string.string);
+                    printf("\"%s\"", op.data.IR_constant.value.string);
                     break;
 
                 case IR_BOOL:
                     printf("%s",
-                        op.data.IR_constant.value.boolean.boolean ? "true" : "false");
+                        op.data.IR_constant.value.boolean ? "true" : "false");
                     break;
 
                 case IR_VOID:

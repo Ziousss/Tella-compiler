@@ -74,15 +74,15 @@ void movConstant(Operand op, FILE *output, char *reg){
     CstTypes cst = op.data.IR_constant.cst_type;
     switch (cst) {
     case IR_INT:
-        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.number.number);
+        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.number);
         break;
 
     case IR_CHAR:
-        fprintf(output, "mov %s, %c\n", reg, op.data.IR_constant.value.chr.chr);
+        fprintf(output, "mov %s, %c\n", reg, op.data.IR_constant.value.chr);
         break;
 
     case IR_BOOL:
-        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.boolean.boolean);
+        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.boolean);
         break;
 
     case IR_STRING:
