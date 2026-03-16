@@ -2,7 +2,7 @@
 
 int main (int argc, char **argv) {
     if (argc != 2) {
-        perror("You need 2 arguments, the first being the compiler file and second being the file to compile.\n");
+        perror("You need 2 arguments, the first being the compiler's binary and second being the file to compile.\n");
         return 0;
     }
 

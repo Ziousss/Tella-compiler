@@ -57,8 +57,40 @@ int getOffset(Operand op, StackLayout *stack){
             return findVarInStack(op, stack);
         case IR_TMP:
             return stack->tmp[op.data.IR_tmp.id_tmp];
+            
         default:
             printf("No offset found for var or tmp.\n");
             return 0;
+    }
+}
+
+void movConstant(Operand op, FILE *output, char *reg){
+    IRtype type = op.IR_type;
+    if(type != IR_CONST){
+        printf("Wrong Operand given to movConstant.\n");
+        return;
+    }
+
+    CstTypes cst = op.data.IR_constant.cst_type;
+    switch (cst) {
+    case IR_INT:
+        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.number.number);
+        break;
+
+    case IR_CHAR:
+        fprintf(output, "mov %s, %c\n", reg, op.data.IR_constant.value.chr.chr);
+        break;
+
+    case IR_BOOL:
+        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.boolean.boolean);
+        break;
+
+    case IR_STRING:
+        printf("String constants not yet implemented\n");
+        break;
+    
+    default:
+        printf("Unknown cst type given to movConstant.\n");
+        break;
     }
 }

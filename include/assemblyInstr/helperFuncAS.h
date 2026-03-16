@@ -10,5 +10,6 @@ void setTmpStack(Operand op, StackLayout *stack);
 void setParamstack(Operand param, StackLayout *stack, int param_offset);
 int findVarInStack(Operand op, StackLayout *stack);
 int getOffset(Operand op, StackLayout *stack);
+void movConstant(Operand op, FILE *output, char *reg);
 
 #endif
