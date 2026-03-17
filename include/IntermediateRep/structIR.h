@@ -65,6 +65,11 @@ typedef struct IRstruct {
         struct {
             int target_label;
         } jump;
+
+        struct {
+            Operand dst;
+            Operand src;
+        } assign;
         
         struct {
             int target_label;

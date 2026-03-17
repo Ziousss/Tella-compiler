@@ -27,11 +27,20 @@ void programAS(IRstruct *IRlist, FILE *output){
                 callAS(tmp, output, stack);
                 break;
 
+            case IR_ASSIGN:
+                assignAS(tmp, output, stack);
+                break;
+
             case IR_ARG:
                 argAS(tmp, output, stack);
                 break;
 
+            case IR_PARAM:
+                paramAS(tmp, output, stack);
+                break;
+
             case IR_SUB:
+            case IR_ADD:
             case IR_MULT:
             case IR_DIV:
             case IR_EQEQ:

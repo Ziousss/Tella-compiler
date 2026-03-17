@@ -182,9 +182,8 @@ IRstruct *newAssign(IRContext *context, Operand dst, Operand src){
 
     new->op = IR_ASSIGN;
     new->next = NULL;
-    new->data.binary.dst = dst;
-    new->data.binary.src1 = src;
-    new->data.binary.src2 = (Operand){0};
+    new->data.assign.dst = dst;
+    new->data.assign.src = src;
 
     return new;
 }
