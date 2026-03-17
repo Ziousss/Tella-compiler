@@ -57,6 +57,7 @@ void programAS(IRstruct *IRlist, FILE *output){
                 if(stack == NULL){
                     return;
                 }
+                break;
 
             default:
                 printf("Unhandled op in stackFunctionAS: %d\n", tmp->op);

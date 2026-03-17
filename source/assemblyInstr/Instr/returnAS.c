@@ -34,6 +34,7 @@ void returnAS(IRstruct *ret, FILE *output, StackLayout *stack){
             printf("Unknown CstTyped in returnAS.\n");
             break;
         }    
+        break;
     default:
         printf("Unknown dstType in returnAS.\n");
         break;

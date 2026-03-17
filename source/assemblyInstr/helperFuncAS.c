@@ -1,10 +1,6 @@
 #include "../include/assemblyInstr/helperFuncAS.h"
 
 void setStackLayout(Operand op, StackLayout *stack){
-    if(op.IR_type == 0){
-        return;
-    }
-
     if(op.IR_type == IR_CONST){
         return;
     } 
@@ -12,8 +8,12 @@ void setStackLayout(Operand op, StackLayout *stack){
         setVarStack(op, stack);
         return;
     } 
-    else {
+    else if(op.IR_type == IR_TMP) {
         setTmpStack(op,stack);
+        return;
+    } else {
+        printf("Problem in setStackLayout.\n");
+        fflush(stdout);
         return;
     }
 }
@@ -38,7 +38,7 @@ void setTmpStack(Operand op, StackLayout *stack){
     stack->tmp[op.data.IR_tmp.id_tmp] = stack->current_offset_count;
 }
 
-void setParamstack(Operand param, StackLayout *stack, int param_offset){
+void setParamStack(Operand param, StackLayout *stack, int param_offset){
     stack->arg[stack->param_count].name_var = param.data.IR_Variable.identifier;
     stack->arg[stack->param_count++].offset = param_offset;
 }
@@ -50,20 +50,20 @@ int findVarInStack(Operand op, StackLayout *stack){
         }
     }
 
-    for(int i = 0; i < stack->arg_count; i++){
+    for(int i = 0; i < stack->param_count; i++){
         if(strcmp(op.data.IR_Variable.identifier, stack->arg[i].name_var) == 0){
             return stack->arg[i].offset;
         }
     }
 
-    return 0;
+    return -1;
 }
 
 int getOffset(Operand op, StackLayout *stack){
     switch (op.IR_type) {
         case IR_VAR:
             int offset = findVarInStack(op, stack);
-            if(offset == 0){
+            if(offset == -1){
                 printf("Variable not found in stack\n");
             }
             return offset;
@@ -74,7 +74,7 @@ int getOffset(Operand op, StackLayout *stack){
                 printf("Temporary not found in stack\n");
             }
             return tmpOffset;
-            
+
         default:
             printf("No offset found for var or tmp.\n");
             return 0;

@@ -4,7 +4,7 @@ char *readFile(char *filename)
 {
     FILE *fp = fopen(filename, "r");
     if (!fp){
-        printf("File could not open");
+        printf("File could not open\n");
         return NULL;
     }
 
@@ -14,13 +14,13 @@ char *readFile(char *filename)
 
     char *content = malloc(size+1);
     if (!content) {
-        printf("Memory allocation failed");
+        printf("Memory allocation failed\n");
         fclose(fp);
         return NULL;
     }
 
     if (fread(content, 1, size, fp) != size) {
-        printf("Failed to read file");
+        printf("Failed to read file\n");
         free(content);
         fclose(fp);
         return NULL;

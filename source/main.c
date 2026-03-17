@@ -42,7 +42,11 @@ int main (int argc, char **argv) {
     printIR(IR);
 
     //Now go on to the assembly code.
-    
+    bool created = mainAssemblyInstr(IR);
+    if(!created){
+        printf("Failed to create a good assembly file.\n");
+        return 6;
+    }
 
     return 0;
 }

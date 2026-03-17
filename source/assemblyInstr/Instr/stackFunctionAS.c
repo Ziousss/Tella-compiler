@@ -55,6 +55,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
 
                 setStackLayout(dst, stack);
                 setStackLayout(src1, stack);
+                break;
             }
             case IR_JMP_FALSE:{
                 Operand condition = tmp->data.condition_jump.condition;
@@ -95,6 +96,6 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
     fprintf(output, "push rbp\n");
     fprintf(output, "mov rbp, rsp\n");
     fprintf(output, "sub rsp, %d\n", -stack->current_offset_count);
-
+    printf("printed\n");
     return stack;
 }
