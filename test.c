@@ -1,9 +1,11 @@
 int main(char *name){
     int j = 4;
-    for(int i = 0; i < 10; i = i + 1){
-        int j = 5;
+    int k = 0;
+    while(0 == 4){
+        k = 1;
     }
-    return j;
+
+    return k;
 }
 
 int foo(int hello){

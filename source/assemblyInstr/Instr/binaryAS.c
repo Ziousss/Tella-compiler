@@ -29,24 +29,56 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack){
             break;
 
         case IR_SUB:
-            fprintf(output, "sub rax, rbx\n");
+            fprintf(output, "sub rbx, rax\n");
+            fprintf(output, "mov rax, rbx\n");
             break;
 
         case IR_MULT:
             fprintf(output, "imul rax, rbx\n");
             break;
             
-        case IR_DIV:
+        case IR_DIV: {
+            fprintf(output, "mov r10, rax\n");
+            fprintf(output, "mov rax, rbx\n");
             fprintf(output, "cqo\n");
-            fprintf(output, "idiv rbx\n");
+            fprintf(output, "idiv r10\n");
+            break;
+}
+        case IR_EQEQ:
+            fprintf(output, "cmp rbx, rax\n");
+            fprintf(output, "sete al\n");
+            fprintf(output, "movzx eax, al\n");
             break;
 
-        case IR_EQEQ:            
         case IR_UNEQ:
+            fprintf(output, "cmp rbx, rax\n");
+            fprintf(output, "setne al\n");
+            fprintf(output, "movzx eax, al\n");
+            break;
+
         case IR_GR:
+            fprintf(output, "cmp rbx, rax\n");
+            fprintf(output, "setg al\n");
+            fprintf(output, "movzx eax, al\n");
+            break;
+
         case IR_GREQ:
+            fprintf(output, "cmp rbx, rax\n");
+            fprintf(output, "setge al\n");
+            fprintf(output, "movzx eax, al\n");
+            break;
+
         case IR_LESS:
+            fprintf(output, "cmp rbx, rax\n");
+            fprintf(output, "setl al\n");
+            fprintf(output, "movzx eax, al\n");
+            break;
+
         case IR_LESSEQ:
+            fprintf(output, "cmp rbx, rax\n");
+            fprintf(output, "setle al\n");
+            fprintf(output, "movzx eax, al\n");
+            break;
     }
 
     int dstOffset = getOffset(dst, stack);

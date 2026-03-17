@@ -16,7 +16,7 @@ void programAS(IRstruct *IRlist, FILE *output){
                 break;
             
             case IR_JMP_FALSE: 
-                condJumpAS(tmp->data.condition_jump, output, stack);
+                condJumpAS(tmp, output, stack);
                 break;
             
             case IR_RET: 

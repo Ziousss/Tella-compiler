@@ -12,5 +12,6 @@ StackLayout *stackFunctionAS(IRstruct *IRlist);
 void callAS(IRstruct *call, FILE *output, StackLayout *stack);
 void argAS(IRstruct *arg, FILE *output, StackLayout *stack);
 void returnAS(IRstruct *ret, FILE *output, StackLayout *stack);
+void condJumpAS(IRstruct *call, FILE *output, StackLayout *stack);
 
 #endif
