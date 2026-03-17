@@ -53,7 +53,7 @@ void programAS(IRstruct *IRlist, FILE *output){
                 break;
             
             case IR_FUNC:
-                stack = stackFunctionAS(tmp);
+                stack = stackFunctionAS(tmp, output);
                 if(stack == NULL){
                     return;
                 }

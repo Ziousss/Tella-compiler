@@ -18,12 +18,13 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
 
     //since param are at + from rbp
     int param_offset = 8;
-    
+ 
     for(int i = 0; i < 256; i++){
         stack->tmp[i] = -1;
         stack->var[i].offset = 0;
         stack->var[i].name_var = NULL;
     }
+    char *funcName = tmp->data.function.name_func;
 
     tmp = tmp->next;
     while(tmp != NULL && tmp->op != IR_FUNC){
@@ -37,8 +38,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
             case IR_GR:
             case IR_GREQ:
             case IR_LESS:
-            case IR_LESSEQ:
-            case IR_ASSIGN: {
+            case IR_LESSEQ: {
                 Operand dst = tmp->data.binary.dst;
                 Operand src1 = tmp->data.binary.src1;
                 Operand src2 = tmp->data.binary.src2;
@@ -48,6 +48,13 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
                 setStackLayout(src1, stack);
                 setStackLayout(src2, stack);
                 break;
+            }
+            case IR_ASSIGN: {
+                Operand dst = tmp->data.assign.dst;
+                Operand src1 = tmp->data.assign.src;
+
+                setStackLayout(dst, stack);
+                setStackLayout(src1, stack);
             }
             case IR_JMP_FALSE:{
                 Operand condition = tmp->data.condition_jump.condition;
@@ -84,6 +91,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
         tmp = tmp->next;
     }
 
+    fprintf(output, "%s:\n", funcName);
     fprintf(output, "push rbp\n");
     fprintf(output, "mov rbp, rsp\n");
     fprintf(output, "sub rsp, %d\n", -stack->current_offset_count);

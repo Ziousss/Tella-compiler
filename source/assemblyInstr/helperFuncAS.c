@@ -31,7 +31,7 @@ void setVarStack(Operand op, StackLayout *stack){
 }
 
 void setTmpStack(Operand op, StackLayout *stack){   
-    if(stack->tmp[op.data.IR_tmp.id_tmp] == -1){
+    if(stack->tmp[op.data.IR_tmp.id_tmp] != -1){
         return;
     }
     stack->current_offset_count -= 8;
@@ -39,24 +39,41 @@ void setTmpStack(Operand op, StackLayout *stack){
 }
 
 void setParamstack(Operand param, StackLayout *stack, int param_offset){
-    stack->var[stack->param_count].name_var = param.data.IR_Variable.identifier;
-    stack->var[stack->param_count++].offset = param_offset;
+    stack->arg[stack->param_count].name_var = param.data.IR_Variable.identifier;
+    stack->arg[stack->param_count++].offset = param_offset;
 }
 
 int findVarInStack(Operand op, StackLayout *stack){
     for(int i = 0; i < stack->var_count; i++){
         if(strcmp(op.data.IR_Variable.identifier, stack->var[i].name_var) == 0){
-            return stack->var->offset;
+            return stack->var[i].offset;
         }
     }
+
+    for(int i = 0; i < stack->arg_count; i++){
+        if(strcmp(op.data.IR_Variable.identifier, stack->arg[i].name_var) == 0){
+            return stack->arg[i].offset;
+        }
+    }
+
+    return 0;
 }
 
 int getOffset(Operand op, StackLayout *stack){
     switch (op.IR_type) {
         case IR_VAR:
-            return findVarInStack(op, stack);
+            int offset = findVarInStack(op, stack);
+            if(offset == 0){
+                printf("Variable not found in stack\n");
+            }
+            return offset;
+
         case IR_TMP:
-            return stack->tmp[op.data.IR_tmp.id_tmp];
+            int tmpOffset = stack->tmp[op.data.IR_tmp.id_tmp];
+            if(tmpOffset == -1){
+                printf("Temporary not found in stack\n");
+            }
+            return tmpOffset;
             
         default:
             printf("No offset found for var or tmp.\n");

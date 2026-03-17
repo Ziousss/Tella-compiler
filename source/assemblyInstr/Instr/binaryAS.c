@@ -22,6 +22,8 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack){
     }
     fprintf(output, "pop rbx\n");
 
+    //src 1 = rbx and src2 = rax
+
     IRoperation op = binary->op;
     switch (op) {
         case IR_ADD:
@@ -37,13 +39,13 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack){
             fprintf(output, "imul rax, rbx\n");
             break;
             
-        case IR_DIV: {
+        case IR_DIV:
             fprintf(output, "mov r10, rax\n");
             fprintf(output, "mov rax, rbx\n");
             fprintf(output, "cqo\n");
             fprintf(output, "idiv r10\n");
             break;
-}
+
         case IR_EQEQ:
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "sete al\n");
