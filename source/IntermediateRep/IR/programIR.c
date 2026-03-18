@@ -26,10 +26,12 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
     }
 
     if(context->errors == 0){
-        return context->head;
+        IRstruct *head = context->head;
+        free(context);
+        return head;
     }
 
     printf("Failed somewhere, %d errors.\n", context->errors);
-    return NULL;
-
+    free(context);
+    return NULL;    
 }

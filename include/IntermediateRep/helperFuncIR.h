@@ -7,6 +7,7 @@
 #include "structIR.h"
 #include "../include/lexer/tokenizer.h"
 #include "../include/semanticAnalyser/struct.h"
+#include "../include/parser/ast.h"
 
 void emit(IRstruct *to_add, IRContext *context);
 IRstruct *newLabel(IRContext *context, int label);
@@ -32,5 +33,7 @@ bool isbool(IRoperation op);
 IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type);
 CstTypes fromTokToCstType(Tokentype type);
 void freeFunctions(GlobalFunc *functions);
+void freeIR(IRstruct *IR);
+void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR);
 
 #endif

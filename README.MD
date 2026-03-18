@@ -2,7 +2,7 @@
 
 Welcome to the **TELLA Compiler**, a basic **C compiler written in C**.
 
-This project is an educational compiler developed to improve my practical knowledge of the C language and to deepen my understanding of fundamental concepts such as **parsing**, and **semantic analysis**.  It also provides hands-on experience with the inner workings of a computer, including x86-64 assembly and low-level code generation.
+This project is an educational compiler developed to improve my practical knowledge of the C language and to deepen my understanding of fundamental concepts such as **parsing** and **semantic analysis**.  It also provides hands-on experience with the inner workings of a computer, including x86-64 assembly and low-level code generation.
 
 ---
 
@@ -29,13 +29,26 @@ This project is primarily focused on learning compiler design concepts rather th
 - Semantic Analyzer  
 - IR 
 - Assembly code x86_64
-- The compiler can now compile and create executable for very simple programs.
+
+---
+
+## Architecture Pipeline
+
+Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assembly → Binary (GCC)
+
+---
+
+## Known Limitations
+
+- < 1% memory leak on standard programs
+- No optimization passes
+- Basic error reporting
 
 ---
 
 ## Next Steps
 
-Now that the tella compiler can compile simple programs, I will compile it with all the warnings to make it the safest possible.
+"Implementing more advanced features such as strings and arrays"
 
 ---
 
@@ -59,13 +72,13 @@ To use this compiler,
 
 ```bash
 cd build
-./compiler /path/to/the/file
+./compiler /path/to/the/file /path/to/the/executable
 ```
 
-You can also use the test file given in the folder.
-Write the code to try in the test.c file.
+You can also use the test file given in the "tests" folder.
+Write your test code in a '.c' file.
 
 ```bash
 cd build
-./compiler ../tests/test1.c
+./compiler ../tests/test1.c test
 ```

@@ -308,3 +308,12 @@ void freeFunctions(GlobalFunc *functions){
         current = next;
     }
 }
+
+void freeIR(IRstruct *IR){
+    IRstruct *current = IR;
+    while(current != NULL){
+        IRstruct *next = current->next;
+        free(current);
+        current = next;
+    }
+}

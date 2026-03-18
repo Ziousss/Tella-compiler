@@ -131,3 +131,12 @@ bool compileAssembly(const char *asmFile, const char *outputFile){
     }
     return true;
 }
+
+void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR){
+    if(programNode != NULL){
+        freeASTNode(programNode->data.program_node.func_def);
+        free(programNode);
+    }
+    if(functions != NULL) freeFunctions(functions);
+    if(IR != NULL) freeIR(IR);
+}

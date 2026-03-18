@@ -34,6 +34,7 @@ int main (int argc, char **argv) {
     printf("4. Semantic analysis...\n"); fflush(stdout);
     GlobalFunc *functions = programAnalyser(programNode);
     if(functions == NULL){
+        cleanup(programNode, NULL, NULL);
         printf("Semantic error(s).\n");
         return 4;
     }
@@ -43,6 +44,7 @@ int main (int argc, char **argv) {
     printf("5. IR generation...\n"); fflush(stdout);
     IRstruct *IR = programIR(programNode, functions);
     if(IR == NULL){
+        cleanup(programNode, functions, NULL);
         printf("Error in the IR creation.\n");
         return 5;
     }
@@ -54,6 +56,7 @@ int main (int argc, char **argv) {
     printf("6. Assembly generation...\n"); fflush(stdout);
     bool created = mainAssemblyInstr(IR);
     if(!created){
+        cleanup(programNode, functions, IR);
         printf("Failed to create a good assembly file.\n");
         return 6;
     }
@@ -62,17 +65,14 @@ int main (int argc, char **argv) {
     bool compiled = compileAssembly("../ASoutput.s", executable);
 
     if(!compiled){
+        cleanup(programNode, functions, IR);
         printf("gcc compilation failed\n");
         return 1;
     }
 
     //Frees the AST
     printf("7. Starting freeing the nodes...\n"); fflush(stdout);
-    freeASTNode(programNode->data.program_node.func_def);
-    free(programNode);
-
-    //Frees functions
-    freeFunctions(functions);
+    cleanup(programNode, functions, IR);
 
     printf("Compilation successful!\n"); fflush(stdout);
 

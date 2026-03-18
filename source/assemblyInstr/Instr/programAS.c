@@ -65,4 +65,6 @@ void programAS(IRstruct *IRlist, FILE *output){
         }
         tmp = tmp->next;
     }
+
+    free(stack);
 }
