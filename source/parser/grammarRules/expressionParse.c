@@ -27,6 +27,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             left->ast_type = AST_IDENTIFIER;
             left->data.identifier.name = name;
             left->line = tokenList[start].line;
+            left->next = NULL;
         }
     }
     else if(tokenList[i].type == TOK_INTEGER_LITERAL){

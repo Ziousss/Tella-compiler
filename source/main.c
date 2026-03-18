@@ -68,14 +68,15 @@ int main (int argc, char **argv) {
         return 1;
     }
 
+    printf("Compilation successful!\n");
+
     //Frees the AST
+    printf("7. Starting freeing the nodes...\n"); fflush(stdout);
     freeASTNode(programNode->data.program_node.func_def);
     free(programNode);
 
     //Frees functions
     //
-
-    printf("Compilation successful!\n");
 
     return 0;
 }

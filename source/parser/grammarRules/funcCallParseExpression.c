@@ -5,7 +5,6 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
     int start = *index;
     ArgNode *args = NULL;
     ArgNode *last = NULL;
-    char *name = strdup(tokenList[i].lexeme);
     ASTnode *funcCall = malloc(sizeof(ASTnode));
     if (funcCall == NULL){
         printf("Malloc error in funcCall");
@@ -22,6 +21,7 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
     }
     if (tokenList[i].type == TOK_RPAREN)
     {
+        char *name = strdup(tokenList[start].lexeme);
         funcCall->data.func_call.name = name;
         funcCall->ast_type = AST_FUNC_CALL;
         funcCall->data.func_call.args = args;
@@ -63,6 +63,7 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
         }
     }++i;
 
+    char *name = strdup(tokenList[start].lexeme);
     funcCall->data.func_call.args = args;
     funcCall->ast_type = AST_FUNC_CALL;
     funcCall->data.func_call.name = name;

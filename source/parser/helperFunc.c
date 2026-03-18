@@ -87,6 +87,7 @@ void freeASTNode(ASTnode *node){
     }
 
     NodeType type = node->ast_type;
+    printf("Freeing type %s.\n", astTypeToString(type));
     switch (type) {
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN: {
