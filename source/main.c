@@ -1,8 +1,8 @@
 #include "../include/main.h"
 
 int main (int argc, char **argv) {
-    if (argc != 2) {
-        perror("You need 2 arguments, the first being the compiler's binary and second being the file to compile.\n");
+    if (argc != 3) {
+        perror("You need 3 arguments, the first being the compiler's binary, the second being the file to compile and third the name of the executable once it is compiled.\n");
         return 0;
     }
 
@@ -60,9 +60,10 @@ int main (int argc, char **argv) {
         return 6;
     }
 
-    
-    int result = system("gcc ../ASoutput.s -o ../tests/test");
-    if(result != 0){
+    char *executable = argv[2];
+    bool compiled = compileAssembly("../ASoutput.s", executable);
+
+    if(!compiled){
         printf("gcc compilation failed\n");
         return 1;
     }

@@ -119,3 +119,15 @@ void movConstant(Operand op, FILE *output, const char *reg){
         }
     }
 }
+
+bool compileAssembly(const char *asmFile, const char *outputFile){
+    char command[256];
+    snprintf(command, sizeof(command), "gcc %s -o %s", asmFile, outputFile);
+    
+    int result = system(command);
+    if(result != 0){
+        printf("Compilation failed\n");
+        return false;
+    }
+    return true;
+}

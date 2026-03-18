@@ -7,5 +7,7 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 #include "../include/IntermediateRep/IRheader.h"
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
+#include <string.h>
+#include <stdlib.h>
 
 #endif

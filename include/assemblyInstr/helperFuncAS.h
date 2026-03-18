@@ -11,5 +11,6 @@ void setParamStack(Operand param, StackLayout *stack, int param_offset);
 int findVarInStack(Operand op, StackLayout *stack);
 int getOffset(Operand op, StackLayout *stack);
 void movConstant(Operand op, FILE *output, const char *reg);
+bool compileAssembly(const char *asmFile, const char *outputFile);
 
 #endif
