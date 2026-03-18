@@ -19,7 +19,7 @@ void returnAS(IRstruct *ret, FILE *output, StackLayout *stack){
             break;
 
         case IR_CHAR:
-            fprintf(output, "mov rax, %c\n", dst.data.IR_constant.value.chr);
+            fprintf(output, "mov rax, %d\n", dst.data.IR_constant.value.chr);
             break;
 
         case IR_BOOL:

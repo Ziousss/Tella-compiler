@@ -39,7 +39,7 @@ int main (int argc, char **argv) {
         printf("Error in the IR creation.\n");
         return 5;
     }
-    printIR(IR);
+    //printIR(IR);
 
     //Now go on to the assembly code.
     bool created = mainAssemblyInstr(IR);
@@ -47,6 +47,15 @@ int main (int argc, char **argv) {
         printf("Failed to create a good assembly file.\n");
         return 6;
     }
+
+    
+    int result = system("gcc ../ASoutput.s -o ../tests/test5");
+    if(result != 0){
+        printf("gcc compilation failed\n");
+        return 1;
+    }
+
+    printf("Compilation successful!");
 
     return 0;
 }

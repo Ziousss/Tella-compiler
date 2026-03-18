@@ -16,19 +16,19 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
     switch (argType){
     case IR_VAR:
         int stackOffset = findVarInStack(argOp, stack);
-        fprintf(output, "mov %s, [rbp - %d]\n", reg, stackOffset);
+        fprintf(output, "mov %s, [rbp %+d]\n", reg, stackOffset);
         break;
     
     case IR_TMP:
         int tmpOffset = stack->tmp[argOp.data.IR_tmp.id_tmp];
-        fprintf(output, "mov %s, [rbp - %d]\n", reg, tmpOffset);
+        fprintf(output, "mov %s, [rbp %+d]\n", reg, tmpOffset);
         break;
 
     case IR_CONST:
         CstTypes cstType = argOp.data.IR_constant.cst_type; 
         switch (cstType) {
         case IR_STRING:
-            printf("Not implemented yet");
+            printf("Not implemented yet\n");
             break;
         
         case IR_INT:
@@ -36,7 +36,7 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
             break;
 
         case IR_CHAR:
-            fprintf(output, "mov %s, %c\n", reg, argOp.data.IR_constant.value.chr);
+            fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.chr);
             break;
 
         case IR_BOOL:

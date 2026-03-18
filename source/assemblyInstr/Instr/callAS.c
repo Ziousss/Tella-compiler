@@ -8,7 +8,7 @@ void callAS(IRstruct *call, FILE *output, StackLayout *stack){
         int offset = getOffset(dst, stack);
         
         //does - for variables etc and + for parameters
-        fprintf(output, "mov [rbp %+d], rax", offset);
+        fprintf(output, "mov [rbp %+d], rax\n", offset);
     }
 
     stack->arg_count = 0;

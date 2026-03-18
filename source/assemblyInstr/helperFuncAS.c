@@ -95,7 +95,7 @@ void movConstant(Operand op, FILE *output, char *reg){
         break;
 
     case IR_CHAR:
-        fprintf(output, "mov %s, %c\n", reg, op.data.IR_constant.value.chr);
+        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.chr);
         break;
 
     case IR_BOOL:

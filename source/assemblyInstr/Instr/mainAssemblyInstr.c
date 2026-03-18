@@ -3,7 +3,7 @@
 //return a bool to know whether it worked or not.
 bool mainAssemblyInstr(IRstruct *IRlist){
     bool opened = false;
-    FILE *output = fopen("/home/zious/Myproject/tella-compiler/ASoutput.s", "w");
+    FILE *output = fopen("../ASoutput.s", "w");
     if(output == NULL){
         printf("File ASoutput.s did not open correctly.\n");
         fflush(stdout);

@@ -95,7 +95,10 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
     fprintf(output, "%s:\n", funcName);
     fprintf(output, "push rbp\n");
     fprintf(output, "mov rbp, rsp\n");
-    fprintf(output, "sub rsp, %d\n", -stack->current_offset_count);
-    printf("printed\n");
+    if(stack->current_offset_count%16 == 0){
+        fprintf(output, "sub rsp, %d\n", -stack->current_offset_count);
+    } else {
+        fprintf(output, "sub rsp, %d\n", -stack->current_offset_count-8);
+    }
     return stack;
 }
