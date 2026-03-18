@@ -14,5 +14,6 @@ void returnAS(IRstruct *ret, FILE *output, StackLayout *stack);
 void condJumpAS(IRstruct *call, FILE *output, StackLayout *stack);
 void assignAS(IRstruct *assign, FILE *output, StackLayout *stack);
 void paramAS(IRstruct *parameter, FILE *output, StackLayout *stack);
+void ifStmtAS(IRstruct *ifStmt, FILE *output, StackLayout *stack);
 
 #endif

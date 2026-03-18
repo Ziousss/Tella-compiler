@@ -4,9 +4,7 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, 0
-mov rax, 0
-mov [rbp -8], rax
-mov rax, [rbp -8]
+mov rax, 99
 mov rsp, rbp
 pop rbp
 ret

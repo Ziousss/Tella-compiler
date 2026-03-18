@@ -3,7 +3,7 @@ char main(){
 }
 
 /*
-ech $?
+echo $?
 99 = 'c' in ascii
 works
 */

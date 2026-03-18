@@ -88,8 +88,10 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
 
                 break;
             }
+            case IR_LABEL: break;
+            case IR_JMP: break;
             default: {
-                printf("Unknown IR token in stackFunctionAS.\n");
+                printf("Unknown IR token in stackFunctionAS %d.\n", tmp->op);
                 break;
             }
         }

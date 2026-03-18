@@ -6,12 +6,14 @@ int main (int argc, char **argv) {
         return 0;
     }
 
+    printf("1. Reading file...\n"); fflush(stdout);
     char *source = readFile(argv[1]);
     if (source == NULL){
         printf("Fail to read the given file to compile.\n");
         return 1;
     }
 
+    printf("2. Lexical analysis...\n"); fflush(stdout);
     Tokenstruct *tokenList = lexicalAnalyzer(source);
     if(tokenList == NULL){
         return 2;
@@ -19,6 +21,7 @@ int main (int argc, char **argv) {
     free(source);
 
     int index = 0;
+    printf("3. Parsing...\n"); fflush(stdout);
     ASTnode *programNode = programParse(tokenList, &index);
     if(programNode == NULL){
         printf("programNode is NULL\n");
@@ -26,6 +29,7 @@ int main (int argc, char **argv) {
     }
     free(tokenList);
 
+    printf("4. Semantic analysis...\n"); fflush(stdout);
     GlobalFunc *functions = programAnalyser(programNode);
     if(functions == NULL){
         printf("Semantic error(s).\n");
@@ -34,6 +38,7 @@ int main (int argc, char **argv) {
 
     //now all good for compilation.
     //Starting with the IR.
+    printf("5. IR generation...\n"); fflush(stdout);
     IRstruct *IR = programIR(programNode, functions);
     if(IR == NULL){
         printf("Error in the IR creation.\n");
@@ -42,6 +47,7 @@ int main (int argc, char **argv) {
     //printIR(IR);
 
     //Now go on to the assembly code.
+    printf("6. Assembly generation...\n"); fflush(stdout);
     bool created = mainAssemblyInstr(IR);
     if(!created){
         printf("Failed to create a good assembly file.\n");
@@ -49,13 +55,13 @@ int main (int argc, char **argv) {
     }
 
     
-    int result = system("gcc ../ASoutput.s -o ../tests/test5");
+    int result = system("gcc ../ASoutput.s -o ../test5");
     if(result != 0){
         printf("gcc compilation failed\n");
         return 1;
     }
 
-    printf("Compilation successful!");
+    printf("Compilation successful!\n");
 
     return 0;
 }
