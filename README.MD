@@ -48,7 +48,7 @@ Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assemb
 
 ## Next Steps
 
-"Implementing more advanced features such as strings and arrays"
+Implementing more advanced features such as strings and arrays
 
 ---
 
