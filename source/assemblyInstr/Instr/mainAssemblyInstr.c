@@ -13,6 +13,7 @@ bool mainAssemblyInstr(IRstruct *IRlist){
     opened = true;
     fprintf(output, ".intel_syntax noprefix\n.globl main\n");
     programAS(IRlist, output);
+    fprintf(output, ".section .note.GNU-stack,\"\",@progbits\n");
     fclose(output);
 
     return opened;

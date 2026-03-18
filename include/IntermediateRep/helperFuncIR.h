@@ -31,5 +31,6 @@ const char *printCstType(CstTypes type);
 bool isbool(IRoperation op);
 IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type);
 CstTypes fromTokToCstType(Tokentype type);
+void freeFunctions(GlobalFunc *functions);
 
 #endif

@@ -42,3 +42,4 @@ mov rax, [rbp -8]
 mov rsp, rbp
 pop rbp
 ret
+.section .note.GNU-stack,"",@progbits

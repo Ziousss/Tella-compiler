@@ -50,8 +50,6 @@ int main (int argc, char **argv) {
     //Uncomment for better visualisation
     //printIR(IR);
 
-    //free(programNode);
-
     //Now go on to the assembly code.
     printf("6. Assembly generation...\n"); fflush(stdout);
     bool created = mainAssemblyInstr(IR);
@@ -68,15 +66,15 @@ int main (int argc, char **argv) {
         return 1;
     }
 
-    printf("Compilation successful!\n");
-
     //Frees the AST
     printf("7. Starting freeing the nodes...\n"); fflush(stdout);
     freeASTNode(programNode->data.program_node.func_def);
     free(programNode);
 
     //Frees functions
-    //
+    freeFunctions(functions);
+
+    printf("Compilation successful!\n"); fflush(stdout);
 
     return 0;
 }
