@@ -55,7 +55,7 @@ int main (int argc, char **argv) {
     }
 
     
-    int result = system("gcc ../ASoutput.s -o ../test5");
+    int result = system("gcc ../ASoutput.s -o ../test");
     if(result != 0){
         printf("gcc compilation failed\n");
         return 1;

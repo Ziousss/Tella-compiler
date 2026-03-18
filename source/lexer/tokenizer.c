@@ -24,6 +24,18 @@ Tokenstruct *lexicalAnalyzer(char *input){
             continue;
         }
 
+        if(input[right] == '/' && right+1 < len && input[right+1] == '*'){
+            while(input[right] != '*' || input[right+1] != '/'){
+                if(input[right] == '\n'){
+                    ++line;
+                }
+                ++right;
+            }
+            right+=2;
+            left = right; 
+            continue;
+        }
+
         if (input[right] == '\n'){
             right++;
             left = right;
