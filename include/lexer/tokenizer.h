@@ -44,5 +44,6 @@ Tokenstruct *lexicalAnalyzer (char* input);
 Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, int line);
 Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, int line);
 Tokentype keyword_type(char *sub);
+void freeTokenList(Tokenstruct *tokenlist);
 
 #endif

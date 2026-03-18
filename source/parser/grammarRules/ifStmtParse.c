@@ -49,6 +49,7 @@ ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index){
     ifStmt->data.if_node.if_branch = if_block;
     ifStmt->data.if_node.else_branch = else_block;
     ifStmt->line = tokenList[start].line;
+    ifStmt->next = NULL;
 
     *index = i;
     return ifStmt;

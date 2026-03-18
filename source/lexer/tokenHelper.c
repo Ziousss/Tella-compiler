@@ -114,3 +114,17 @@ Tokentype keyword_type(char *sub){
     }
     return TOK_IDENTIFIER;
 }
+
+void freeTokenList(Tokenstruct *tokenlist){
+    int i = 0;
+    while(tokenlist[i].type != TOK_EOF) {
+        if(tokenlist[i].type == TOK_IDENTIFIER || 
+           tokenlist[i].type == TOK_INTEGER_LITERAL ||
+           tokenlist[i].type == TOK_STRING_LITERAL ||
+           tokenlist[i].type == TOK_CHAR_LITERAL) {
+            free((void*)tokenlist[i].lexeme);
+        }
+        i++;
+    }
+    free(tokenlist);
+}

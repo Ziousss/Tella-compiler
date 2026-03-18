@@ -3,6 +3,6 @@ int main(){
     test
     comment
     */
-    int i = 5;
-    return i;
+    int i = 4;
+    return 4;
 }

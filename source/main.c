@@ -27,7 +27,9 @@ int main (int argc, char **argv) {
         printf("programNode is NULL\n");
         return 3;
     }
-    free(tokenList);
+
+    //Frees tokenList
+    freeTokenList(tokenList);
 
     printf("4. Semantic analysis...\n"); fflush(stdout);
     GlobalFunc *functions = programAnalyser(programNode);
@@ -44,7 +46,11 @@ int main (int argc, char **argv) {
         printf("Error in the IR creation.\n");
         return 5;
     }
+
+    //Uncomment for better visualisation
     //printIR(IR);
+
+    //free(programNode);
 
     //Now go on to the assembly code.
     printf("6. Assembly generation...\n"); fflush(stdout);
@@ -55,11 +61,18 @@ int main (int argc, char **argv) {
     }
 
     
-    int result = system("gcc ../ASoutput.s -o ../test");
+    int result = system("gcc ../ASoutput.s -o ../tests/test");
     if(result != 0){
         printf("gcc compilation failed\n");
         return 1;
     }
+
+    //Frees the AST
+    freeASTNode(programNode->data.program_node.func_def);
+    free(programNode);
+
+    //Frees functions
+    //
 
     printf("Compilation successful!\n");
 

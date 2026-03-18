@@ -13,7 +13,8 @@ bool isOperatorExpression (Tokentype type);
 ParameterNode *create_param_tree(char *name, Tokentype type, int count);
 void param_list_add(ParameterNode **head, ParameterNode *param);
 void add_stmt_list(ASTnode **head, ASTnode **last, ASTnode *stmt, NodeType ast_type);
-const char* astTypeToString(int type);
+const char* astTypeToString(NodeType type);
 void prinast(ASTnode *node);
+void freeASTNode(ASTnode *node);
 
 #endif

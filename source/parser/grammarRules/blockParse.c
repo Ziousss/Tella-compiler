@@ -53,7 +53,7 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
                 if(declaration != NULL){
                     add_stmt_list(&stmt_list,&last, declaration, AST_VAR_DECL);
                     continue;
-                }
+                }   
             }
             if(tokenList[i].type == TOK_IF){
                 ASTnode *if_stmt = ifStmtParse(tokenList, &i);

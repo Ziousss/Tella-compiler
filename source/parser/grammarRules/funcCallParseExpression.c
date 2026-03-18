@@ -67,6 +67,7 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
     funcCall->ast_type = AST_FUNC_CALL;
     funcCall->data.func_call.name = name;
     funcCall->line = tokenList[start].line;
+    funcCall->next = NULL;
 
     *index = i;
     return funcCall;

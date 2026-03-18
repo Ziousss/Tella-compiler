@@ -122,6 +122,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left = tmp;
     }
 
+    left->next = NULL;
     *index = i;
     return left;
 }

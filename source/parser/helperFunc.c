@@ -56,22 +56,17 @@ void prinast(ASTnode *node){
     printf("programAST is not NULL.\n");
 }
 
-const char* astTypeToString(int type) {
+const char* astTypeToString(NodeType type) {
     switch (type) {
         case AST_PROGRAM:           return "PROGRAM_AST";
         case AST_VAR_DECL:          return "DECLARATION_AST";
         case AST_ASSIGN_EXPR:       return "ASSIGN_AST";
         case AST_BINARY_EXPR:       return "BINARY_AST";
         case AST_BLOCK:             return "BLOCK_AST";
-        case AST_CALL_EXPR:         return "CALL_EXPR_AST";
-        case AST_EXPR_STMT:         return "EXPR_STMT_AST";
         case AST_FOR_STMT:          return "FOR_STMT_AST";
         case AST_WHILE_STMT:        return "WHILE_STMT_AST";
         case AST_IF_STMT:           return "IF_STMT_AST";
         case AST_INCLUDE:           return "INCLUDE_AST";
-        case AST_PARAM_DECL:        return "PARAM_DECLARATION_AST";
-        case AST_PARAM_LIST:        return "PARAM_LIST_AST";
-        case AST_STMT_LIST:         return "STMT_LIST_AST";
         case AST_RETURN:            return "RETURN_AST";
 
         case AST_FUNC_CALL:         return "FUNC_CALL_AST";
@@ -85,3 +80,107 @@ const char* astTypeToString(int type) {
         default:                    return "NOT_NAMED_YET";
     }
 }   
+
+void freeASTNode(ASTnode *node){
+    if(node == NULL){
+        return;
+    }
+
+    NodeType type = node->ast_type;
+    switch (type) {
+        case AST_FUNC_DEF:
+        case AST_FUNC_DEF_MAIN: {
+            free(node->data.func_def.name);
+            freeASTNode(node->data.func_def.body);
+            
+            ParameterNode *param = node->data.func_def.parameters;
+            if(param != NULL) {  // ← AJOUTER CE CHECK!
+                ParameterNode *current = param;
+                while (current != NULL){
+                    ParameterNode *next = current->next;
+                    free(current->name);
+                    free(current);
+                    current = next;
+                }
+            }
+            break;
+        }
+        case AST_ASSIGN_EXPR: {
+            freeASTNode(node->data.assign.value);
+            free(node->data.assign.target);
+            break;
+        }
+        case AST_BINARY_EXPR:{
+            freeASTNode(node->data.binary.left);
+            freeASTNode(node->data.binary.right);
+            break;
+        }
+        case AST_BLOCK: {
+            freeASTNode(node->data.block.stmts);
+            break;
+        }
+        case AST_BOOLEAN: 
+        case AST_NUMBER:
+        case AST_CHAR_LITERAL:{
+            break;
+        }
+        case AST_FOR_STMT:{
+            freeASTNode(node->data.for_node.block);
+            freeASTNode(node->data.for_node.condition);
+            freeASTNode(node->data.for_node.incrementation);
+            freeASTNode(node->data.for_node.initialisation);
+            break;
+        }
+        case AST_FUNC_CALL:{
+            free(node->data.func_call.name);
+            ArgNode *arg = node->data.func_call.args;
+            ArgNode *current = arg;
+            while(current != NULL){
+                ArgNode *next = current->next;
+                freeASTNode(current->expression);
+                free(current);
+                current = next;
+            } 
+            break;
+        }
+        case AST_IDENTIFIER:{
+            free(node->data.identifier.name);
+            break;
+        }
+        case AST_IF_STMT:{
+            freeASTNode(node->data.if_node.condition);
+            freeASTNode(node->data.if_node.else_branch);
+            freeASTNode(node->data.if_node.if_branch);
+            break;
+        }
+        
+        case AST_RETURN:{
+            freeASTNode(node->data.return_node.expr);
+            break;
+        }
+        case AST_VAR_DECL:{
+            free(node->data.declaration.identifier);
+            freeASTNode(node->data.declaration.expression);
+            break;
+        }
+        case AST_STRING_LITERAL:{
+            free(node->data.string_literal.string);
+            break;
+        }
+        case AST_WHILE_STMT:{
+            freeASTNode(node->data.while_node.condition);
+            freeASTNode(node->data.while_node.block);
+            break;
+        }
+        default:{
+            printf("Unknown ast type.");
+            break;
+        }
+    }
+
+    if(node->next != NULL) {
+        freeASTNode(node->next);
+    }
+
+    free(node);
+}

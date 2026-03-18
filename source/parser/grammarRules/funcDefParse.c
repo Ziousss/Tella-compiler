@@ -30,6 +30,8 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
         parameters = malloc(sizeof(ParameterNode));
         parameters->count = 0;
         param = false;
+        parameters->next = NULL;
+        parameters->name = NULL;
     } 
     else if(!isTOKType(tokenList[i].type) && tokenList[i].type != TOK_IDENTIFIER){
         printf("Missing ')' on line %d in the function definition.\n", tokenList[i].line);
@@ -71,6 +73,7 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     func_def_ast->data.func_def.param = param;
     func_def_ast->data.func_def.return_type = return_type;
     func_def_ast->line = tokenList[start].line;
+    func_def_ast->next = NULL;
 
     *index = i;
     return func_def_ast;

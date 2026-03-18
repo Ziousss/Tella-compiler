@@ -64,6 +64,7 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
     forStmt->data.for_node.incrementation = incrementation;
     forStmt->data.for_node.initialisation = initialisation;
     forStmt->line = tokenList[start].line;
+    forStmt->next = NULL;
 
     *index = i;
     return forStmt;

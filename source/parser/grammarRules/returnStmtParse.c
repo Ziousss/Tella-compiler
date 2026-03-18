@@ -29,6 +29,7 @@ ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index){
     returnStmt->data.return_node.expr = expression;
     returnStmt->ast_type = AST_RETURN;
     returnStmt->line = tokenList[start].line;
+    returnStmt->next = NULL;
 
     *index = i;
     return returnStmt;

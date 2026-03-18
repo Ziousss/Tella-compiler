@@ -46,6 +46,7 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
     assigneNode->data.assign.target = name;
     assigneNode->data.assign.value = value;
     assigneNode->line = tokenList[start].line;
+    assigneNode->next = NULL;
     *index = i;
     return assigneNode;
 }
