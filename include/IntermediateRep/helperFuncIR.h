@@ -27,7 +27,7 @@ GlobalFunc *findFuncDef(char *name);
 CstTypes fromSemToIRTypes(SemanticType type);
 IRstruct *newArg(IRContext *context, Operand arg);
 IRstruct *newCall(IRContext *context, char *name, int count, Operand dst);
-char *printCstType(CstTypes type);
+const char *printCstType(CstTypes type);
 bool isbool(IRoperation op);
 IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type);
 CstTypes fromTokToCstType(Tokentype type);

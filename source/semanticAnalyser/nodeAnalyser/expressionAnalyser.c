@@ -1,7 +1,7 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
 SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
-    Tokentype type = expressionAst->ast_type;
+    NodeType type = expressionAst->ast_type;
     switch (type){
         case AST_IDENTIFIER: {
             SymbolNode *identifier =  find_in_scope(expressionAst->data.identifier.name, context);

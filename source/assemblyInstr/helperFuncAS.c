@@ -61,27 +61,30 @@ int findVarInStack(Operand op, StackLayout *stack){
 
 int getOffset(Operand op, StackLayout *stack){
     switch (op.IR_type) {
-        case IR_VAR:
+        case IR_VAR:{
             int offset = findVarInStack(op, stack);
             if(offset == -1){
                 printf("Variable not found in stack\n");
             }
             return offset;
+        }
 
-        case IR_TMP:
+        case IR_TMP:{
             int tmpOffset = stack->tmp[op.data.IR_tmp.id_tmp];
             if(tmpOffset == -1){
                 printf("Temporary not found in stack\n");
             }
             return tmpOffset;
+        }
 
-        default:
+        default:{
             printf("No offset found for var or tmp.\n");
             return 0;
+        }
     }
 }
 
-void movConstant(Operand op, FILE *output, char *reg){
+void movConstant(Operand op, FILE *output, const char *reg){
     IRtype type = op.IR_type;
     if(type != IR_CONST){
         printf("Wrong Operand given to movConstant.\n");
@@ -90,24 +93,29 @@ void movConstant(Operand op, FILE *output, char *reg){
 
     CstTypes cst = op.data.IR_constant.cst_type;
     switch (cst) {
-    case IR_INT:
-        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.number);
-        break;
+        case IR_INT:{
+            fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.number);
+            break;
+        }
 
-    case IR_CHAR:
-        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.chr);
-        break;
+        case IR_CHAR:{
+            fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.chr);
+            break;
+        }
 
-    case IR_BOOL:
-        fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.boolean);
-        break;
+        case IR_BOOL:{
+            fprintf(output, "mov %s, %d\n", reg, op.data.IR_constant.value.boolean);
+            break;
+        }
 
-    case IR_STRING:
-        printf("String constants not yet implemented\n");
-        break;
-    
-    default:
-        printf("Unknown cst type given to movConstant.\n");
-        break;
+        case IR_STRING:{
+            printf("String constants not yet implemented\n");
+            break;
+        }
+
+        default:{
+            printf("Unknown cst type given to movConstant.\n");
+            break;
+        }
     }
 }

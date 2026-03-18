@@ -24,7 +24,7 @@ ASTnode *whileStmtParse(Tokenstruct *tokenList, int *index){
         return NULL;
     }++i;
 
-    ASTnode *block = blockParse(tokenList, &i, "while");
+    ASTnode *block = blockParse(tokenList, &i);
     if(block == NULL){
         printf("Issue in the block parsing of the while statement.\n");
         return NULL;

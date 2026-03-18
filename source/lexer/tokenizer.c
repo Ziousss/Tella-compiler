@@ -2,10 +2,10 @@
 #include "../include/lexer/charcheck.h"
 
 Tokenstruct *lexicalAnalyzer(char *input){
-    int right = 0, left = 0, tokencount = 0;
+    size_t right = 0, left = 0, tokencount = 0;
     int line = 1;
     Tokenstruct *tokenList = NULL;
-    int len = strlen(input);
+    size_t len = strlen(input);
     while (right < len){
         
         if(whiteSpace(input[right])){
@@ -157,7 +157,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
             if (input[right] == '\'')
             {
                 right++;
-                int start = right;
+                size_t start = right;
                 if(input[right] == '\\'){
                     ++right;
                 } else if (input[right] == '\'' || input[right] == ' '){
@@ -167,7 +167,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
 
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
                 char *sub = getSubstring(input,start,right);
-                int sublen = strlen(sub);
+                size_t sublen = strlen(sub);
                 maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub,sublen, line);
                 right++;
                 if(input[right] != '\''){
@@ -184,14 +184,14 @@ Tokenstruct *lexicalAnalyzer(char *input){
             }
 
             if (isdigit(input[right])){
-                int start = right;
+                size_t start = right;
                 while (isdigit(input[right]) && right+1 < len)
                 {
                     right++;
                 }
                 tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
                 char *sub = getSubstring(input, start,right-1);
-                int sublen = strlen(sub);
+                size_t sublen = strlen(sub);
                 maketokenString(tokenList, tokencount, TOK_INTEGER_LITERAL, sub, sublen,line);
 
                 left = right;
@@ -201,7 +201,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
             if (input[right] == '\"')
             {
                 right++;
-                int start = right;
+                size_t start = right;
                 while (input[right] != '\"')
                 {
                     if(input[right] == '\n'){
@@ -212,7 +212,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 }
                 
                 char *sub = getSubstring(input,start,right-1);
-                int sublen = strlen(sub);
+                size_t sublen = strlen(sub);
 
                 if(sub[sublen-2] == '.' && sub[sublen-1] == 'h'){
                     if(input[start - 1] == '\"' && input[right] == '\"'){
@@ -244,7 +244,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 continue;
             }
             if (isalpha(input[right]) || input[right] == '_') {
-                int start = right;
+                size_t start = right;
                 right++;
 
                 while (isalnum(input[right]) || input[right] == '_'){
@@ -255,14 +255,14 @@ Tokenstruct *lexicalAnalyzer(char *input){
 
                 if(right + 1 < len && input[right] == '.' && input[right+1] == 'h'){
                     char *sub = getSubstring(input, start, right + 1);
-                    int sublen = strlen(sub);
+                    size_t sublen = strlen(sub);
                     maketokenString(tokenList, tokencount, TOK_INCLUDE_NAME, sub, sublen, line);
                     right = right + 2;
                     left = right;
                 }
                 else{
                     char *sub = getSubstring(input, start, right - 1);
-                    int sublen = strlen(sub);
+                    size_t sublen = strlen(sub);
                     Tokentype type = keyword_type(sub);
                     
                     if(type == TOK_CHAR){

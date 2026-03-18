@@ -48,5 +48,9 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             whileAnalyser(stmtAst, context);
             break;
         }
+
+        default: {
+            break;
+        }
     }
 }

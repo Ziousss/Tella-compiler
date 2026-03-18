@@ -265,7 +265,7 @@ CstTypes fromTokToCstType(Tokentype type){
         case TOK_TRUE:
         case TOK_FALSE:                 return IR_BOOL;
         case TOK_VOID:                  return IR_VOID;
-        default:                        return IR_ERROR;
+        default:                        return IR_CST_ERROR;
     }
 }
 
@@ -277,11 +277,12 @@ CstTypes fromSemToIRTypes(SemanticType type){
         case SEM_VOID:          return IR_VOID;
         case SEM_BOOL:          return IR_BOOL;
 
-        default:                return IR_ERROR;
+        default:                return IR_CST_ERROR;
     }
 }
 
-char *printCstType(CstTypes type){
+//Unused
+const char *printCstType(CstTypes type){
     switch (type){
         case IR_STRING:     return "IR_string";
         case IR_INT:        return "IR_int";

@@ -8,8 +8,8 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
 
     push_scope(context);
 
-    NodeType type = initialisation->ast_type;
-    if(type == AST_VAR_DECL){
+    NodeType nodeType = initialisation->ast_type;
+    if(nodeType == AST_VAR_DECL){
         char *name = initialisation->data.declaration.identifier;
         SymbolNode *verification = find_in_scope(name, context);
         if(verification != NULL){
@@ -18,10 +18,10 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
             return;
         }
 
-        SemanticType type = fromTokToSem(initialisation->data.declaration.type);
+        SemanticType semType = fromTokToSem(initialisation->data.declaration.type);
 
-        if(type != SEM_INT){
-            printf("In the for loop line %d, the initialisation should be of type Int, it is now %s.\n", forAst->line, fromSemToString(type));
+        if(semType != SEM_INT){
+            printf("In the for loop line %d, the initialisation should be of type Int, it is now %s.\n", forAst->line, fromSemToString(semType));
             context->error_count++;
             return;
         }
@@ -30,7 +30,7 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
         sym->kind = SEM_VAR;
         sym->name = strdup(name);
         sym->next = NULL;
-        sym->type = type;
+        sym->type = semType;
 
         push_variables(sym, context);
     } else {

@@ -29,7 +29,6 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
         funcCall->ast_type = AST_FUNC_CALL;
         funcCall->data.func_call.args = args;
     } else {
-        int count = 0;
         while(true){
             ArgNode *arg = malloc(sizeof(ArgNode));
             ASTnode *expression = expressionParse(tokenList, &i);

@@ -66,17 +66,18 @@ const char* tokenTypeToString(int type) {
     }
 }
 
-Tokenstruct *maketokenChar (Tokenstruct *tokenlist, int count, Tokentype type, char chr, int length, int line){
+Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, int line){
     tokenlist[count].type = type;
-    tokenlist[count].lexeme = malloc(2);
-    tokenlist[count].lexeme[0] = (char)chr;
-    tokenlist[count].lexeme[1] = '\0';
+    char *temp = (char *)malloc(2);
+    temp[0] = chr;
+    temp[1] = '\0';
+    tokenlist[count].lexeme = temp;
     tokenlist[count].line = line;
     tokenlist[count].length = length;
     return tokenlist;
 }
 
-Tokenstruct *maketokenString (Tokenstruct *tokenlist, int count, Tokentype type, char *sub, int length, int line) {
+Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, int line) {
     tokenlist[count].type = type;
     tokenlist[count].lexeme = sub;
     tokenlist[count].line = line;
@@ -84,7 +85,7 @@ Tokenstruct *maketokenString (Tokenstruct *tokenlist, int count, Tokentype type,
     return tokenlist;
 }
 
-Keyword keywords[] = {
+const Keyword keywords[] = {
     {"if", TOK_IF},
     {"else", TOK_ELSE},
     {"while", TOK_WHILE},

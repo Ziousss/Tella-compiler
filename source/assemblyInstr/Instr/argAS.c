@@ -1,6 +1,6 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-char *param_reg[] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
+char const *param_reg[] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
 
 void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
     //will add stack argument later.
@@ -11,42 +11,51 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
 
     Operand argOp = arg->data.arg.value;
     IRtype argType = argOp.IR_type;
-    char *reg = param_reg[stack->arg_count++];
+    const char *reg = param_reg[stack->arg_count++];
 
     switch (argType){
-    case IR_VAR:
+    case IR_VAR:{
         int stackOffset = findVarInStack(argOp, stack);
         fprintf(output, "mov %s, [rbp %+d]\n", reg, stackOffset);
         break;
+    }
     
-    case IR_TMP:
+    case IR_TMP:{
         int tmpOffset = stack->tmp[argOp.data.IR_tmp.id_tmp];
         fprintf(output, "mov %s, [rbp %+d]\n", reg, tmpOffset);
         break;
+    }
 
-    case IR_CONST:
+    case IR_CONST:{
         CstTypes cstType = argOp.data.IR_constant.cst_type; 
         switch (cstType) {
-        case IR_STRING:
+        case IR_STRING: {
             printf("Not implemented yet\n");
             break;
+        }
         
-        case IR_INT:
+        case IR_INT:{
             fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.number);
             break;
+        }
 
-        case IR_CHAR:
+        case IR_CHAR:{
             fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.chr);
             break;
+        }
 
-        case IR_BOOL:
+        case IR_BOOL:{
             fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.boolean);
             break;
+        }
 
-        default:
+        default:{
             printf("Cst with unknown type in argAS.\n");
             break;
-        }    
+        }
+        }  
+        break;  
+    }
 
     default:
         printf("Arg type not known in argAS.\n");

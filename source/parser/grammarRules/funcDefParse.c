@@ -46,7 +46,7 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     }
 
     char *name = strdup(tokenList[index_identifier].lexeme);
-    ASTnode *block = blockParse(tokenList, &i, name);
+    ASTnode *block = blockParse(tokenList, &i);
 
     if (block == NULL){
         free(name);

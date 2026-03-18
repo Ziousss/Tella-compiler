@@ -14,11 +14,11 @@ typedef enum {
 } IRoperation;
 
 typedef enum {
-    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND
+    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND, IR_IRTYPE_ERROR
 } IRtype;
 
 typedef enum {
-    IR_INT, IR_STRING, IR_CHAR, IR_BOOL, IR_VOID
+    IR_INT, IR_STRING, IR_CHAR, IR_BOOL, IR_VOID, IR_CST_ERROR
 } CstTypes;
 
 typedef struct Operand {

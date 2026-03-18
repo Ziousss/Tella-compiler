@@ -5,39 +5,22 @@ void returnAS(IRstruct *ret, FILE *output, StackLayout *stack){
     IRtype dstType = dst.IR_type;
 
     switch (dstType) {
-    case IR_VAR:
-    case IR_TMP:
-        int offset = getOffset(dst, stack);
-        fprintf(output, "mov rax, [rbp %+d]\n", offset);
-        break;
+        case IR_VAR:
+        case IR_TMP: {
+            int offset = getOffset(dst, stack);
+            fprintf(output, "mov rax, [rbp %+d]\n", offset);
+            break;
+        }
 
-    case IR_CONST:
-        CstTypes cstType = dst.data.IR_constant.cst_type;
-        switch (cstType) {
-        case IR_INT:
-            fprintf(output, "mov rax, %d\n", dst.data.IR_constant.value.number);
+        case IR_CONST:{
+            movConstant(dst, output, "rax");
             break;
+        }
 
-        case IR_CHAR:
-            fprintf(output, "mov rax, %d\n", dst.data.IR_constant.value.chr);
+        default:{
+            printf("Unknown dstType in returnAS.\n");
             break;
-
-        case IR_BOOL:
-            fprintf(output, "mov rax, %d\n", dst.data.IR_constant.value.boolean);
-            break;
-
-        case IR_STRING:
-            printf("Strings not implemented yet in the ASInstr.\n");
-            break;
-        
-        default:
-            printf("Unknown CstTyped in returnAS.\n");
-            break;
-        }    
-        break;
-    default:
-        printf("Unknown dstType in returnAS.\n");
-        break;
+        }
     }
 
     fprintf(output, "mov rsp, rbp\n");

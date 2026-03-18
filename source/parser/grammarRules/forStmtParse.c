@@ -47,7 +47,7 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
         return NULL;
     } ++i;
     
-    ASTnode *block = blockParse(tokenList, &i, "for");
+    ASTnode *block = blockParse(tokenList, &i);
     if(block == NULL){
         printf("block issue in for loop.\n");
         return NULL;

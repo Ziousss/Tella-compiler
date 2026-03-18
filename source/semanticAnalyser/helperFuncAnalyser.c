@@ -89,7 +89,7 @@ SemanticType fromTokToSem(Tokentype type){
     }
 }
 
-char *fromSemToString(SemanticType type){
+const char *fromSemToString(SemanticType type){
     switch (type){
         case SEM_INT:       return "Int";
         case SEM_STRING:    return "Char *";

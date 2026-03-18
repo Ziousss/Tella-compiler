@@ -30,7 +30,7 @@ bool validIdentitfier (char *str) {
         return false;
     }   
 
-    for (int i = 1; i < strlen(str); i++){
+    for (size_t i = 1; i < strlen(str); i++){
         if (notAccepted(str[i])){
             return false;
         }
@@ -50,7 +50,7 @@ bool isKeyword (char *str) {
           "long", "break", "case", "do", "return", "static",
           "sizeof", "void", "unsigned", "continue", "true", "false"};
   
-    for(int i = 0; i < sizeof(keyword)/sizeof(keyword[0]); i++){
+    for(size_t i = 0; i < sizeof(keyword)/sizeof(keyword[0]); i++){
         if (strcmp(str, keyword[i]) == 0){
             return true;
         }
@@ -58,9 +58,8 @@ bool isKeyword (char *str) {
     return false;
 }
 
-char* getSubstring (char *str, int start, int end) {
-    int length = strlen(str);
-    int sublength = end - start + 1;
+char* getSubstring (char *str, size_t start, size_t end) {
+    size_t sublength = end - start + 1;
     char* subStr = (char*)malloc((sublength + 1) * sizeof(char));
 
     strncpy(subStr, str+start, sublength);

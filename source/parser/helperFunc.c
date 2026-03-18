@@ -35,7 +35,7 @@ void param_list_add(ParameterNode **head, ParameterNode *param) {
     cur->next = param;
 }
 
-void add_stmt_list(ASTnode **head, ASTnode **last, ASTnode *stmt, Tokentype ast_type) {
+void add_stmt_list(ASTnode **head, ASTnode **last, ASTnode *stmt, NodeType ast_type) {
     stmt->ast_type = ast_type;
     stmt->next = NULL;
 

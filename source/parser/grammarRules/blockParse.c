@@ -1,6 +1,6 @@
 #include "../include/parser/grammarRules.h"
 
-ASTnode *blockParse(Tokenstruct *tokenList, int *index, char *name_function){
+ASTnode *blockParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     
     if(tokenList[i].type != TOK_LBRACE){

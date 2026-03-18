@@ -26,23 +26,23 @@ typedef enum {
 } Tokentype;
 
 typedef struct {
-    char *lexeme;
+    const char *lexeme;
     Tokentype type;
 } Keyword;
 
-extern Keyword keywords[];
+extern const Keyword keywords[];
 
 typedef struct {
     Tokentype type;
-    char* lexeme;
+    const char* lexeme;
     int line;
-    int length;
+    size_t length;
 } Tokenstruct;
 
 const char* tokenTypeToString(int type);
 Tokenstruct *lexicalAnalyzer (char* input);
-Tokenstruct *maketokenChar (Tokenstruct *tokenlist, int count, Tokentype type, char chr, int length, int line);
-Tokenstruct *maketokenString (Tokenstruct *tokenlist, int count, Tokentype type, char *sub, int length, int line);
+Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, int line);
+Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, int line);
 Tokentype keyword_type(char *sub);
 
 #endif

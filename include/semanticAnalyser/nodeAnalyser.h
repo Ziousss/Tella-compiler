@@ -20,5 +20,6 @@ SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context);
 void ifAnalyser(ASTnode *ifStmtAst, SemContext *context);
 SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context);
 void whileAnalyser(ASTnode *whileAst, SemContext *context);
+void forAnalyser(ASTnode *forAst, SemContext *context);
 
 #endif

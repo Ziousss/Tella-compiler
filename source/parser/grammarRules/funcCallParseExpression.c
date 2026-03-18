@@ -27,7 +27,6 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
         funcCall->data.func_call.args = args;
         funcCall->line = tokenList[start].line;
     } else {
-        int count = 0;
         while(true){
             ArgNode *arg = malloc(sizeof(ArgNode));
             ASTnode *expression = expressionParse(tokenList, &i);

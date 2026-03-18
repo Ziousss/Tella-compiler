@@ -34,13 +34,13 @@ void funcDefIR(ASTnode *funcdef, IRContext *context){
         tmp = paramTree;
         int param_index = 0;
         while(tmp != NULL){
-            IRstruct *param = newParam(context, param_index, tmp->name, fromTokToCstType(tmp->ret_type));
-            if(param == NULL){
+            IRstruct *paramIR = newParam(context, param_index, tmp->name, fromTokToCstType(tmp->ret_type));
+            if(paramIR == NULL){
                 printf("New param failed.\n");
                 return;
             }
             
-            emit(param, context);
+            emit(paramIR, context);
             param_index++;
             tmp = tmp->next;
         }

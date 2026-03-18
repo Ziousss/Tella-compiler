@@ -9,7 +9,7 @@ char *readFile(char *filename)
     }
 
     fseek(fp, 0, SEEK_END);
-    long size = ftell(fp);
+    size_t size = (size_t)ftell(fp);
     rewind(fp);
 
     char *content = malloc(size+1);

@@ -88,6 +88,10 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
 
                 break;
             }
+            default: {
+                printf("Unknown IR token in stackFunctionAS.\n");
+                break;
+            }
         }
         tmp = tmp->next;
     }

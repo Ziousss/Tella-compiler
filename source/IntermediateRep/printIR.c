@@ -130,6 +130,10 @@ void printOperand(Operand op){
                 case IR_VOID:
                     printf("void");
                     break;
+
+                default:
+                    printf("Unknown const type in printOperand.\n");
+                    break;
             }
             break;
         default:

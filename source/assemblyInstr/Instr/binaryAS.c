@@ -26,61 +26,76 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack){
 
     IRoperation op = binary->op;
     switch (op) {
-        case IR_ADD:
+        case IR_ADD: {
             fprintf(output, "add rax, rbx\n");
             break;
+        }
 
-        case IR_SUB:
+        case IR_SUB:{
             fprintf(output, "sub rbx, rax\n");
             fprintf(output, "mov rax, rbx\n");
             break;
+        }
 
-        case IR_MULT:
+        case IR_MULT:{
             fprintf(output, "imul rax, rbx\n");
             break;
-            
-        case IR_DIV:
+        }
+
+        case IR_DIV:{
             fprintf(output, "mov r10, rax\n");
             fprintf(output, "mov rax, rbx\n");
             fprintf(output, "cqo\n");
             fprintf(output, "idiv r10\n");
             break;
+        }
 
-        case IR_EQEQ:
+        case IR_EQEQ:{
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "sete al\n");
             fprintf(output, "movzx eax, al\n");
             break;
+        }
 
-        case IR_UNEQ:
+        case IR_UNEQ:{
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "setne al\n");
             fprintf(output, "movzx eax, al\n");
             break;
+        }
 
-        case IR_GR:
+        case IR_GR:{
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "setg al\n");
             fprintf(output, "movzx eax, al\n");
             break;
+        }
 
-        case IR_GREQ:
+        case IR_GREQ:{
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "setge al\n");
             fprintf(output, "movzx eax, al\n");
             break;
+        }
 
-        case IR_LESS:
+        case IR_LESS:{
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "setl al\n");
             fprintf(output, "movzx eax, al\n");
             break;
+        }
 
-        case IR_LESSEQ:
+        case IR_LESSEQ:{
             fprintf(output, "cmp rbx, rax\n");
             fprintf(output, "setle al\n");
             fprintf(output, "movzx eax, al\n");
             break;
+        }
+
+        default:{
+            printf("Unknown binary operation in binaryAS.\n");
+            return;
+        }
     }
 
     int dstOffset = getOffset(dst, stack);

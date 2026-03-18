@@ -13,7 +13,7 @@
 
 ASTnode *funcDefParse(Tokenstruct *tokenList, int *index);
 ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index);
-ASTnode *blockParse(Tokenstruct *tokenList, int *index, char *name_function);
+ASTnode *blockParse(Tokenstruct *tokenList, int *index);
 ASTnode *funcCallParse(Tokenstruct *tokenList, int *index);
 ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index);
 ASTnode *declarationParse(Tokenstruct *tokenlist, int *index);

@@ -27,7 +27,7 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     //This is useful for function calls
     int param_count = funcDefAst->data.func_def.parameters->count;
     funcDefSem->param_count = param_count;
-    funcDefSem->param = malloc(sizeof(SemanticType) * param_count);
+    funcDefSem->param = malloc(sizeof(SemanticType) * (size_t)param_count);
     if(funcDefSem->param == NULL){
         printf("Malloc issue in funcDefAnalyser.\n");
         context->error_count++;

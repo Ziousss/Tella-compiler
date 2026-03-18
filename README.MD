@@ -28,7 +28,14 @@ This project is primarily focused on learning compiler design concepts rather th
 - Parser  
 - Semantic Analyzer  
 - IR 
-- Machine code x86_64 (Ongoing)
+- Assembly code x86_64
+- The compiler can now compile and create executable for very simple programs.
+
+---
+
+## Next Steps
+
+Now that the tella compiler can compile simple programs, I will compile it with all the warnings to make it the safest possible.
 
 ---
 
@@ -60,5 +67,5 @@ Write the code to try in the test.c file.
 
 ```bash
 cd build
-./compiler ../test.c
+./compiler ../tests/test1.c
 ```
