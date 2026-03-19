@@ -50,7 +50,7 @@ int main (int argc, char **argv) {
     }
 
     //Uncomment for better visualisation
-    //printIR(IR);
+    printIR(IR);
 
     //Now go on to the assembly code.
     printf("6. Assembly generation...\n"); fflush(stdout);
