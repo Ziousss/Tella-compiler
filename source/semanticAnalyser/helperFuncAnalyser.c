@@ -82,6 +82,7 @@ SemanticType fromTokToSem(Tokentype type){
         case TOK_INT:               return SEM_INT;
         case TOK_TRUE:              return SEM_BOOL;
         case TOK_FALSE:             return SEM_BOOL;
+        case TOK_BOOL:              return SEM_BOOL;
         case TOK_VOID:              return SEM_VOID;
         case TOK_STRING:            return SEM_STRING;
         

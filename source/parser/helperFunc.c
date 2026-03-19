@@ -1,7 +1,7 @@
 #include "../include/parser/helperFunc.h"
 
 bool isTOKType(Tokentype type){
-    return (type == TOK_INT || type == TOK_VOID || type == TOK_CHAR || type == TOK_STRING || type == TOK_TRUE || type == TOK_FALSE);
+    return (type == TOK_INT || type == TOK_VOID || type == TOK_CHAR || type == TOK_STRING || type == TOK_TRUE || type == TOK_FALSE || type == TOK_BOOL);
 }
 
 bool isOperatorExpression (Tokentype type) {

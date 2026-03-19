@@ -53,6 +53,7 @@ const char* tokenTypeToString(int type) {
         case TOK_VOID:              return "VOID_TYPE";
         case TOK_STRING:            return "STRING_TYPE";
         
+        case TOK_BOOL:              return "BOOL";
         case TOK_TRUE:              return "TRUE";
         case TOK_FALSE:             return "FALSE";
         case TOK_NULL:              return "NULL";
@@ -103,6 +104,7 @@ const Keyword keywords[] = {
     {"true", TOK_TRUE},
     {"false", TOK_FALSE},
     {"NULL", TOK_NULL},
+    {"bool", TOK_BOOL},
     {NULL, 0} 
 };
 
