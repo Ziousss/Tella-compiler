@@ -2,7 +2,8 @@
 
 int main (int argc, char **argv) {
     if (argc != 3) {
-        perror("You need 3 arguments, the first being the compiler's binary, the second being the file to compile and third the name of the executable once it is compiled.\n");
+        // Usage {argv[0]} <FILE.c> <OUT>
+        printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
         return 0;
     }
 

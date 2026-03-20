@@ -34,7 +34,7 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
             int start_i = i;
             if(tokenList[i].type == TOK_IDENTIFIER){
                 int tmp = i;
-                if(tokenList[++tmp].type == TOK_LPAREN){
+                if(tokenList[tmp + 1].type == TOK_LPAREN){
                     ASTnode *func_call = funcCallParse(tokenList, &i);
                     if(func_call != NULL){
                         add_stmt_list(&stmt_list, &last, func_call, AST_FUNC_CALL);

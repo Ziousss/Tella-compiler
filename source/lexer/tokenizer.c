@@ -119,20 +119,31 @@ Tokenstruct *lexicalAnalyzer(char *input){
                             break; 
                         }
                     case '+': 
-                        if (right+1 >= len || input[right+1] != '=') {
-                            maketokenChar(tokenList, tokencount, TOK_PLUS, input[right], 1, line); break;
-                        } else {
+                        if (right+1 >= len || input[right+1] == '=') {
                             maketokenString(tokenList, tokencount, TOK_PLUSEQ, "+=", 2, line); 
                             right++;
                             break; 
+                        } else if(right+1 >= len || input[right+1] == '+') {
+                            maketokenString(tokenList, tokencount, TOK_PLUSPLUS, "++", 2, line); 
+                            right++;
+                            break; 
+                        }
+                        else {
+                            maketokenChar(tokenList, tokencount, TOK_PLUS, input[right], 1, line); break;
                         }
                     case '-': 
-                    if (right+1 >= len || input[right+1] != '=') {
-                            maketokenChar(tokenList, tokencount, TOK_MINUS, input[right], 1, line);break;
-                        } else {
+                        if (right+1 >= len || input[right+1] == '=') {
                             maketokenString(tokenList, tokencount, TOK_MINUSEQ, "-=", 2, line); 
                             right++;
                             break; 
+                        } 
+                        else if(right+1 >= len || input[right+1] == '-'){
+                            maketokenString(tokenList, tokencount, TOK_MINUSMINUS, "--", 2, line); 
+                            right++;
+                            break; 
+                        }
+                        else {
+                            maketokenChar(tokenList, tokencount, TOK_MINUS, input[right], 1, line);break;
                         }
                     case '/': maketokenChar(tokenList, tokencount, TOK_SLASH, input[right], 1, line);break;
                     case '*': maketokenChar(tokenList, tokencount, TOK_STAR, input[right], 1, line);break;
@@ -303,6 +314,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
     tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
     maketokenChar(tokenList,tokencount,TOK_EOF,' ',0,line);
     tokencount++;
+    
     
     for (int i = 0; i < tokencount; i++){
         printf("%s, %s\n", tokenList[i].lexeme, tokenTypeToString(tokenList[i].type));

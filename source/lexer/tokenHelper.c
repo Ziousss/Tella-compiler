@@ -11,8 +11,10 @@ const char* tokenTypeToString(int type) {
 
         case TOK_PLUS:              return "PLUS";
         case TOK_PLUSEQ:            return "PLUSEQ";
+        case TOK_PLUSPLUS:          return "PLUSPLUS";
         case TOK_MINUS:             return "MINUS";
         case TOK_MINUSEQ:           return "MINUSEQ";
+        case TOK_MINUSMINUS:        return "MINUSMINUS";
         case TOK_STAR:              return "STAR";
         case TOK_SLASH:             return "SLASH";
         case TOK_UNEQ:              return "UNEQ";

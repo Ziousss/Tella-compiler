@@ -102,7 +102,6 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         //wrong for calculation for now but we ll let it be and change it later
         Tokentype op = tokenList[i].type;
         ++i;
-
         
         ASTnode *right = expressionParse(tokenList, &i);
         if(right == NULL){
