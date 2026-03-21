@@ -1,6 +1,6 @@
 #include "../include/assemblyInstr/helperFuncAS.h"
 
-void setStackLayout(Operand op, StackLayout *stack){
+void setStackLayout(Operand op, StackLayout *stack, ASContext* context){
     if(op.IR_type == IR_CONST){
         return;
     } 
@@ -13,6 +13,7 @@ void setStackLayout(Operand op, StackLayout *stack){
         return;
     } else {
         printf("Problem in setStackLayout.\n");
+        context->errors++;
         fflush(stdout);
         return;
     }
@@ -59,12 +60,13 @@ int findVarInStack(Operand op, StackLayout *stack){
     return -1;
 }
 
-int getOffset(Operand op, StackLayout *stack){
+int getOffset(Operand op, StackLayout *stack, ASContext* context){
     switch (op.IR_type) {
         case IR_VAR:{
             int offset = findVarInStack(op, stack);
             if(offset == -1){
                 printf("Variable not found in stack\n");
+                context->errors++;
             }
             return offset;
         }
@@ -73,21 +75,24 @@ int getOffset(Operand op, StackLayout *stack){
             int tmpOffset = stack->tmp[op.data.IR_tmp.id_tmp];
             if(tmpOffset == -1){
                 printf("Temporary not found in stack\n");
+                context->errors++;
             }
             return tmpOffset;
         }
 
         default:{
             printf("No offset found for var or tmp.\n");
+            context->errors++;
             return 0;
         }
     }
 }
 
-void movConstant(Operand op, FILE *output, const char *reg){
+void movConstant(Operand op, FILE *output, const char *reg, ASContext* context){
     IRtype type = op.IR_type;
     if(type != IR_CONST){
         printf("Wrong Operand given to movConstant.\n");
+        context->errors++;
         return;
     }
 
@@ -110,33 +115,14 @@ void movConstant(Operand op, FILE *output, const char *reg){
 
         case IR_STRING:{
             printf("String constants not yet implemented\n");
+            context->errors++;
             break;
         }
 
         default:{
             printf("Unknown cst type given to movConstant.\n");
+            context->errors++;
             break;
         }
     }
-}
-
-bool compileAssembly(const char *asmFile, const char *outputFile){
-    char command[256];
-    snprintf(command, sizeof(command), "gcc %s -o %s", asmFile, outputFile);
-    
-    int result = system(command);
-    if(result != 0){
-        printf("Compilation failed\n");
-        return false;
-    }
-    return true;
-}
-
-void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR){
-    if(programNode != NULL){
-        freeASTNode(programNode->data.program_node.func_def);
-        free(programNode);
-    }
-    if(functions != NULL) freeFunctions(functions);
-    if(IR != NULL) freeIR(IR);
 }

@@ -16,4 +16,9 @@ typedef struct {
     int arg_count;
 }StackLayout;
 
+typedef struct{
+    int errors;
+} ASContext;
+
+
 #endif

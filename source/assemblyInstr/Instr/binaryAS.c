@@ -1,23 +1,23 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack){
+void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack, ASContext* context){
     Operand dst = binary->data.binary.dst;
     Operand src1 = binary->data.binary.src1;
     Operand src2 = binary->data.binary.src2;
 
     //Puts the values/tmp/variables in rax and rbx
     if(src1.IR_type == IR_CONST){
-        movConstant(src1, output, "rax");
+        movConstant(src1, output, "rax", context);
     } else {
-        int src1Offset = getOffset(src1, stack);
+        int src1Offset = getOffset(src1, stack, context);
         fprintf(output, "mov rax, [rbp %+d]\n", src1Offset);
     }
     fprintf(output, "push rax\n");
 
     if(src2.IR_type == IR_CONST){
-        movConstant(src2, output, "rax");
+        movConstant(src2, output, "rax", context);
     } else {
-        int src2Offset = getOffset(src2, stack);
+        int src2Offset = getOffset(src2, stack, context);
         fprintf(output, "mov rax, [rbp %+d]\n", src2Offset);
     }
     fprintf(output, "pop rbx\n");
@@ -94,13 +94,15 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack){
 
         default:{
             printf("Unknown binary operation in binaryAS.\n");
+            context->errors++;
             return;
         }
     }
 
-    int dstOffset = getOffset(dst, stack);
+    int dstOffset = getOffset(dst, stack, context);
     if(dstOffset == 0){
         printf("Dst not found for binary operation in binaryAS.\n");
+        context->errors++;
         return;
     }
     fprintf(output, "mov [rbp %+d], rax\n", dstOffset);

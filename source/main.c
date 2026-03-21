@@ -1,10 +1,24 @@
 #include "../include/main.h"
 
 int main (int argc, char **argv) {
-    if (argc != 3) {
+    if(strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0){
+        printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
+        printf("After this command, you can use several other commands to better visualise the process.\n");
+        printf("-l: Shows you the lexer output.\n");
+        printf("-i: Shows you the parser output.\n");
+        return 0;
+    }
+
+    if (argc < 3 || argc > 5) {
         // Usage {argv[0]} <FILE.c> <OUT>
         printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
+        printf("For more informations: ./compiler -h or ./compiler -help\n");
         return 0;
+    }
+
+    MainContext *contextMain = contextInit(argv, argc); 
+    if(contextMain == NULL){
+        return -1;
     }
 
     printf("1. Reading file...\n"); fflush(stdout);
@@ -20,6 +34,7 @@ int main (int argc, char **argv) {
         return 2;
     }
     free(source);
+    if(contextMain->lexer) printLexer(tokenList);
 
     int index = 0;
     printf("3. Parsing...\n"); fflush(stdout);
@@ -35,7 +50,7 @@ int main (int argc, char **argv) {
     printf("4. Semantic analysis...\n"); fflush(stdout);
     GlobalFunc *functions = programAnalyser(programNode);
     if(functions == NULL){
-        cleanup(programNode, NULL, NULL);
+        cleanup(programNode, NULL, NULL,contextMain);
         printf("Semantic error(s).\n");
         return 4;
     }
@@ -45,19 +60,18 @@ int main (int argc, char **argv) {
     printf("5. IR generation...\n"); fflush(stdout);
     IRstruct *IR = programIR(programNode, functions);
     if(IR == NULL){
-        cleanup(programNode, functions, NULL);
+        cleanup(programNode, functions, NULL, contextMain);
         printf("Error in the IR creation.\n");
         return 5;
     }
 
-    //Uncomment for better visualisation
-    printIR(IR);
+    if(contextMain->IR) printIR(IR);
 
     //Now go on to the assembly code.
     printf("6. Assembly generation...\n"); fflush(stdout);
-    bool created = mainAssemblyInstr(IR);
-    if(!created){
-        cleanup(programNode, functions, IR);
+    int errors = mainAssemblyInstr(IR);
+    if(errors != 0){
+        cleanup(programNode, functions, IR, contextMain);
         printf("Failed to create a good assembly file.\n");
         return 6;
     }
@@ -66,14 +80,14 @@ int main (int argc, char **argv) {
     bool compiled = compileAssembly("../ASoutput.s", executable);
 
     if(!compiled){
-        cleanup(programNode, functions, IR);
+        cleanup(programNode, functions, IR, contextMain);
         printf("gcc compilation failed\n");
         return 1;
     }
 
     //Frees the AST
     printf("7. Starting freeing the nodes...\n"); fflush(stdout);
-    cleanup(programNode, functions, IR);
+    cleanup(programNode, functions, IR, contextMain);
 
     printf("Compilation successful!\n"); fflush(stdout);
 

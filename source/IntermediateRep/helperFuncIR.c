@@ -298,22 +298,3 @@ bool isbool(IRoperation op){
     return (op == IR_GR || op == IR_GREQ || op == IR_LESS
             || op == IR_LESSEQ || op == IR_EQEQ || op == IR_UNEQ);
 }
-
-void freeFunctions(GlobalFunc *functions){
-    GlobalFunc *current = functions;
-    while(current != NULL){
-        GlobalFunc *next = current->next;
-        free(current->name);
-        free(current);
-        current = next;
-    }
-}
-
-void freeIR(IRstruct *IR){
-    IRstruct *current = IR;
-    while(current != NULL){
-        IRstruct *next = current->next;
-        free(current);
-        current = next;
-    }
-}

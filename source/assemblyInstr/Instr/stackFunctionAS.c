@@ -1,6 +1,6 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
+StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context){
     IRstruct *tmp = IRlist;
     if(tmp->op != IR_FUNC){
         printf("Wrong token given to functionAS.\n");
@@ -44,40 +44,40 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
                 Operand src2 = tmp->data.binary.src2;
 
                 //check if null in the function itself
-                setStackLayout(dst, stack);
-                setStackLayout(src1, stack);
-                setStackLayout(src2, stack);
+                setStackLayout(dst, stack, context);
+                setStackLayout(src1, stack, context);
+                setStackLayout(src2, stack, context);
                 break;
             }
             case IR_ASSIGN: {
                 Operand dst = tmp->data.assign.dst;
                 Operand src1 = tmp->data.assign.src;
 
-                setStackLayout(dst, stack);
-                setStackLayout(src1, stack);
+                setStackLayout(dst, stack, context);
+                setStackLayout(src1, stack, context);
                 break;
             }
             case IR_JMP_FALSE:{
                 Operand condition = tmp->data.condition_jump.condition;
-                setStackLayout(condition, stack);
+                setStackLayout(condition, stack, context);
 
                 break;
             }
             case IR_CALL:{
                 Operand call = tmp->data.call.dst;
-                setStackLayout(call, stack);
+                setStackLayout(call, stack, context);
 
                 break;
             }
             case IR_RET:{
                 Operand ret = tmp->data.ret.return_value;
-                setStackLayout(ret, stack);
+                setStackLayout(ret, stack, context);
 
                 break;
             }
             case IR_ARG: {
                 Operand arg = tmp->data.arg.value;
-                setStackLayout(arg, stack);
+                setStackLayout(arg, stack, context);
 
                 break;
             }
@@ -92,6 +92,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output){
             case IR_JMP: break;
             default: {
                 printf("Unknown IR token in stackFunctionAS %d.\n", tmp->op);
+                context->errors++;
                 break;
             }
         }

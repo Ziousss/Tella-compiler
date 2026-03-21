@@ -4,16 +4,16 @@
 #include "../include/IntermediateRep/IRheader.h"
 #include "helperFuncAS.h"
 
-bool mainAssemblyInstr(IRstruct *IRlist);
-void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack);
-void programAS(IRstruct *IRlist, FILE *output);
-StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output);
-void callAS(IRstruct *call, FILE *output, StackLayout *stack);
-void argAS(IRstruct *arg, FILE *output, StackLayout *stack);
-void returnAS(IRstruct *ret, FILE *output, StackLayout *stack);
-void condJumpAS(IRstruct *call, FILE *output, StackLayout *stack);
-void assignAS(IRstruct *assign, FILE *output, StackLayout *stack);
-void paramAS(IRstruct *parameter, FILE *output, StackLayout *stack);
-void ifStmtAS(IRstruct *ifStmt, FILE *output, StackLayout *stack);
+int mainAssemblyInstr(IRstruct *IRlist);
+void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack, ASContext* context);
+void programAS(IRstruct *IRlist, FILE *output, ASContext* context);
+StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *outpu, ASContext* contextt);
+void callAS(IRstruct *call, FILE *output, StackLayout *stack, ASContext* context);
+void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context);
+void returnAS(IRstruct *ret, FILE *output, StackLayout *stack, ASContext* context);
+void condJumpAS(IRstruct *call, FILE *output, StackLayout *stack, ASContext* context);
+void assignAS(IRstruct *assign, FILE *output, StackLayout *stack, ASContext* context);
+void paramAS(IRstruct *parameter, FILE *output, StackLayout *stack, ASContext* context);
+void ifStmtAS(IRstruct *ifStmt, FILE *output, StackLayout *stack, ASContext* context);
 
 #endif

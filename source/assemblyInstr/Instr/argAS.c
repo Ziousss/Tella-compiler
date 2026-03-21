@@ -2,10 +2,11 @@
 
 char const *param_reg[] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
 
-void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
+void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
     //will add stack argument later.
     if(stack->arg_count >= 6){
         printf("ERROR: Too many arguments (> 6)\n");
+        context->errors++;
         return;
     }
 
@@ -31,6 +32,7 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
         switch (cstType) {
         case IR_STRING: {
             printf("Not implemented yet\n");
+            context->errors++;
             break;
         }
         
@@ -51,6 +53,7 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
 
         default:{
             printf("Cst with unknown type in argAS.\n");
+            context->errors++;
             break;
         }
         }  
@@ -59,6 +62,7 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack){
 
     default:
         printf("Arg type not known in argAS.\n");
+        context->errors++;
         break;
     }
 }

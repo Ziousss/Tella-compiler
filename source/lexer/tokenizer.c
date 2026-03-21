@@ -315,11 +315,5 @@ Tokenstruct *lexicalAnalyzer(char *input){
     maketokenChar(tokenList,tokencount,TOK_EOF,' ',0,line);
     tokencount++;
     
-    
-    for (int i = 0; i < tokencount; i++){
-        printf("%s, %s\n", tokenList[i].lexeme, tokenTypeToString(tokenList[i].type));
-    }
-    
-
     return tokenList;
 }

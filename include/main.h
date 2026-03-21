@@ -9,5 +9,6 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 #include <string.h>
 #include <stdlib.h>
+#include "../include/mainHelper.h"
 
 #endif
