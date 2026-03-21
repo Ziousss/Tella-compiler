@@ -3,7 +3,12 @@
 ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int start = *index;
-    ASTnode *left = NULL;
+    ASTnode *left = NULL;\
+    bool isNegative = false;
+    if(tokenList[i].type == TOK_MINUS){
+        isNegative = true;
+        ++i;
+    }
 
     if(tokenList[i].type == TOK_IDENTIFIER){
         char *name = strdup(tokenList[i].lexeme);
@@ -37,7 +42,8 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             return NULL;
         }
         left->ast_type = AST_NUMBER;
-        left->data.int_literal.value = atoi(tokenList[i].lexeme);
+        if(isNegative) left->data.int_literal.value = -atoi(tokenList[i].lexeme);
+        else left->data.int_literal.value = atoi(tokenList[i].lexeme);
         left->line = tokenList[start].line;
         ++i;
     }

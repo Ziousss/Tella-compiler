@@ -3,10 +3,17 @@
 ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int start = *index;
+    bool is_pointer = false;
     ASTnode *declaration = NULL;
     Tokentype decla_type = tokenList[i].type;
     ASTnode *expression = NULL;
     ++i;
+
+    if(tokenList[i].type == TOK_STAR){
+        is_pointer = true;
+        ++i;
+    }
+
 
     if(tokenList[i].type != TOK_IDENTIFIER){
         printf("Identifier expected line %d after type %s.\n", tokenList[i].line,tokenTypeToString(tokenList[i-1].type));
@@ -14,7 +21,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     }
     int name_i = i;
     ++i;
-    
+
     if(tokenList[i].type == TOK_EQ){
         ++i;
         expression = expressionParse(tokenList, &i);
@@ -41,7 +48,10 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     declaration->data.declaration.expression = expression;
     declaration->data.declaration.identifier = name;
     declaration->data.declaration.type = decla_type;
-    declaration->line = tokenList[start].line;
+
+    if(is_pointer) declaration->line = fromTypeToPTR(tokenList[start].line);
+    else declaration->line = tokenList[start].line;
+    
     declaration->next = NULL;
 
     *index = i;

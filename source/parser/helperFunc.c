@@ -184,3 +184,14 @@ void freeASTNode(ASTnode *node){
 
     free(node);
 }
+
+Tokentype fromTypeToPTR(Tokentype type){
+    switch (type){
+        case TOK_CHAR:      return TOK_CHAR_PTR;
+        case TOK_INT:       return TOK_INT_PTR;
+
+        default:  return TOK_ERROR;
+    }
+
+
+}
