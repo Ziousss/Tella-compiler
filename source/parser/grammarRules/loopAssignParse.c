@@ -11,18 +11,67 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
     int identifier_name = i;
     ++i;
 
-    if(tokenList[i].type != TOK_EQ){
+    if(tokenList[i].type != TOK_EQ && tokenList[i].type != TOK_PLUSEQ && tokenList[i].type != TOK_PLUSPLUS && tokenList[i].type != TOK_MINUSEQ && tokenList[i].type != TOK_MINUSMINUS){
         if(tokenList[i].line != tokenList[i-1].line){
             printf("Equal sign expected in assignment line %d\n", tokenList[i-1].line);
             return NULL;
         } 
         printf("Equal sign expected in assignment line %d\n", tokenList[i].line);
         return NULL;
-    } ++i;
+    } 
+    int tok = i;
+    ++i;
 
-    ASTnode *value = expressionParse(tokenList, &i);
-    if(value == NULL){
-        return NULL;
+    
+    ASTnode *value = NULL;
+    if(tokenList[tok].type != TOK_PLUSPLUS && tokenList[tok].type != TOK_MINUSMINUS){
+        value = expressionParse(tokenList, &i);
+        if(value == NULL){
+            return NULL;
+        }
+    } else {
+        value = malloc(sizeof(ASTnode));
+        if(value == NULL){
+            printf("Malloc error in assignParse for value.\n");
+            return NULL;
+        }
+
+        value->ast_type = AST_NUMBER;
+        value->data.int_literal.value = 1;
+
+        value->next = NULL;
+    }
+
+    ASTnode *givenvalue = NULL;
+    if(tokenList[tok].type == TOK_PLUSEQ || tokenList[tok].type == TOK_PLUSPLUS || tokenList[tok].type == TOK_MINUSEQ || tokenList[tok].type == TOK_MINUSMINUS){
+        ASTnode *expresison = malloc(sizeof(ASTnode));
+        if(expresison == NULL){
+            printf("Malloc error in assignParse for expression.\n");
+            return NULL;
+        }
+
+        ASTnode *identifier = malloc(sizeof(ASTnode));
+        if(identifier == NULL){
+            printf("Malloc error in assignParse for identifier.\n");
+            return NULL;
+        }
+
+        identifier->ast_type = AST_IDENTIFIER;
+        identifier->data.identifier.name = strdup(tokenList[identifier_name].lexeme);
+        identifier->next = NULL;
+
+        expresison->ast_type = AST_BINARY_EXPR;
+        expresison->data.binary.left = identifier;
+        if(tokenList[tok].type == TOK_PLUSEQ || tokenList[tok].type == TOK_PLUSPLUS) expresison->data.binary.op = TOK_PLUS;
+        else expresison->data.binary.op = TOK_MINUS;
+        expresison->data.binary.right = value;
+        expresison->next = NULL;
+
+        givenvalue = expresison;
+        givenvalue->next = NULL;
+    } else {
+        givenvalue = value;
+        givenvalue->next = NULL;
     }
 
     ASTnode *assigneNode = malloc(sizeof(ASTnode));
@@ -34,7 +83,7 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
     char *name = strdup(tokenList[identifier_name].lexeme); 
     assigneNode->ast_type = AST_ASSIGN_EXPR;
     assigneNode->data.assign.target = name;
-    assigneNode->data.assign.value = value;
+    assigneNode->data.assign.value = givenvalue;
     assigneNode->line = tokenList[start].line;
     assigneNode->next = NULL;
     *index = i;

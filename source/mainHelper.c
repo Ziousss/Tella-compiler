@@ -37,8 +37,11 @@ bool compileAssembly(const char *asmFile, const char *outputFile){
     return true;
 }
 
-void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR, MainContext *contextMain){
+void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR, MainContext *contextMain, Tokenstruct *tokenList){
     free(contextMain);
+    if(tokenList != NULL){
+        freeTokenList(tokenList);
+    }
     if(programNode != NULL){
         freeASTNode(programNode->data.program_node.func_def);
         free(programNode);

@@ -132,3 +132,13 @@ void freeTokenList(Tokenstruct *tokenlist){
     }
     free(tokenlist);
 }
+
+Tokenstruct* reallocTokenList(Tokenstruct* list, size_t tokencount, size_t* capacity) {
+    if(tokencount >= *capacity){
+        *capacity *= 2;
+        Tokenstruct* newList = realloc(list, sizeof(Tokenstruct) * (*capacity));
+        if(!newList){ freeTokenList(list); printf("realloc failed"); return NULL; }
+        return newList;
+    }
+    return list;
+}

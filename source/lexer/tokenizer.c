@@ -6,8 +6,10 @@ Tokenstruct *lexicalAnalyzer(char *input){
     int line = 1;
     Tokenstruct *tokenList = NULL;
     size_t len = strlen(input);
+    size_t capacity = 16;
+    tokenList = malloc(sizeof(Tokenstruct) * capacity);
+
     while (right < len){
-        
         if(whiteSpace(input[right])){
             right++;
             left = right;
@@ -45,7 +47,9 @@ Tokenstruct *lexicalAnalyzer(char *input){
 
         if (right == left && right < len){
             if (input[right] == '.'){
-                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+                
                 maketokenChar(tokenList, tokencount, TOK_DOT, '.', 1, line);
                 right++;
                 left = right;
@@ -55,7 +59,9 @@ Tokenstruct *lexicalAnalyzer(char *input){
 
             //Delimiter token
             if(isDelimiter(input[right])){
-                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+
                 switch (input[right])
                 {
                     case '|': 
@@ -98,8 +104,13 @@ Tokenstruct *lexicalAnalyzer(char *input){
             }
 
             //Operator token
+            printf("right/left = %c/%c\n", input[right], input[left]);
+
             if(isOperation(input[right])){
-                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+
+
                 switch (input[right])
                 {
                     case '>':
@@ -120,6 +131,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
                         }
                     case '+': 
                         if (right+1 >= len || input[right+1] == '=') {
+                            
                             maketokenString(tokenList, tokencount, TOK_PLUSEQ, "+=", 2, line); 
                             right++;
                             break; 
@@ -174,7 +186,6 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 left = right;
                 continue;
             }
-
             //String and Char literal token
             if (input[right] == '\'')
             {
@@ -184,10 +195,13 @@ Tokenstruct *lexicalAnalyzer(char *input){
                     ++right;
                 } else if (input[right] == '\'' || input[right] == ' '){
                     printf("The two ' are empty or have a space between them line %d.\n",line);
+                    freeTokenList(tokenList);
                     return NULL;
                 }
 
-                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+
                 char *sub = getSubstring(input,start,right);
                 size_t sublen = strlen(sub);
                 maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub,sublen, line);
@@ -195,9 +209,11 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 if(input[right] != '\''){
                     if(input[right] == ';'){
                         printf("Missing a second ' in line %d for the character literal.\n", line);
+                        freeTokenList(tokenList);
                         return NULL;
                     }
                     printf("Char literal line %d can only contain one character or two including the first one being '\\'.\n", line);
+                    freeTokenList(tokenList);
                     return NULL;
                 } ++right;
                 left = right;
@@ -211,7 +227,10 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 {
                     right++;
                 }
-                tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+
                 char *sub = getSubstring(input, start,right-1);
                 size_t sublen = strlen(sub);
                 maketokenString(tokenList, tokencount, TOK_INTEGER_LITERAL, sub, sublen,line);
@@ -220,8 +239,7 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 tokencount++;
                 continue;
             }
-            if (input[right] == '\"')
-            {
+            if (input[right] == '\"'){
                 right++;
                 size_t start = right;
                 while (input[right] != '\"')
@@ -238,25 +256,31 @@ Tokenstruct *lexicalAnalyzer(char *input){
 
                 if(sub[sublen-2] == '.' && sub[sublen-1] == 'h'){
                     if(input[start - 1] == '\"' && input[right] == '\"'){
-                        tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+3));
-                        maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
-                        maketokenString(tokenList,tokencount++,TOK_LOCAL_INCLUDE, sub,sublen, line);
-                        maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
+                        tokenList = reallocTokenList(tokenList, tokencount + 3, &capacity);
+                        if(tokenList == NULL) return NULL;
+
+                            maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
+                            maketokenString(tokenList,tokencount++,TOK_LOCAL_INCLUDE, sub,sublen, line);
+                            maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
                     } else {
                         printf("Missing quotes in the local include statement line %d.\n", line);
+                        freeTokenList(tokenList);
                         return NULL;
                     }
                 }
                 else if (sub[sublen-2] != '.' && sub[sublen-1] == 'h') {
                     printf("Missing the '.' in the include statement line %d.\n", line);
+                    freeTokenList(tokenList);
                     return NULL;
                 }
                 else if (sub[sublen-1] == '.' && sub[sublen] != 'h') {
                     printf("Missing the 'h' after the '.' in the include statement line %d.\n", line);
+                    freeTokenList(tokenList);
                     return NULL;
                 }
                 else {
-                    tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+                    tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                    if(tokenList == NULL) return NULL;
                     maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub,sublen, line);
                     
                 }
@@ -273,7 +297,9 @@ Tokenstruct *lexicalAnalyzer(char *input){
                     right++;
                 }
 
-                tokenList = realloc(tokenList, sizeof(Tokenstruct) * (tokencount + 1)); 
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+
 
                 if(right + 1 < len && input[right] == '.' && input[right+1] == 'h'){
                     char *sub = getSubstring(input, start, right + 1);
@@ -311,9 +337,11 @@ Tokenstruct *lexicalAnalyzer(char *input){
             right++;
         }
     }
-    tokenList = realloc(tokenList, sizeof(Tokenstruct)*(tokencount+1));
+    tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+    if(tokenList == NULL) return NULL;
     maketokenChar(tokenList,tokencount,TOK_EOF,' ',0,line);
     tokencount++;
     
     return tokenList;
+
 }

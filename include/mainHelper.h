@@ -18,11 +18,10 @@ typedef struct {
 
 MainContext *contextInit(char **argv, int argc);
 bool compileAssembly(const char *asmFile, const char *outputFile);
-void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR, MainContext *contextMain);
+void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR, MainContext *contextMain, Tokenstruct *tokenList);
 void freeFunctions(GlobalFunc *functions);
 void freeIR(IRstruct *IR);
 void printLexer(Tokenstruct *tokenList);
 void freeASTNode(ASTnode *node);
 void print_ast(ASTnode *node, int indent);
-
 #endif
