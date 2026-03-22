@@ -11,6 +11,17 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
     int identifier_name = i;
     ++i;
 
+    if(tokenList[i].type == TOK_LSQRTBRAK){
+        ++i;
+        ASTnode *assignArr = assignArray(tokenList, &i, identifier_name);
+        if(assignArr == NULL){
+            return NULL;
+        }
+
+        *index = i;
+        return assignArr;
+    }
+
     if(tokenList[i].type != TOK_EQ && tokenList[i].type != TOK_PLUSEQ && tokenList[i].type != TOK_PLUSPLUS && tokenList[i].type != TOK_MINUSEQ && tokenList[i].type != TOK_MINUSMINUS){
         if(tokenList[i].line != tokenList[i-1].line){
             printf("Equal sign expected in assignment line %d\n", tokenList[i-1].line);

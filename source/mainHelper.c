@@ -232,8 +232,16 @@ void print_ast(ASTnode *node, int indent) {
             printf(" (assign to: %s)", node->data.assign.target);
             break;
 
+        case AST_ASSIGN_ARRAY:
+            printf(" (array assign to: %s)", node->data.arrayAssign.name);
+            break;
+
         case AST_VAR_DECL:
             printf(" (var: %s)", node->data.declaration.identifier);
+            break;
+
+        case AST_ARRAY_DECL:
+            printf(" (array: %s)", node->data.arrayDecl.name);
             break;
 
         default:
@@ -244,7 +252,6 @@ void print_ast(ASTnode *node, int indent) {
 
     // recurse into children
     switch (node->ast_type) {
-
         case AST_BINARY_EXPR:
             print_ast(node->data.binary.left, indent + 1);
             print_ast(node->data.binary.right, indent + 1);
@@ -254,8 +261,17 @@ void print_ast(ASTnode *node, int indent) {
             print_ast(node->data.assign.value, indent + 1);
             break;
 
+        case AST_ARRAY_DECL:
+            print_ast(node->data.arrayDecl.size, indent + 1);
+            break;
+
         case AST_VAR_DECL:
             print_ast(node->data.declaration.expression, indent + 1);
+            break;
+
+        case AST_ASSIGN_ARRAY:
+            print_ast(node->data.arrayAssign.index, indent + 1);
+            print_ast(node->data.arrayAssign.value,indent + 1);
             break;
 
         case AST_FUNC_CALL: {
@@ -296,7 +312,6 @@ void print_ast(ASTnode *node, int indent) {
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN:
             print_ast(node->data.func_def.body, indent + 1);
-
             break;
 
         case AST_PROGRAM:

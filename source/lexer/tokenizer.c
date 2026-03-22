@@ -104,8 +104,6 @@ Tokenstruct *lexicalAnalyzer(char *input){
             }
 
             //Operator token
-            printf("right/left = %c/%c\n", input[right], input[left]);
-
             if(isOperation(input[right])){
                 tokenList = reallocTokenList(tokenList, tokencount, &capacity);
                 if(tokenList == NULL) return NULL;

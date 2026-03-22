@@ -26,5 +26,6 @@ ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index);
 ASTnode *programParse(Tokenstruct *tokenList, int *index);
 ASTnode *includeParse(Tokenstruct *tokenList, int *index);
 ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index);
+ASTnode *assignArray(Tokenstruct *tokenList, int *index, int nameNumber);
 
 #endif

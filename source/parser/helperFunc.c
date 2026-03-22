@@ -68,6 +68,8 @@ const char* astTypeToString(NodeType type) {
         case AST_IF_STMT:           return "IF_STMT_AST";
         case AST_INCLUDE:           return "INCLUDE_AST";
         case AST_RETURN:            return "RETURN_AST";
+        case AST_ARRAY_DECL:        return "ARRAY_DECL_AST";
+        case AST_ASSIGN_ARRAY:      return "ARRAY_ASSIGN_AST";
 
         case AST_FUNC_CALL:         return "FUNC_CALL_AST";
         case AST_BOOLEAN:           return "BOOL_AST";
@@ -79,7 +81,7 @@ const char* astTypeToString(NodeType type) {
 
         default:                    return "NOT_NAMED_YET";
     }
-}   
+}
 
 Tokentype fromTypeToPTR(Tokentype type){
     switch (type){

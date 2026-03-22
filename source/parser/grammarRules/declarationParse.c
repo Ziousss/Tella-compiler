@@ -29,12 +29,8 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     // Array declaration
     if(tokenList[i].type == TOK_LSQRTBRAK){
         ++i;
-        int number = -1;
-        if(tokenList[i].type == TOK_INTEGER_LITERAL){
-            number = i;
-            ++i;
-        } else {
-            printf("Integer literal expected for array size line %d.\n", tokenList[i].line);
+        ASTnode *size = expressionParse(tokenList, &i);
+        if(size == NULL){
             return NULL;
         }
 
@@ -50,14 +46,6 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         }
         ++i;
 
-        // Convert to size_t safely
-        long long arr_size_ll = atoll(tokenList[number].lexeme);
-        if(arr_size_ll < 0){
-            printf("Array size cannot be negative line %d.\n", tokenList[number].line);
-            return NULL;
-        }
-        size_t arr_size = (size_t)arr_size_ll;
-
         ASTnode *arrayDeclation = malloc(sizeof(ASTnode));
         if(!arrayDeclation){
             printf("Malloc failed in declarationParse for arrayDeclation.\n");
@@ -68,12 +56,13 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         arrayDeclation->ast_type = AST_ARRAY_DECL;
         arrayDeclation->data.arrayDecl.name = strdup(tokenList[name_i].lexeme);
         arrayDeclation->data.arrayDecl.type = decla_type;
-        arrayDeclation->data.arrayDecl.size = arr_size;
+        arrayDeclation->data.arrayDecl.size = size;
         arrayDeclation->line = tokenList[start].line;
 
         *index = i;
+        printf("type = %s", astTypeToString(arrayDeclation->ast_type));
         return arrayDeclation;
-    } 
+    }
 
     // Simple variable declaration
     if(tokenList[i].type == TOK_EQ){
