@@ -3,13 +3,14 @@
 int main (int argc, char **argv) {
     if(strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0){
         printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
-        printf("After this command, you can use several other commands to better visualise the process.\n");
-        printf("-l: Shows you the lexer output.\n");
-        printf("-i: Shows you the parser output.\n");
+        printf("After this command, you can use several other commands to better visualise the process.\n\n");
+        printf("-L: Shows you the lexer output.\n");
+        printf("-P: Shows you the parser output.\n");
+        printf("-I: Shows you the IR output.\n");
         return 0;
     }
 
-    if (argc < 3 || argc > 5) {
+    if (argc < 3 || argc > 6) {
         // Usage {argv[0]} <FILE.c> <OUT>
         printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
         printf("For more informations: ./compiler -h or ./compiler -help\n");
@@ -34,7 +35,11 @@ int main (int argc, char **argv) {
         return 2;
     }
     free(source);
-    if(contextMain->lexer) printLexer(tokenList);
+    if(contextMain->lexer) {
+        printf("\n");
+        printLexer(tokenList);
+        printf("\n");
+    }
 
     int index = 0;
     printf("3. Parsing...\n"); fflush(stdout);
@@ -43,7 +48,11 @@ int main (int argc, char **argv) {
         printf("programNode is NULL\n");
         return 3;
     }
-
+    if(contextMain->parser){
+        printf("\n");
+        print_ast(programNode, 0);
+        printf("\n");
+    }
     //Frees tokenList
     freeTokenList(tokenList);
 
@@ -65,7 +74,11 @@ int main (int argc, char **argv) {
         return 5;
     }
 
-    if(contextMain->IR) printIR(IR);
+    if(contextMain->IR){
+        printf("\n");
+        printIR(IR);
+        printf("\n");
+    }
 
     //Now go on to the assembly code.
     printf("6. Assembly generation...\n"); fflush(stdout);

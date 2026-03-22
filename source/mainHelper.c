@@ -11,11 +11,14 @@ MainContext *contextInit(char **argv, int argc){
     context->IR = false;
 
     for(int i = 3; i < argc; i++){
-        if(strcmp(argv[i], "-i") == 0){
+        if(strcmp(argv[i], "-I") == 0){
             context->IR = true;
         }
-        else if(strcmp(argv[i], "-l") == 0){
+        else if(strcmp(argv[i], "-L") == 0){
             context->lexer = true;
+        }
+        else if(strcmp(argv[i], "-P") == 0){
+            context->parser = true;
         }
     }
 
@@ -164,7 +167,7 @@ void freeASTNode(ASTnode *node){
             break;
         }
         default:{
-            printf("Unknown ast type.");
+            printf("Unknown ast type.\n");
             break;
         }
     }
@@ -174,4 +177,134 @@ void freeASTNode(ASTnode *node){
     }
 
     free(node);
+}
+
+void print_ast(ASTnode *node, int indent) {
+    if (!node) {
+        return;
+    }
+
+    for (int i = 0; i < indent; i++) printf("  ");
+
+    printf("%s", astTypeToString(node->ast_type));
+
+    // print value depending on type
+    switch (node->ast_type) {
+        case AST_IDENTIFIER:
+            printf(" (name: %s)", node->data.identifier.name);
+            break;
+
+        case AST_NUMBER:
+            printf(" (value: %d)", node->data.int_literal.value);
+            break;
+
+        case AST_STRING_LITERAL:
+            printf(" (string: \"%s\")", node->data.string_literal.string);
+            break;
+
+        case AST_CHAR_LITERAL:
+            printf(" (char: '%c')", node->data.character_literal.character);
+            break;
+
+        case AST_BOOLEAN:
+            printf(" (bool: %s)", node->data.boolean_literal.boolean ? "true" : "false");
+            break;
+
+        case AST_FUNC_CALL:
+            printf(" (call: %s)", node->data.func_call.name);
+            break;
+
+        case AST_FUNC_DEF:
+        case AST_FUNC_DEF_MAIN:
+            printf(" (func: %s)", node->data.func_def.name);
+            break;
+
+        /*
+        case AST_INCLUDE:
+            printf(" (include: %s)", node->data.include_node.name);
+            break;
+        */
+
+        case AST_ASSIGN_EXPR:
+            printf(" (assign to: %s)", node->data.assign.target);
+            break;
+
+        case AST_VAR_DECL:
+            printf(" (var: %s)", node->data.declaration.identifier);
+            break;
+
+        default:
+            break;
+    }
+
+    printf("\n");
+
+    // recurse into children
+    switch (node->ast_type) {
+
+        case AST_BINARY_EXPR:
+            print_ast(node->data.binary.left, indent + 1);
+            print_ast(node->data.binary.right, indent + 1);
+            break;
+
+        case AST_ASSIGN_EXPR:
+            print_ast(node->data.assign.value, indent + 1);
+            break;
+
+        case AST_VAR_DECL:
+            print_ast(node->data.declaration.expression, indent + 1);
+            break;
+
+        case AST_FUNC_CALL: {
+            ArgNode *arg = node->data.func_call.args;
+            while (arg) {
+                print_ast(arg->expression, indent + 1);
+                arg = arg->next;
+            }
+            break;
+        }
+
+        case AST_BLOCK:
+            print_ast(node->data.block.stmts, indent + 1);
+            break;
+
+        case AST_RETURN:
+            print_ast(node->data.return_node.expr, indent + 1);
+            break;
+
+        case AST_IF_STMT:
+            print_ast(node->data.if_node.condition, indent + 1);
+            print_ast(node->data.if_node.if_branch, indent + 1);
+            print_ast(node->data.if_node.else_branch, indent + 1);
+            break;
+
+        case AST_WHILE_STMT:
+            print_ast(node->data.while_node.condition, indent + 1);
+            print_ast(node->data.while_node.block, indent + 1);
+            break;
+
+        case AST_FOR_STMT:
+            print_ast(node->data.for_node.initialisation, indent + 1);
+            print_ast(node->data.for_node.condition, indent + 1);
+            print_ast(node->data.for_node.incrementation, indent + 1);
+            print_ast(node->data.for_node.block, indent + 1);
+            break;
+
+        case AST_FUNC_DEF:
+        case AST_FUNC_DEF_MAIN:
+            print_ast(node->data.func_def.body, indent + 1);
+
+            break;
+
+        case AST_PROGRAM:
+            //print_ast(node->data.program_node.include, indent + 1);
+            print_ast(node->data.program_node.func_def, indent + 1);
+            break;
+
+        default:
+            break;
+    }
+
+    // move to next node in list
+    print_ast(node->next, indent);
 }

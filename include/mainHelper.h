@@ -13,6 +13,7 @@
 typedef struct {
     bool lexer;
     bool IR;
+    bool parser;
 } MainContext;
 
 MainContext *contextInit(char **argv, int argc);
@@ -22,5 +23,6 @@ void freeFunctions(GlobalFunc *functions);
 void freeIR(IRstruct *IR);
 void printLexer(Tokenstruct *tokenList);
 void freeASTNode(ASTnode *node);
+void print_ast(ASTnode *node, int indent);
 
 #endif
