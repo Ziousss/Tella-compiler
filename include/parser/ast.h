@@ -18,6 +18,7 @@ typedef enum {
     AST_INCLUDE,
     AST_FUNC_CALL,
     AST_VAR_DECL,
+    AST_ARRAY_DECL,
 
     AST_BLOCK,
     AST_RETURN,
@@ -78,6 +79,12 @@ typedef struct ASTnode {
             ASTnode *right; 
         } binary;
         
+        struct {
+            size_t size;
+            char *name;
+            Tokentype type;
+        } arrayDecl;
+
         struct { 
             char *name; 
             ArgNode *args; 
