@@ -3,7 +3,41 @@
 void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
     NodeType ast_type = stmtAst->ast_type;
     switch (ast_type){
-        case AST_VAR_DECL: {
+        case AST_ARRAY_DECL: {
+            if(find_in_current_scope(stmtAst->data.arrayDecl.name, context)){
+                printf("Redefinition of the %s identifier in the same scope.\n", stmtAst->data.arrayDecl.name);
+                context->error_count++;
+                return;
+            }
+
+            SemanticType arrType = fromTokToSem(stmtAst->data.arrayDecl.type);
+
+            if(stmtAst->data.arrayDecl.size->ast_type == AST_NUMBER){
+                int size = stmtAst->data.arrayDecl.size->data.int_literal.value;
+                if(size < 0){
+                    printf("The size of the array \"%s\" is negative line %d.\n", stmtAst->data.arrayDecl.name, stmtAst->line);
+                    context->error_count++;
+                    return;
+                }
+            }
+
+            SymbolNode *sym = malloc(sizeof(SymbolNode));
+            if(sym == NULL){
+                printf("Malloc failed for sym in AST_ARRAY_DECL.\n");
+                return;
+            }
+
+            sym->kind = SEM_ARR;
+            sym->size = stmtAst->data.arrayDecl.size;
+            sym->name = strdup(stmtAst->data.arrayDecl.name);
+            sym->type = arrType;
+            sym->next = NULL;
+            sym->line = stmtAst->line;
+
+            push_variables(sym, context);
+            break;
+        }
+        case AST_VAR_DECL:{
             if(find_in_current_scope(stmtAst->data.declaration.identifier, context)){
                 printf("Redefinition of the %s identifier in the same scope.\n", stmtAst->data.declaration.identifier);
                 context->error_count++;
@@ -34,6 +68,10 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
         }
         case AST_RETURN: {
             returnAnalyser(stmtAst, context);
+            break;
+        }
+        case AST_ASSIGN_ARRAY: {
+            arrayAssignAnalyser(stmtAst, context);
             break;
         }
         case AST_ASSIGN_EXPR: {

@@ -31,6 +31,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         ++i;
         ASTnode *size = expressionParse(tokenList, &i);
         if(size == NULL){
+            printf("The expression missing is the index for the declaration array on line %d.\n", tokenList[i].line);
             return NULL;
         }
 
@@ -60,7 +61,6 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         arrayDeclation->line = tokenList[start].line;
 
         *index = i;
-        printf("type = %s", astTypeToString(arrayDeclation->ast_type));
         return arrayDeclation;
     }
 

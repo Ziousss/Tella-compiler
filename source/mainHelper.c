@@ -169,8 +169,19 @@ void freeASTNode(ASTnode *node){
             freeASTNode(node->data.while_node.block);
             break;
         }
+        case AST_ARRAY_DECL:{
+            freeASTNode(node->data.arrayDecl.size);
+            free(node->data.arrayDecl.name);
+            break;
+        }
+        case AST_ASSIGN_ARRAY:{
+            freeASTNode(node->data.arrayAssign.index);
+            freeASTNode(node->data.arrayAssign.value);
+            free(node->data.arrayAssign.name);
+            break;
+        }
         default:{
-            printf("Unknown ast type.\n");
+            printf("Unknown ast type in freeASTNode.\n");
             break;
         }
     }

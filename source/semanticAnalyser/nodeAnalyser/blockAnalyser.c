@@ -12,7 +12,7 @@ void blockAnalyser(ASTnode *blockAst, SemContext *context, bool new_scope){
         push_scope(context);
     }
 
-    while(stmt){
+    while(stmt != NULL){
         stmtAnalyser(stmt, context);
         stmt = stmt->next;
     }

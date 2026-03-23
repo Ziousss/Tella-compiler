@@ -13,7 +13,7 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type == TOK_LSQRTBRAK){
         ++i;
-        ASTnode *assignArr = assignArray(tokenList, &i, identifier_name);
+        ASTnode *assignArr = assignArrayParse(tokenList, &i, identifier_name);
         if(assignArr == NULL){
             return NULL;
         }

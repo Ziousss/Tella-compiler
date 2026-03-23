@@ -1,6 +1,8 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
+#include "../include/parser/ast.h"
+
 typedef struct SymbolNode SymbolNode;
 typedef struct ScopeNode ScopeNode;
 typedef struct SemContext SemContext;
@@ -11,7 +13,7 @@ typedef enum {
 } SemanticType;
 
 typedef enum {
-    SEM_FCT, SEM_PARAM, SEM_VAR
+    SEM_FCT, SEM_PARAM, SEM_VAR, SEM_ARR
 } SemanticKind;
 
 typedef struct SymbolNode {
@@ -19,10 +21,15 @@ typedef struct SymbolNode {
     SemanticKind kind;
     char *name;
 
+    //for array
+    ASTnode *size;
+
     int param_count;
     SemanticType *param;
 
     SymbolNode *next;
+
+    int line;
 } SymbolNode;
 
 typedef struct ScopeNode {

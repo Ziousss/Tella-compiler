@@ -15,7 +15,7 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     SymbolNode *funcDefSem = malloc(sizeof(SymbolNode));
     SemanticType type = fromTokToSem(funcDefAst->data.func_def.return_type);
     if(type == SEM_ERROR){
-        printf("the return type of the function %s is not supported yet.\n", funcDefAst->data.func_def.name);
+        printf("The return type of the function %s is not supported yet.\n", funcDefAst->data.func_def.name);
         context->error_count += 1;
         return;
     }
