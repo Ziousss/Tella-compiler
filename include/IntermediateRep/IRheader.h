@@ -10,6 +10,7 @@
 #include "../include/parser/helperFunc.h"
 #include "../include/semanticAnalyser/struct.h"
 #include "printIR.h"
+#include "../include/semanticAnalyser/helperFuncAnalyser.h"
 
 IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc);
 void funcDefIR(ASTnode *funcdef, IRContext *context);

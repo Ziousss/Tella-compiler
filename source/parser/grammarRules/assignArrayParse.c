@@ -72,7 +72,6 @@ ASTnode *rightAssignArrayParse(Tokenstruct *tokenList, int *index, int nameNumbe
 
     char *name = strdup(tokenList[nameNumber].lexeme);
     rightArray->next = NULL;
-    printf("line %d\n", tokenList[start].line);
     rightArray->line = tokenList[start].line;
     rightArray->ast_type = AST_ARRAY_LOAD;
     rightArray->data.arrayLoad.name = name;

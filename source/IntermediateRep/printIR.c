@@ -64,6 +64,16 @@ void printIR(IRstruct *IR){
                 printf("\n");
                 break;
 
+            case IR_ASSIGN_ARR:
+                printOperand(tmp->data.assignArray.base);
+                printf("[");
+                printOperand(tmp->data.assignArray.index);
+                printf("]");
+                printf(" = ");
+                printOperand(tmp->data.assignArray.value);
+                printf("\n");
+                break;
+
             case IR_ASSIGN:
                 printOperand(tmp->data.binary.dst);
                 printf(" = ");
@@ -89,6 +99,16 @@ void printIR(IRstruct *IR){
                 printf("PARAM %s\n", tmp->data.parameters.parameter.data.IR_Variable.identifier);
                 break;
 
+            case IR_LOAD_ARRAY:
+                printf("LOAD ");
+                printOperand(tmp->data.loadArray.base);
+                printf("[");
+                printOperand(tmp->data.loadArray.index);
+                printf("] into ");
+                printOperand(tmp->data.loadArray.dst);
+                printf("\n");
+                break;
+
             default:
                 printf("UNKNOWN IR OP\n");
                 break;
@@ -100,6 +120,7 @@ void printIR(IRstruct *IR){
 
 void printOperand(Operand op){
     switch(op.IR_type){
+        case IR_ARR:
         case IR_VAR:
             printf("%s", op.data.IR_Variable.identifier);
             break;

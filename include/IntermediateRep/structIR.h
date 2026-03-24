@@ -2,6 +2,7 @@
 #define STRUCTIR_H
 
 #include <stdbool.h>
+#include "../include/semanticAnalyser/struct.h"
 
 typedef struct Operand Operand;
 typedef struct IRstruct IRstruct;
@@ -9,12 +10,13 @@ typedef struct IRstruct IRstruct;
 typedef enum {
     IR_LABEL, IR_FUNC,
     IR_ADD, IR_SUB, IR_MULT, IR_DIV, IR_GR, IR_GREQ, IR_LESS, IR_LESSEQ, IR_EQEQ, IR_UNEQ, 
-    IR_CALL, IR_JMP, IR_JMP_FALSE, IR_RET, IR_ASSIGN, IR_ARG, IR_PARAM,
+    IR_CALL, IR_JMP, IR_JMP_FALSE, IR_RET, IR_ASSIGN, IR_ARG, IR_PARAM, 
+    IR_ASSIGN_ARR, IR_LOAD_ARRAY,
     IR_ERROR,
 } IRoperation;
 
 typedef enum {
-    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND, IR_IRTYPE_ERROR
+    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND, IR_IRTYPE_ERROR, IR_ARR
 } IRtype;
 
 typedef enum {
@@ -29,8 +31,12 @@ typedef struct Operand {
             char *identifier;
 
             //Only for parameters in IR.
-            CstTypes type;
+            CstTypes paramType;
             int param_index;
+
+            //Only for array
+            int size;
+            int elementSize;
         } IR_Variable;
         
         struct {
@@ -46,7 +52,7 @@ typedef struct Operand {
         struct {
             CstTypes type;
             int id_tmp;
-        } IR_tmp;      
+        } IR_tmp;        
     }data; 
 } Operand;
 
@@ -70,7 +76,7 @@ typedef struct IRstruct {
             Operand dst;
             Operand src;
         } assign;
-        
+
         struct {
             int target_label;
             Operand condition;
@@ -97,7 +103,21 @@ typedef struct IRstruct {
 
         struct {
             Operand parameter;
-        } parameters;        
+        } parameters;     
+        
+        //For arrays specifically
+        struct {
+            Operand dst;
+            Operand base;
+            Operand index;
+        } loadArray;
+
+        struct {
+            Operand base;
+            Operand index;
+            Operand value;
+        } assignArray;
+        
     } data;
 
     struct IRstruct *next;
@@ -111,6 +131,7 @@ typedef struct {
     int current_label;
     int errors;
     bool returned;
+    IRsymbole *IRsym;
 } IRContext;
 
 #endif

@@ -150,7 +150,7 @@ IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type){
 
     new->data.parameters.parameter.data.IR_Variable.param_index = index;
     new->data.parameters.parameter.IR_type = IR_VAR;
-    new->data.parameters.parameter.data.IR_Variable.type = type;
+    new->data.parameters.parameter.data.IR_Variable.paramType = type;
     new->data.parameters.parameter.data.IR_Variable.identifier = strdup(name);
     new->next = NULL;
     new->op = IR_PARAM;
@@ -184,6 +184,40 @@ IRstruct *newAssign(IRContext *context, Operand dst, Operand src){
     new->next = NULL;
     new->data.assign.dst = dst;
     new->data.assign.src = src;
+
+    return new;
+}
+
+IRstruct *newAssignArray(IRContext *context, Operand base, Operand value, Operand index){
+    IRstruct *new = malloc(sizeof(IRstruct));
+    if(new == NULL){
+        printf("Malloc error in newAssignArray to taget.\n");
+        context->errors++;
+        return NULL;
+    }
+
+    new->op = IR_ASSIGN_ARR;
+    new->next = NULL;
+    new->data.assignArray.base = base;
+    new->data.assignArray.value = value;
+    new->data.assignArray.index = index;
+
+    return new;
+}
+
+IRstruct *newArrayLoad(IRContext *context, Operand base, Operand index, Operand tmp){
+    IRstruct *new = malloc(sizeof(IRstruct));
+    if(new == NULL){
+        printf("Malloc error in newAssignArray to taget.\n");
+        context->errors++;
+        return NULL;
+    }
+
+    new->op = IR_LOAD_ARRAY;
+    new->next = NULL;
+    new->data.loadArray.base = base;
+    new->data.loadArray.dst = tmp;
+    new->data.loadArray.index = index;
 
     return new;
 }
@@ -297,4 +331,30 @@ const char *printCstType(CstTypes type){
 bool isbool(IRoperation op){
     return (op == IR_GR || op == IR_GREQ || op == IR_LESS
             || op == IR_LESSEQ || op == IR_EQEQ || op == IR_UNEQ);
+}
+
+int getSizeElement(SemanticType type){
+    switch (type){
+        case SEM_CHAR:      return 1;
+        case SEM_BOOL:      return 1;
+        case SEM_INT:       return 4;
+
+        default: {
+            printf("Unknown type in getSizeElement.\n");
+            return -1;
+        }
+    }
+}
+
+IRsymbole *findDecl(char *name, IRContext *context){
+    IRsymbole *cur = context->IRsym;
+    while(cur != NULL){
+        if(strcmp(name, cur->name) == 0){
+            return cur;
+        }
+
+        cur = cur->next;
+    }
+
+    return NULL;
 }

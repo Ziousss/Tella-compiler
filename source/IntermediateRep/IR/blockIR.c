@@ -9,6 +9,7 @@ void blockIR(ASTnode *block, IRContext *context){
         }
         
         switch (type){
+            case AST_ARRAY_DECL: break;
             case AST_VAR_DECL: {
                 if(stmt->data.declaration.expression == NULL){
                     break;
@@ -22,6 +23,20 @@ void blockIR(ASTnode *block, IRContext *context){
 
                 IRstruct *declaration = newAssign(context, dst, src);
                 emit(declaration, context);
+
+                break;
+            }
+            case AST_ASSIGN_ARRAY:{
+                Operand dst;
+                dst.IR_type = IR_ARR;
+                dst.data.IR_Variable.identifier = stmt->data.arrayAssign.name;
+                dst.data.IR_Variable.elementSize = getSizeElement(fromTokToSem(stmt->data.arrayAssign.type)); 
+                
+                Operand index = expressionIR(stmt->data.arrayAssign.index, context);
+                Operand src = expressionIR(stmt->data.arrayAssign.value, context);
+
+                IRstruct *declArr = newAssignArray(context, dst, src, index);
+                emit(declArr, context);
 
                 break;
             }

@@ -17,6 +17,7 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
     context->current_label = 0;
     context->current_tmp = 0;
     context->errors = 0;
+    context->IRsym = definedFunc->sym;
 
     initGlobalFunctions(definedFunc);
     ASTnode *funcdef = program->data.program_node.func_def;
@@ -27,6 +28,7 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
 
     if(context->errors == 0){
         IRstruct *head = context->head;
+        //Need to free Sym before context;
         free(context);
         return head;
     }

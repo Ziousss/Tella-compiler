@@ -46,6 +46,41 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
             Operand func_ret = funcCallIR(expression, context);
             return func_ret;
         }
+        case AST_ARRAY_LOAD:{
+            Operand index = expressionIR(expression->data.arrayLoad.index, context);
+            if(index.IR_type == IR_TMP && index.data.IR_tmp.type != IR_INT){
+                printf("Index did not return and INT.\n");
+                context->errors++;
+                return (Operand){0};
+            }
+
+            IRsymbole *sym = findDecl(expression->data.arrayLoad.name, context);
+            if(sym == NULL){
+                printf("Could not find any declaration for \"%s\".\n", expression->data.arrayLoad.name);
+                context->errors++;
+                return (Operand){0};
+            }
+
+            int size = sym->size;
+            if(size == -1){
+                printf("\"%s\" is thought to be an array but it is not.", expression->data.arrayLoad.name);
+                context->errors++;
+                return (Operand){0};
+            }
+
+            Operand base;
+            base.IR_type = IR_ARR;
+            base.data.IR_Variable.identifier = expression->data.arrayLoad.name;
+            base.data.IR_Variable.size = size;
+            base.data.IR_Variable.elementSize = getSizeElement(sym->type);
+
+            Operand tmp = newTmp(fromSemToIRTypes(sym->type), context);
+            
+            IRstruct *arrayLoad = newArrayLoad(context, base, index, tmp);
+            emit(arrayLoad, context);
+
+            return tmp;
+        }
         default: {
             printf("The ast %s has not been cover by expressionIR yet.\n", astTypeToString(type));
             context->errors++;
