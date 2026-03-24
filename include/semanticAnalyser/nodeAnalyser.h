@@ -22,5 +22,6 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context);
 void whileAnalyser(ASTnode *whileAst, SemContext *context);
 void forAnalyser(ASTnode *forAst, SemContext *context);
 void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context);
+SemanticType arrLoadAnalyser(ASTnode *arrayAssign, SemContext *context);
 
 #endif

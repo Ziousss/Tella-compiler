@@ -19,5 +19,6 @@ const char *fromSemToString(SemanticType type);
 bool isBool(Tokentype op);
 bool isCalculus (Tokentype op);
 GlobalFunc *getAllFunctions(const SemContext *context);
+Tokentype  fromSemToTok(SemanticType type);
 
 #endif

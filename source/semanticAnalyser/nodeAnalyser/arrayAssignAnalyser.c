@@ -54,4 +54,6 @@ void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context){
         context->error_count++;
         return;
     }
+
+    arrayAssign->data.arrayAssign.type = fromSemToTok(target_type);
 }

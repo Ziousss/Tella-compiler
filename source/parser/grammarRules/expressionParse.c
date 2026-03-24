@@ -11,7 +11,8 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
     }
 
     if(tokenList[i].type == TOK_IDENTIFIER){
-        char *name = strdup(tokenList[i].lexeme);
+        int nameIndex = i;
+        char *name = strdup(tokenList[nameIndex].lexeme);
         ASTnode *function_call = funcCallParseExpression(tokenList, &i);
         if(function_call != NULL){
             left = function_call;
@@ -20,6 +21,12 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             //FuncCall NULL but it s not an indentifier
             free(name);
             return NULL;
+        } else if(tokenList[i+1].type == TOK_LSQRTBRAK){
+            i += 2;
+            ASTnode *assignArr = rightAssignArrayParse(tokenList, &i, nameIndex);
+            if(assignArr != NULL){
+                left = assignArr;
+            }
         }
         else{
             left = malloc(sizeof(ASTnode));
@@ -125,6 +132,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         tmp->data.binary.right = right;
         tmp->data.binary.op = op;
         tmp->line = tokenList[start].line;
+        tmp->next = NULL;
         left = tmp;
     }
 

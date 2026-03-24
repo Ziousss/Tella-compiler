@@ -180,6 +180,12 @@ void freeASTNode(ASTnode *node){
             free(node->data.arrayAssign.name);
             break;
         }
+        case AST_ARRAY_LOAD:{
+            freeASTNode(node->data.arrayLoad.index);
+            free(node->data.arrayLoad.name);
+            break;
+        }
+
         default:{
             printf("Unknown ast type in freeASTNode.\n");
             break;
@@ -254,6 +260,10 @@ void print_ast(ASTnode *node, int indent) {
         case AST_ARRAY_DECL:
             printf(" (array: %s)", node->data.arrayDecl.name);
             break;
+        
+        case AST_ARRAY_LOAD:
+            printf(" (Load: %s)", node->data.arrayLoad.name);
+            break;
 
         default:
             break;
@@ -283,6 +293,10 @@ void print_ast(ASTnode *node, int indent) {
         case AST_ASSIGN_ARRAY:
             print_ast(node->data.arrayAssign.index, indent + 1);
             print_ast(node->data.arrayAssign.value,indent + 1);
+            break;
+
+        case AST_ARRAY_LOAD:
+            print_ast(node->data.arrayLoad.index, indent + 1);
             break;
 
         case AST_FUNC_CALL: {

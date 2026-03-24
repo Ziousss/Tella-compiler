@@ -80,8 +80,8 @@ SemanticType fromTokToSem(Tokentype type){
     switch (type){
         case TOK_CHAR:              return SEM_CHAR;
         case TOK_INT:               return SEM_INT;
-        case TOK_TRUE:              return SEM_BOOL;
-        case TOK_FALSE:             return SEM_BOOL;
+        case TOK_TRUE:
+        case TOK_FALSE:
         case TOK_BOOL:              return SEM_BOOL;
         case TOK_VOID:              return SEM_VOID;
         case TOK_STRING:            return SEM_STRING;
@@ -111,4 +111,16 @@ bool isCalculus(Tokentype op){
 bool isBool(Tokentype op) {
     return (op == TOK_GREQ || op == TOK_LESS
         || op == TOK_LESSEQ || op == TOK_GR);
+}
+
+Tokentype fromSemToTok(SemanticType type){
+    switch (type){
+        case SEM_CHAR:          return TOK_CHAR;
+        case SEM_INT:           return TOK_INT;
+        case SEM_BOOL:          return TOK_BOOL;
+        case SEM_VOID:          return TOK_VOID;
+        case SEM_STRING:        return TOK_STRING;
+        
+        default:                return TOK_ERROR;
+    }
 }

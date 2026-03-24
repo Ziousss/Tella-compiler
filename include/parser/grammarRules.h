@@ -27,5 +27,6 @@ ASTnode *programParse(Tokenstruct *tokenList, int *index);
 ASTnode *includeParse(Tokenstruct *tokenList, int *index);
 ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index);
 ASTnode *assignArrayParse(Tokenstruct *tokenList, int *index, int nameNumber);
+ASTnode *rightAssignArrayParse(Tokenstruct *tokenList, int *index, int nameNumber);
 
 #endif

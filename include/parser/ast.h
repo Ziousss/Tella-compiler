@@ -29,6 +29,7 @@ typedef enum {
     AST_BINARY_EXPR,
     AST_ASSIGN_EXPR,
     AST_ASSIGN_ARRAY,
+    AST_ARRAY_LOAD,
 
     AST_IDENTIFIER,
     AST_BOOLEAN,
@@ -90,7 +91,13 @@ typedef struct ASTnode {
             char *name;
             ASTnode *index;
             ASTnode *value;
+            Tokentype type;
         } arrayAssign;
+
+        struct {
+            char *name;
+            ASTnode *index;
+        } arrayLoad;
         
 
         struct { 

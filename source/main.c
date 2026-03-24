@@ -74,7 +74,6 @@ int main (int argc, char **argv) {
     IRstruct *IR = programIR(programNode, functions);
     if(IR == NULL){
         cleanup(programNode, functions, NULL, contextMain, tokenList);
-        printf("Error in the IR creation.\n");
         return 5;
     }
 
