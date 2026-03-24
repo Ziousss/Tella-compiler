@@ -20,5 +20,7 @@ bool isBool(Tokentype op);
 bool isCalculus (Tokentype op);
 GlobalFunc *getAllFunctions(const SemContext *context);
 Tokentype  fromSemToTok(SemanticType type);
+IRsymbole *newIRsym(char *name, SemanticType type, int size);
+void pushIRSym(IRsymbole *symIR, SemContext *context);
 
 #endif

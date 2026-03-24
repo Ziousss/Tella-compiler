@@ -15,6 +15,7 @@ GlobalFunc *programAnalyser(ASTnode *program) {
     context->error_count = 0;
     context->current_scope = NULL;
     context->saw_return = false;
+    context->IRsym = NULL;
 
     push_scope(context);
     ASTnode *func_def_node = program->data.program_node.func_def;
@@ -29,5 +30,12 @@ GlobalFunc *programAnalyser(ASTnode *program) {
         return NULL;
     }
 
+    GlobalFunc *current = functionsList;
+    while (current != NULL)
+    {
+        current->sym = context->IRsym;
+        current = current->next;
+    }
+    
     return functionsList;
 }

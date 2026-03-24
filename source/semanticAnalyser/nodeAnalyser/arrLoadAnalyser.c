@@ -16,6 +16,13 @@ SemanticType arrLoadAnalyser(ASTnode *arrayLoad, SemContext *context){
             context->error_count++;
             return SEM_ERROR;
         }
+        if(sym->size->ast_type == AST_NUMBER){
+            if(sym->size->data.int_literal.value <= value){
+                printf("Trying to acces an out of bound index for array \"%s\" line %d.\n", name, arrayLoad->line);
+                context->error_count++;
+                return SEM_ERROR;
+            }
+        }
     }
 
     return sym->type;

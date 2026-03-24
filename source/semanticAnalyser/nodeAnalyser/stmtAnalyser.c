@@ -12,8 +12,10 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
             SemanticType arrType = fromTokToSem(stmtAst->data.arrayDecl.type);
 
+            //So now -1 means not an array and -2 means it is an array but with an expression as index.
+            int size = -2;
             if(stmtAst->data.arrayDecl.size->ast_type == AST_NUMBER){
-                int size = stmtAst->data.arrayDecl.size->data.int_literal.value;
+                size = stmtAst->data.arrayDecl.size->data.int_literal.value;
                 if(size < 0){
                     printf("The size of the array \"%s\" is negative line %d.\n", stmtAst->data.arrayDecl.name, stmtAst->line);
                     context->error_count++;
@@ -35,6 +37,14 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             sym->line = stmtAst->line;
 
             push_variables(sym, context);
+
+            IRsymbole *symIR = newIRsym(strdup(stmtAst->data.arrayDecl.name), arrType, size);
+            if(symIR == NULL){
+                context->error_count++;
+                return;
+            }
+            pushIRSym(symIR, context);
+
             break;
         }
         case AST_VAR_DECL:{
@@ -54,7 +64,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
                     printf("On declaration line %d, the right side has %s type but the left is defined as %s type.\n", stmtAst->line, fromSemToString(right_type), fromSemToString(left_type));
                     context->error_count++;
                     return;
-                }
+                }                
             }
 
             SymbolNode *sym = malloc(sizeof(SymbolNode));
@@ -64,6 +74,14 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             sym->next = NULL;
 
             push_variables(sym, context);
+
+            IRsymbole *symIR = newIRsym(strdup(stmtAst->data.arrayDecl.name), left_type, -1);
+            if(symIR == NULL){
+                context->error_count++;
+                return;
+            }
+            pushIRSym(symIR, context);
+
             break;
         }
         case AST_RETURN: {

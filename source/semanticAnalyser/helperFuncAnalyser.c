@@ -124,3 +124,31 @@ Tokentype fromSemToTok(SemanticType type){
         default:                return TOK_ERROR;
     }
 }
+
+//size and typeSize are only for arrays for now
+IRsymbole *newIRsym(char *name, SemanticType type, int size){
+    IRsymbole *sym = malloc(sizeof(IRsymbole));
+    if(sym == NULL){
+        printf("Malloc failed for IRsymbole.\n");
+        return NULL;
+    }
+
+    sym->name = strdup(name);
+    sym->type = type;
+    sym->size = size;
+    sym->next = NULL;
+    
+    return sym;
+}
+
+void pushIRSym(IRsymbole *symIR, SemContext *context){
+    if(context->IRsym == NULL){
+        context->IRsym = symIR; 
+        return;
+    }
+    SemContext *cur = context;
+    while (cur->IRsym->next != NULL){
+        cur->IRsym = cur->IRsym->next;
+    }
+    cur->IRsym->next = symIR;
+}
