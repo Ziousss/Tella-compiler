@@ -30,8 +30,17 @@ void blockIR(ASTnode *block, IRContext *context){
                 Operand dst;
                 dst.IR_type = IR_ARR;
                 dst.data.IR_Variable.identifier = stmt->data.arrayAssign.name;
-                dst.data.IR_Variable.elementSize = getSizeElement(fromTokToSem(stmt->data.arrayAssign.type)); 
+                dst.data.IR_Variable.elementSize = getSizeElement(fromTokToSem(stmt->data.arrayAssign.type));
                 
+                IRsymbole *sym = findDecl(dst.data.IR_Variable.identifier, context);
+                if(sym == NULL){
+                    printf("could not find Decl in findDecl, blockIR.c\n");
+                    context->errors++;
+                    return;
+                }
+
+                dst.data.IR_Variable.size = sym->size;
+
                 Operand index = expressionIR(stmt->data.arrayAssign.index, context);
                 Operand src = expressionIR(stmt->data.arrayAssign.value, context);
 

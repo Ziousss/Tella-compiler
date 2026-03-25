@@ -57,6 +57,16 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
                 setStackLayout(src1, stack, context);
                 break;
             }
+            case IR_ASSIGN_ARR: {
+                Operand value = tmp->data.assignArray.value;
+                Operand base = tmp->data.assignArray.base;
+                Operand index = tmp->data.assignArray.index;
+
+                setStackLayout(value, stack, context);
+                setStackLayout(index, stack, context);
+                setStackLayout(base, stack, context);
+                break; 
+            }
             case IR_JMP_FALSE:{
                 Operand condition = tmp->data.condition_jump.condition;
                 setStackLayout(condition, stack, context);
@@ -90,6 +100,20 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
             }
             case IR_LABEL: break;
             case IR_JMP: break;
+
+            //array already allocated
+            case IR_LOAD_ARRAY: {
+                Operand dst = tmp->data.loadArray.base;
+                Operand index = tmp->data.loadArray.index;
+                Operand base = tmp->data.loadArray.base;
+
+                setStackLayout(base, stack, context);
+                setStackLayout(dst, stack, context);
+                setStackLayout(index, stack , context);
+
+                break;
+            }
+
             default: {
                 printf("Unknown IR token in stackFunctionAS %d.\n", tmp->op);
                 context->errors++;

@@ -9,7 +9,7 @@ int mainAssemblyInstr(IRstruct *IRlist){
     }
     context->errors = 0;
 
-    FILE *output = fopen("../ASoutput.s", "w");
+    FILE *output = fopen("ASoutput.s", "w");
     if(output == NULL){
         printf("File ASoutput.s did not open correctly.\n");
         fflush(stdout);

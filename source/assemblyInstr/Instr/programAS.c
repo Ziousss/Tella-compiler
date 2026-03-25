@@ -38,6 +38,10 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
             case IR_PARAM:
                 paramAS(tmp, output, stack, context);
                 break;
+            
+            case IR_ASSIGN_ARR:
+                assignArrAS(tmp, output, stack, context);
+                break;
 
             case IR_SUB:
             case IR_ADD:
@@ -57,6 +61,10 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
                 if(stack == NULL){
                     return;
                 }
+                break;
+        
+            case IR_LOAD_ARRAY:
+                loadArrAS(tmp, output, stack, context);
                 break;
 
             default:

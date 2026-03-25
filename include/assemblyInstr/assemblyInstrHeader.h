@@ -15,5 +15,7 @@ void condJumpAS(IRstruct *call, FILE *output, StackLayout *stack, ASContext* con
 void assignAS(IRstruct *assign, FILE *output, StackLayout *stack, ASContext* context);
 void paramAS(IRstruct *parameter, FILE *output, StackLayout *stack, ASContext* context);
 void ifStmtAS(IRstruct *ifStmt, FILE *output, StackLayout *stack, ASContext* context);
+void assignArrAS(IRstruct *assignArr, FILE *output, StackLayout *stack, ASContext* context);
+void loadArrAS(IRstruct *loadArr, FILE *output, StackLayout *stack, ASContext *context);
 
 #endif

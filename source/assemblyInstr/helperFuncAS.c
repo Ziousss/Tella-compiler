@@ -8,6 +8,10 @@ void setStackLayout(Operand op, StackLayout *stack, ASContext* context){
         setVarStack(op, stack);
         return;
     } 
+    else if(op.IR_type == IR_ARR){
+        setArrStack(op, stack);
+        return;
+    }
     else if(op.IR_type == IR_TMP) {
         setTmpStack(op,stack);
         return;
@@ -17,6 +21,30 @@ void setStackLayout(Operand op, StackLayout *stack, ASContext* context){
         fflush(stdout);
         return;
     }
+}
+
+void setArrStack(Operand op, StackLayout *stack){
+    for(int i = 0; i < stack->var_count; i++){
+        if(strcmp(op.data.IR_Variable.identifier, stack->var[i].name_var) == 0){
+            return;
+        }
+    }
+
+    if(op.data.IR_Variable.size >= 0){
+        int size = op.data.IR_Variable.size;
+        int elementSize = op.data.IR_Variable.elementSize;
+        int spaceNeeded = size * elementSize;
+        while(spaceNeeded % 8 != 0){
+            spaceNeeded++;
+        }
+
+        stack->current_offset_count -= spaceNeeded;
+    } else {
+        stack->current_offset_count -= 8;
+    }
+
+    stack->var[stack->var_count].name_var = op.data.IR_Variable.identifier;
+    stack->var[stack->var_count++].offset = stack->current_offset_count;
 }
 
 void setVarStack(Operand op, StackLayout *stack){
@@ -62,6 +90,7 @@ int findVarInStack(Operand op, StackLayout *stack){
 
 int getOffset(Operand op, StackLayout *stack, ASContext* context){
     switch (op.IR_type) {
+        case IR_ARR:
         case IR_VAR:{
             int offset = findVarInStack(op, stack);
             if(offset == -1){

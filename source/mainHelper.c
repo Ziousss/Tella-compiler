@@ -9,6 +9,7 @@ MainContext *contextInit(char **argv, int argc){
 
     context->lexer = false;
     context->IR = false;
+    context->parser = false;
 
     for(int i = 3; i < argc; i++){
         if(strcmp(argv[i], "-I") == 0){

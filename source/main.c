@@ -93,7 +93,7 @@ int main (int argc, char **argv) {
     }
 
     char *executable = argv[2];
-    bool compiled = compileAssembly("../ASoutput.s", executable);
+    bool compiled = compileAssembly("ASoutput.s", executable);
 
     if(!compiled){
         cleanup(programNode, functions, IR, contextMain, tokenList);

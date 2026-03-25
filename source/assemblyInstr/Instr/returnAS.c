@@ -3,7 +3,6 @@
 void returnAS(IRstruct *ret, FILE *output, StackLayout *stack, ASContext* context){
     Operand dst = ret->data.ret.return_value;
     IRtype dstType = dst.IR_type;
-
     switch (dstType) {
         case IR_VAR:
         case IR_TMP: {
