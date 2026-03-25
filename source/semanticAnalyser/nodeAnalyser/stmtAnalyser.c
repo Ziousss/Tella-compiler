@@ -38,7 +38,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
             push_variables(sym, context);
 
-            IRsymbole *symIR = newIRsym(strdup(stmtAst->data.arrayDecl.name), arrType, size);
+            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, arrType, size);
             if(symIR == NULL){
                 context->error_count++;
                 return;
@@ -75,7 +75,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
             push_variables(sym, context);
 
-            IRsymbole *symIR = newIRsym(strdup(stmtAst->data.arrayDecl.name), left_type, -1);
+            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, left_type, -1);
             if(symIR == NULL){
                 context->error_count++;
                 return;

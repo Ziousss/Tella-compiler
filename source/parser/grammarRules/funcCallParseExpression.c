@@ -12,11 +12,13 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
     }
     ++i;
     if(tokenList[i].type != TOK_LPAREN){
+        free(funcCall);
         return NULL;
     } ++i;
 
     if(tokenList[i].type == TOK_SEMICOLON){
         printf("Missing a ')' line %d for the function call\n", tokenList[i].line);
+        free(funcCall);
         return NULL;
     }
     if (tokenList[i].type == TOK_RPAREN)
@@ -57,6 +59,7 @@ ASTnode *funcCallParseExpression(Tokenstruct *tokenList, int *index){
                 printf("Comma expected in the parameter of the function call line %d\n", tokenList[i].line);
                 free(arg);
                 free(expression);
+                free(funcCall);
                 return NULL;
             }
 

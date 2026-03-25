@@ -2,7 +2,8 @@
 
 void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
     IRstruct *tmp = IRlist;  
-    StackLayout *stack;
+    StackLayout *stack = NULL;
+    bool stackDefined = false;
 
     while(tmp != NULL){
         IRoperation op = tmp->op;
@@ -57,6 +58,11 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
                 break;
             
             case IR_FUNC:
+                if(stackDefined){
+                    freeStackLayout(stack);
+                } else {
+                    stackDefined = true;
+                }
                 stack = stackFunctionAS(tmp, output, context);
                 if(stack == NULL){
                     return;

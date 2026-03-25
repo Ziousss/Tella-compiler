@@ -155,3 +155,15 @@ void movConstant(Operand op, FILE *output, const char *reg, ASContext* context){
         }
     }
 }
+
+void freeStackLayout(StackLayout *stack){
+    if(stack == NULL) return;
+
+    for(int i = 0; i < stack->var_count; i++){
+        if(stack->var[i].name_var != NULL){
+            free(stack->var[i].name_var);
+        }
+
+        free(stack);
+    }
+}

@@ -36,6 +36,19 @@ GlobalFunc *programAnalyser(ASTnode *program) {
         current->sym = context->IRsym;
         current = current->next;
     }
-    
+
+    ScopeNode *cur = context->current_scope;
+    while(cur != NULL){
+        SymbolNode *node = cur->symbols;
+        while(node != NULL){
+            SymbolNode *next = node->next;
+            free(node);
+            node = next;
+        }
+        ScopeNode *next = cur->parent;
+        free(cur);
+        cur = next;
+    }
+    free(context);
     return functionsList;
 }

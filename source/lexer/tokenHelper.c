@@ -124,10 +124,7 @@ Tokentype keyword_type(char *sub){
 void freeTokenList(Tokenstruct *tokenlist){
     int i = 0;
     while(tokenlist[i].type != TOK_EOF) {
-        if(tokenlist[i].type == TOK_IDENTIFIER || 
-           tokenlist[i].type == TOK_INTEGER_LITERAL ||
-           tokenlist[i].type == TOK_STRING_LITERAL ||
-           tokenlist[i].type == TOK_CHAR_LITERAL) {
+        if(tokenlist[i].lexeme != NULL) {
             free((void*)tokenlist[i].lexeme);
         }
         i++;

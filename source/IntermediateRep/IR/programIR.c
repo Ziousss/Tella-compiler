@@ -28,7 +28,14 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
 
     if(context->errors == 0){
         IRstruct *head = context->head;
-        //Need to free Sym before context;
+        
+        IRsymbole *sym = context->IRsym;
+        while(sym != NULL){
+            IRsymbole* next = sym->next;
+            free(sym->name);
+            free(sym);
+            sym = next;
+        }
         free(context);
         return head;
     }

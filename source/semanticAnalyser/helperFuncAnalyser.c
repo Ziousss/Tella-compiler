@@ -10,6 +10,13 @@ void push_scope(SemContext *context){
 void pop_scope(SemContext *context){
     ScopeNode *old = context->current_scope;
     context->current_scope = old->parent;
+    SymbolNode *sym = old->symbols;
+    while(sym != NULL){
+        SymbolNode *next = sym->next;
+        free(sym->name);
+        free(sym);
+        sym = next;
+    }
     free(old);
 }
 
