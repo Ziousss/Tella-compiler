@@ -26,6 +26,7 @@ void returnAnalyser(ASTnode *returnAst, SemContext *context){
     if(ret_type != func_type){
         printf("The function returns %s type but the return statement line %d returns %s type.\n",fromSemToString(func_type), returnAst->line, fromSemToString(ret_type));
         context->error_count++;
+        context->saw_return = true;
         return;
     }
 

@@ -105,6 +105,7 @@ const char *fromSemToString(SemanticType type){
         case SEM_BOOL:      return "Bool";
         case SEM_VOID:      return "Void";
         case SEM_ERROR:     return "Error";
+        case SEM_ARR_TYPE:  return "Array pointer";
 
         default:            return "Not named yet";
     }

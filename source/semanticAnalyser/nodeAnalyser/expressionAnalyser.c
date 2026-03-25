@@ -10,8 +10,10 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
                 context->error_count += 1;
                 return SEM_ERROR;
             }
-            SemanticType identifier_type = identifier->type;
-            return identifier_type;
+            if(identifier->kind == SEM_ARR){
+                return SEM_ARR_TYPE;
+            }
+            return identifier->type;
         }
 
         case AST_NUMBER:            return SEM_INT;

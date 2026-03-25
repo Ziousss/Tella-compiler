@@ -3,28 +3,22 @@
 main:
 push rbp
 mov rbp, rsp
-sub rsp, 32
-mov rbx, 7
-mov rax, 2
+sub rsp, 16
+mov rax, 5
+mov [rbp -8], rax
+mov rbx, 4
+mov rax, [rbp -8]
 imul rax, 4
 lea rcx, [rbp -16]
 sub rcx, rax
 mov [rcx], rbx
-mov rax, 2
+mov rax, 5
 imul rax, 4
 lea rcx, [rbp -16]
 sub rcx, rax
 mov rbx, [rcx]
-mov [rbp -32], rbx
-mov rax, 4
-push rax
-mov rax, [rbp -32]
-pop rbx
-add rax, rbx
-mov [rbp -24], rax
+mov [rbp -24], rbx
 mov rax, [rbp -24]
-mov [rbp -40], rax
-mov rax, [rbp -40]
 mov rsp, rbp
 pop rbp
 ret

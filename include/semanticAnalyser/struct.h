@@ -10,7 +10,7 @@ typedef struct GlobalFunc GlobalFunc;
 typedef struct IRsymbole IRsymbole;
 
 typedef enum {
-    SEM_INT, SEM_CHAR, SEM_STRING, SEM_VOID, SEM_BOOL, SEM_ERROR
+    SEM_INT, SEM_CHAR, SEM_STRING, SEM_VOID, SEM_BOOL, SEM_ERROR, SEM_ARR_TYPE
 } SemanticType;
 
 typedef enum {
@@ -24,12 +24,12 @@ typedef struct SymbolNode {
 
     //for array
     ASTnode *size;
+    bool isArr;
 
     int param_count;
     SemanticType *param;
 
     SymbolNode *next;
-
     int line;
 } SymbolNode;
 
