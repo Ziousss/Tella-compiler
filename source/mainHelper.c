@@ -12,6 +12,7 @@ MainContext *contextInit(char **argv, int argc){
     context->parser = false;
     context->source = false;
     context->postSource = false;
+    context->assembly = false;
     context->errors = 0;
 
     for(int i = 3; i < argc; i++){
@@ -33,6 +34,10 @@ MainContext *contextInit(char **argv, int argc){
         }
         else if(strcmp(argv[i], "-PA") == 0){
             context->parser = true;
+            continue;
+        }
+        else if(strcmp(argv[i], "-A") == 0){
+            context->assembly = true;
             continue;
         }
 

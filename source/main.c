@@ -9,12 +9,13 @@ int main (int argc, char **argv) {
         printf("-L: Shows you the lexer output.\n");
         printf("-PA: Shows you the parser output.\n");
         printf("-I: Shows you the IR output.\n");
+        printf("-A: Shows you the created assembly file.\n");
         return 0;
     }
 
-    if (argc < 3 || argc > 6) {
+    if (argc < 3 || argc > 9) {
         // Usage {argv[0]} <FILE.c> <OUT>
-        printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
+        printf("Usage: ./compiler <FILE.c> <OUTPUT> [command1] [command2] etc\n");
         printf("For more informations: ./compiler -h or ./compiler -help\n");
         return 0;
     }
@@ -30,7 +31,10 @@ int main (int argc, char **argv) {
         printf("Fail to read the given file to compile.\n");
         return 1;
     }
-
+    if(contextMain->source) {
+        printf("\n%s\n\n", source);
+    }
+    
     printf("2. Preprocessing the source file...\n"); fflush(stdout);
     char *tmp = preprocess(source);
     free(source);
@@ -39,7 +43,7 @@ int main (int argc, char **argv) {
         return 2;
     }
     source = tmp;
-    if(contextMain->source) printf("%s\n\n", source);
+    if(contextMain->postSource) printf("\n%s\n\n", source);
 
     printf("3. Lexical analysis...\n"); fflush(stdout);
     Tokenstruct *tokenList = lexicalAnalyzer(source);
@@ -111,6 +115,13 @@ int main (int argc, char **argv) {
         cleanup(programNode, functions, IR, contextMain, tokenList);
         printf("gcc compilation failed\n");
         return 100;
+    }
+
+    if(contextMain->assembly){
+        char *assembly = readFile("ASoutput.s");
+        printf("\n%s\n", assembly);
+        printf("The original file has not been destroyed so you can inspect it directly as well.\n\n");
+        free(assembly);
     }
 
     //Frees Everything

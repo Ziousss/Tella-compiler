@@ -1,6 +1,6 @@
 #include "../include/lexer/readFile.h"
 
-char *readFile(char *filename)
+char *readFile(const char *filename)
 {
     FILE *fp = fopen(filename, "r");
     if (!fp){

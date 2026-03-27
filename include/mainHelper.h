@@ -18,6 +18,7 @@ typedef struct {
     bool lexer;
     bool IR;
     bool parser;
+    bool assembly;
 } MainContext;
 
 MainContext *contextInit(char **argv, int argc);

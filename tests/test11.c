@@ -1,11 +1,11 @@
-#include "includeTest.c"
+#include "tests/includeTest.c"
 
 int main(){
-    return foo();
+    return foo() + cool();
 }
 
 /*
 echo $?
-8
+14
 works
 */

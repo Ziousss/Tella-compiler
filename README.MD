@@ -20,10 +20,13 @@ The goal of this compiler is to **analyze C source code**, **detect errors**, an
 
 This project is primarily focused on learning compiler design concepts rather than providing a production-ready compiler.
 
+Implementations have also been added to help visualise how my compiler works. To see those commands, run ./compiler -j or ./compiler -help
+
 ---
 
 ## Current Progress
 
+- Preprocesser (for local files for now)
 - Lexer  
 - Parser  
 - Semantic Analyzer  
@@ -48,7 +51,7 @@ Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assemb
 
 ## Next Steps
 
-Implementing more advanced features such as strings and arrays
+Implementing my own simple libc verison compiled through the tella compiler.
 
 ---
 
@@ -72,7 +75,7 @@ To use this compiler,
 
 ```bash
 cd build
-./compiler /path/to/the/file /path/to/the/executable
+./compiler /path/to/the/file /path/to/executable
 ```
 
 You can also use the test file given in the "tests" folder.

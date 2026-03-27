@@ -6,6 +6,6 @@
 #include <string.h>
 #include "charcheck.h"
 
-char *readFile(char *filename);
+char *readFile(const char *filename);
 
 #endif
