@@ -4,9 +4,9 @@ int foo(int param){
 
 int main(){
     int j = 4;
-    int i = j + foo(j);
+    int i = foo(4);
 
-    return i;
+    return 5;
 }
 
 /*

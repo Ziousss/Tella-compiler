@@ -63,12 +63,12 @@ bool compileAssembly(const char *asmFile, const char *outputFile){
 
 void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR, MainContext *contextMain, Tokenstruct *tokenList){
     free(contextMain);
-    if(tokenList != NULL){
-        freeTokenList(tokenList);
-    }
     if(programNode != NULL){
         freeASTNode(programNode->data.program_node.func_def);
         free(programNode);
+    }
+    if(tokenList != NULL){
+        freeTokenList(tokenList);
     }
     if(functions != NULL) freeFunctions(functions);
     if(IR != NULL) freeIR(IR);
@@ -108,14 +108,14 @@ void freeASTNode(ASTnode *node){
     }
 
     NodeType type = node->ast_type;
+    printf("Now freeing %s.\n", astTypeToString(type)); fflush(stdout);
     switch (type) {
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN: {
             free(node->data.func_def.name);
             freeASTNode(node->data.func_def.body);
-            
             ParameterNode *param = node->data.func_def.parameters;
-            if(param != NULL) {  // ← AJOUTER CE CHECK!
+            if(param != NULL) {
                 ParameterNode *current = param;
                 while (current != NULL){
                     ParameterNode *next = current->next;
@@ -128,15 +128,19 @@ void freeASTNode(ASTnode *node){
         }
         case AST_ASSIGN_EXPR: {
             freeASTNode(node->data.assign.value);
+            printf("Freeing pointer %p\n", &node->data.assign.target);
             free(node->data.assign.target);
             break;
         }
         case AST_BINARY_EXPR:{
+            printf("Freeing pointer %p\n", node->data.binary.left); fflush(stdout);
+            printf("Freeing pointer %p\n", node->data.binary.right); fflush(stdout);
             freeASTNode(node->data.binary.left);
             freeASTNode(node->data.binary.right);
             break;
         }
         case AST_BLOCK: {
+            printf("Freeing pointer block %p\n", node->data.block.stmts); fflush(stdout);
             freeASTNode(node->data.block.stmts);
             break;
         }
@@ -145,6 +149,7 @@ void freeASTNode(ASTnode *node){
         case AST_CHAR_LITERAL:{
             break;
         }
+        
         case AST_FOR_STMT:{
             freeASTNode(node->data.for_node.block);
             freeASTNode(node->data.for_node.condition);
@@ -165,6 +170,7 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_IDENTIFIER:{
+            printf("Freeing pointer %p\n", node->data.identifier.name); fflush(stdout);
             free(node->data.identifier.name);
             break;
         }
@@ -180,7 +186,6 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_VAR_DECL:{
-            free(node->data.declaration.identifier);
             freeASTNode(node->data.declaration.expression);
             break;
         }
@@ -206,7 +211,6 @@ void freeASTNode(ASTnode *node){
         }
         case AST_ARRAY_LOAD:{
             freeASTNode(node->data.arrayLoad.index);
-            free(node->data.arrayLoad.name);
             break;
         }
 
@@ -364,7 +368,6 @@ void print_ast(ASTnode *node, int indent) {
             break;
 
         case AST_PROGRAM:
-            //print_ast(node->data.program_node.include, indent + 1);
             print_ast(node->data.program_node.func_def, indent + 1);
             break;
 

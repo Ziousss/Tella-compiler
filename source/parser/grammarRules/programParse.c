@@ -9,31 +9,8 @@ ASTnode *programParse(Tokenstruct *tokenList, int *index){
     }
     program->ast_type = AST_PROGRAM;
     program->data.program_node.func_def = NULL;
-    //Include is just for fun not actually doing it for now
-    //program->data.program_node.include = NULL;
-    //ASTnode **tail_include = &program->data.program_node.include;
     ASTnode **tail_funcDef = &program->data.program_node.func_def;
     bool main = false;
-    /*
-    This is old design as well xD
-    while(!isTOKType(tokenList[i].type)){
-        ASTnode *include = includeParse(tokenList, &i);
-        if(include == NULL){
-            return NULL;
-        }
-
-        ASTnode *node_include = malloc(sizeof(ASTnode));
-        if(node_include == NULL){
-            printf("Malloc error in node include, programParse.\n");
-            return NULL;
-        }
-        node_include->data.program_node.include = include;
-        node_include->next = NULL;
-
-        *tail_include = node_include;
-        tail_include = &node_include->next;
-    }
-    */
 
     while(tokenList[i].type != TOK_EOF){
         ASTnode *func_def = funcDefParse(tokenList, &i);

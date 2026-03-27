@@ -28,6 +28,8 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
         funcCall->data.func_call.name = name;
         funcCall->ast_type = AST_FUNC_CALL;
         funcCall->data.func_call.args = args;
+
+        return funcCall;
     } else {
         while(true){
             ArgNode *arg = malloc(sizeof(ArgNode));
@@ -57,7 +59,11 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
 
             if(tokenList[i].type != TOK_COMMA){
                 printf("Comma expected in the parameter of the function call line %d\n", tokenList[i].line);
-                free(arg);
+                while(arg != NULL){
+                    ArgNode *next = arg->next;
+                    free(arg);
+                    arg = next;
+                }
                 free(expression);
                 return NULL;
             }

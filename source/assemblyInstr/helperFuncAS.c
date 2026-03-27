@@ -43,7 +43,7 @@ void setArrStack(Operand op, StackLayout *stack){
         stack->current_offset_count -= 8;
     }
 
-    stack->var[stack->var_count].name_var = op.data.IR_Variable.identifier;
+    stack->var[stack->var_count].name_var = strdup(op.data.IR_Variable.identifier);
     stack->var[stack->var_count++].offset = stack->current_offset_count;
 }
 
@@ -55,7 +55,7 @@ void setVarStack(Operand op, StackLayout *stack){
     }
 
     stack->current_offset_count -= 8;
-    stack->var[stack->var_count].name_var = op.data.IR_Variable.identifier;
+    stack->var[stack->var_count].name_var = strdup(op.data.IR_Variable.identifier);
     stack->var[stack->var_count++].offset = stack->current_offset_count;
 }
 
@@ -68,7 +68,7 @@ void setTmpStack(Operand op, StackLayout *stack){
 }
 
 void setParamStack(Operand param, StackLayout *stack, int param_offset){
-    stack->arg[stack->param_count].name_var = param.data.IR_Variable.identifier;
+    stack->arg[stack->param_count].name_var = strdup(param.data.IR_Variable.identifier);
     stack->arg[stack->param_count++].offset = param_offset;
 }
 
@@ -160,9 +160,10 @@ void freeStackLayout(StackLayout *stack){
 
     for(int i = 0; i < stack->var_count; i++){
         if(stack->var[i].name_var != NULL){
+            printf("Freeing stack name pointer %p\n", stack->var[i].name_var); fflush(stdout);
+
             free(stack->var[i].name_var);
         }
-
-        free(stack);
     }
+    free(stack);
 }

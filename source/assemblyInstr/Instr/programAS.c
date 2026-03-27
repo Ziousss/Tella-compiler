@@ -74,7 +74,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
                 break;
             
             case IR_FUNC:
-                if(stackDefined){
+                if(stackDefined == true){
                     freeStackLayout(stack);
                 } else {
                     stackDefined = true;
@@ -98,5 +98,5 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
         tmp = tmp->next;
     }
 
-    free(stack);
+    freeStackLayout(stack);
 }

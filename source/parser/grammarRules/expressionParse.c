@@ -3,7 +3,7 @@
 ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
     int i = *index;
     int start = *index;
-    ASTnode *left = NULL;\
+    ASTnode *left = NULL;
     bool isNegative = false;
     if(tokenList[i].type == TOK_MINUS){
         isNegative = true;
@@ -52,6 +52,8 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         if(isNegative) left->data.int_literal.value = -atoi(tokenList[i].lexeme);
         else left->data.int_literal.value = atoi(tokenList[i].lexeme);
         left->line = tokenList[start].line;
+        left->next = NULL;
+        printf("POINTER NUMBER %d = %p\n", left->data.int_literal.value, left);
         ++i;
     }
     else if(tokenList[i].type == TOK_LPAREN){
@@ -76,6 +78,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left->ast_type = AST_CHAR_LITERAL;
         left->data.character_literal.character = chr;
         left->line = tokenList[start].line;
+        left->next = NULL;
         ++i;
     }
     else if(tokenList[i].type == TOK_STRING_LITERAL){
@@ -88,6 +91,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left->ast_type = AST_STRING_LITERAL;
         left->data.string_literal.string = string;
         left->line = tokenList[start].line;
+        left->next = NULL;
         ++i;
     }
     else if(tokenList[i].type == TOK_TRUE || tokenList[i].type == TOK_FALSE){
@@ -103,6 +107,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             left->data.boolean_literal.boolean = false;
         }
         left->line = tokenList[start].line;
+        left->next = NULL;
         ++i;
     }
     else {
@@ -136,7 +141,6 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left = tmp;
     }
 
-    left->next = NULL;
     *index = i;
     return left;
 }
