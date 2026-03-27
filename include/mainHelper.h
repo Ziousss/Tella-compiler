@@ -11,6 +11,10 @@
 #include <stdlib.h>
 
 typedef struct {
+    int errors;
+
+    bool source;
+    bool postSource;
     bool lexer;
     bool IR;
     bool parser;

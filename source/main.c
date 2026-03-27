@@ -4,8 +4,10 @@ int main (int argc, char **argv) {
     if(strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0){
         printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
         printf("After this command, you can use several other commands to better visualise the process.\n\n");
+        printf("-S: Prints the source code before preprocessing.\n");
+        printf("-PR: Prints the source code after preprocessing.\n");
         printf("-L: Shows you the lexer output.\n");
-        printf("-P: Shows you the parser output.\n");
+        printf("-PA: Shows you the parser output.\n");
         printf("-I: Shows you the IR output.\n");
         return 0;
     }
@@ -18,7 +20,7 @@ int main (int argc, char **argv) {
     }
 
     MainContext *contextMain = contextInit(argv, argc); 
-    if(contextMain == NULL){
+    if(contextMain == NULL || contextMain->errors != 0){
         return -1;
     }
 
@@ -29,12 +31,22 @@ int main (int argc, char **argv) {
         return 1;
     }
 
-    printf("2. Lexical analysis...\n"); fflush(stdout);
+    printf("2. Preprocessing the source file...\n"); fflush(stdout);
+    char *tmp = preprocess(source);
+    free(source);
+    if(tmp == NULL){
+        printf("Preprocessing issue(s).\n");
+        return 2;
+    }
+    source = tmp;
+    if(contextMain->source) printf("%s\n\n", source);
+
+    printf("3. Lexical analysis...\n"); fflush(stdout);
     Tokenstruct *tokenList = lexicalAnalyzer(source);
     if(tokenList == NULL){
         free(source);
         cleanup(NULL, NULL, NULL, contextMain, NULL);
-        return 2;
+        return 3;
     }
 
     free(source);
@@ -46,12 +58,12 @@ int main (int argc, char **argv) {
     }
 
     int index = 0;
-    printf("3. Parsing...\n"); fflush(stdout);
+    printf("4. Parsing...\n"); fflush(stdout);
     ASTnode *programNode = programParse(tokenList, &index);
     if(programNode == NULL){
         printf("programNode is NULL\n");
         cleanup(NULL, NULL, NULL, contextMain, tokenList);
-        return 3;
+        return 4;
     }
 
     if(contextMain->parser){
@@ -60,21 +72,21 @@ int main (int argc, char **argv) {
         printf("\n");
     }
 
-    printf("4. Semantic analysis...\n"); fflush(stdout);
+    printf("5. Semantic analysis...\n"); fflush(stdout);
     GlobalFunc *functions = programAnalyser(programNode);
     if(functions == NULL){
         cleanup(programNode, NULL, NULL,contextMain, tokenList);
         printf("Semantic error(s).\n");
-        return 4;
+        return 5;
     }
 
     //now all good for compilation.
     //Starting with the IR.
-    printf("5. IR generation...\n"); fflush(stdout);
+    printf("6. IR generation...\n"); fflush(stdout);
     IRstruct *IR = programIR(programNode, functions);
     if(IR == NULL){
         cleanup(programNode, functions, NULL, contextMain, tokenList);
-        return 5;
+        return 6;
     }
 
     if(contextMain->IR){
@@ -84,12 +96,12 @@ int main (int argc, char **argv) {
     }
 
     //Now go on to the assembly code.
-    printf("6. Assembly generation...\n"); fflush(stdout);
+    printf("7. Assembly generation...\n"); fflush(stdout);
     int errors = mainAssemblyInstr(IR);
     if(errors != 0){
         cleanup(programNode, functions, IR, contextMain, tokenList);
         printf("Failed to create a good assembly file.\n");
-        return 6;
+        return 7;
     }
 
     char *executable = argv[2];
@@ -98,11 +110,11 @@ int main (int argc, char **argv) {
     if(!compiled){
         cleanup(programNode, functions, IR, contextMain, tokenList);
         printf("gcc compilation failed\n");
-        return 1;
+        return 100;
     }
 
     //Frees Everything
-    printf("7. Starting freeing the nodes...\n"); fflush(stdout);
+    printf("8. Starting freeing the nodes...\n"); fflush(stdout);
     cleanup(programNode, functions, IR, contextMain, tokenList);
 
     printf("Compilation successful!\n"); fflush(stdout);

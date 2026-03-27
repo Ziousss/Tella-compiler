@@ -4,7 +4,7 @@ char *readFile(char *filename)
 {
     FILE *fp = fopen(filename, "r");
     if (!fp){
-        printf("File could not open\n");
+        printf("File %s could not open\n", filename);
         return NULL;
     }
 

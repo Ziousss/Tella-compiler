@@ -10,5 +10,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../include/mainHelper.h"
+#include "../include/preprocess/preprocess.h"
 
 #endif

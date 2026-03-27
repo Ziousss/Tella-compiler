@@ -17,6 +17,7 @@ file(GLOB SOURCES
     "source/IntermediateRep/IR/*.c"
     "source/assemblyInstr/Instr/*.c"
     "source/assemblyInstr/*.c"
+    "source/preprocess/*.c"
 )
 
 add_executable(compiler ${SOURCES})

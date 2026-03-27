@@ -10,17 +10,35 @@ MainContext *contextInit(char **argv, int argc){
     context->lexer = false;
     context->IR = false;
     context->parser = false;
+    context->source = false;
+    context->postSource = false;
+    context->errors = 0;
 
     for(int i = 3; i < argc; i++){
-        if(strcmp(argv[i], "-I") == 0){
+        if(strcmp(argv[i], "-PR") == 0){
+            context->postSource = true;
+            continue;
+        }
+        else if(strcmp(argv[i], "-S") == 0){
+            context->source = true;
+            continue;
+        }
+        else if(strcmp(argv[i], "-I") == 0){
             context->IR = true;
+            continue;
         }
         else if(strcmp(argv[i], "-L") == 0){
             context->lexer = true;
+            continue;
         }
-        else if(strcmp(argv[i], "-P") == 0){
+        else if(strcmp(argv[i], "-PA") == 0){
             context->parser = true;
+            continue;
         }
+
+        printf("Unknown command [%s]. Use compiler -h to have the list of available commands.\n", argv[i]);
+        context->errors++;
+        return context;
     }
 
     return context;

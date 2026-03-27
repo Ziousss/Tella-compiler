@@ -19,7 +19,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
         rodataTmp = rodataTmp->next;
     }
 
-    fprintf(output, "\n.text\n");
+    fprintf(output, "\n.section .text\n");
     while(tmp != NULL){
         IRoperation op = tmp->op;
         switch (op) {
