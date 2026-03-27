@@ -222,12 +222,12 @@ IRstruct *newArrayLoad(IRContext *context, Operand base, Operand index, Operand 
     return new;
 }
 
-Operand newString(char *value){
+Operand newString(int stringID){
     Operand op;
 
     op.IR_type = IR_CONST;
     op.data.IR_constant.cst_type = IR_STRING;
-    op.data.IR_constant.value.string = value;
+    op.data.IR_constant.value.stringID = stringID;
 
     return op;
 }

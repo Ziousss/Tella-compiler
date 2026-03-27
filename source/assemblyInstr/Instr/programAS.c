@@ -4,10 +4,26 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
     IRstruct *tmp = IRlist;  
     StackLayout *stack = NULL;
     bool stackDefined = false;
+    bool rodataNeeded = false;
 
+    IRstruct *rodataTmp = tmp;
+
+    while(rodataTmp != NULL){
+        if(rodataTmp->op == IR_RODATA){
+            if(!rodataNeeded){
+                fprintf(output, ".section .rodata\n");
+                rodataNeeded = true;
+            }
+            fprintf(output, "   string_%d: .asciz \"%s\"\n", rodataTmp->data.rodata.stringID, rodataTmp->data.rodata.string);
+        }
+        rodataTmp = rodataTmp->next;
+    }
+
+    fprintf(output, "\n.text\n");
     while(tmp != NULL){
         IRoperation op = tmp->op;
         switch (op) {
+            case IR_RODATA: break;
             case IR_LABEL:
                 fprintf(output, "L%d:\n", tmp->data.label.label_id);
                 break;
@@ -72,6 +88,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
             case IR_LOAD_ARRAY:
                 loadArrAS(tmp, output, stack, context);
                 break;
+
 
             default:
                 printf("Unhandled op in stackFunctionAS: %d\n", tmp->op);

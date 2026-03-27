@@ -42,6 +42,7 @@ const char* tokenTypeToString(int type) {
         case TOK_QUOTE:             return "QUOTE";
         
         case TOK_IF:                return "IF";
+        case TOK_DEFINE:            return "DEFINE";
         case TOK_WHILE:             return "WHILE";
         case TOK_RETURN:            return "RETURN";
         case TOK_FUNC:              return "FUNC";
@@ -109,6 +110,7 @@ const Keyword keywords[] = {
     {"false", TOK_FALSE},
     {"NULL", TOK_NULL},
     {"bool", TOK_BOOL},
+    {"define", TOK_DEFINE},
     {NULL, 0} 
 };
 

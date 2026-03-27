@@ -103,7 +103,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
 
             //array already allocated
             case IR_LOAD_ARRAY: {
-                Operand dst = tmp->data.loadArray.base;
+                Operand dst = tmp->data.loadArray.dst;
                 Operand index = tmp->data.loadArray.index;
                 Operand base = tmp->data.loadArray.base;
 
@@ -113,6 +113,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
 
                 break;
             }
+            case IR_RODATA: break;
 
             default: {
                 printf("Unknown IR token in stackFunctionAS %d.\n", tmp->op);

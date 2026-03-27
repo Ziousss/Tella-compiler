@@ -143,8 +143,7 @@ void movConstant(Operand op, FILE *output, const char *reg, ASContext* context){
         }
 
         case IR_STRING:{
-            printf("String constants not yet implemented\n");
-            context->errors++;
+            fprintf(output, "lea %s, [rip + string_%d]\n", reg, op.data.IR_constant.value.stringID);
             break;
         }
 

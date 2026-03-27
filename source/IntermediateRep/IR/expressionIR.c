@@ -11,7 +11,7 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
             return variable;
         }
         case AST_STRING_LITERAL: {
-            Operand string = newString(expression->data.string_literal.string);
+            Operand string = rodataIR(expression, context);
             return string;
         }
         case AST_CHAR_LITERAL: {
@@ -51,7 +51,7 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
             if(index.IR_type == IR_TMP && index.data.IR_tmp.type != IR_INT){
                 printf("Index did not return and INT.\n");
                 context->errors++;
-                return (Operand){0};
+                return (Operand){.IR_type = IR_OPERAND_ERROR};
             }
 
             IRsymbole *sym = findDecl(expression->data.arrayLoad.name, context);

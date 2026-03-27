@@ -109,6 +109,10 @@ void printIR(IRstruct *IR){
                 printf("\n");
                 break;
 
+            case IR_RODATA:
+                printf("string_%d = %s\n", tmp->data.rodata.stringID, tmp->data.rodata.string);
+                break;
+
             default:
                 printf("UNKNOWN IR OP\n");
                 break;
@@ -140,7 +144,7 @@ void printOperand(Operand op){
                     break;
 
                 case IR_STRING:
-                    printf("\"%s\"", op.data.IR_constant.value.string);
+                    printf("string_%d", op.data.IR_constant.value.stringID);
                     break;
 
                 case IR_BOOL:

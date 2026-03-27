@@ -22,5 +22,6 @@ void returnIR(ASTnode *returnNode, IRContext *context);
 Operand funcCallIR(ASTnode *funcCall, IRContext *context);
 void ifStmtIR(ASTnode *ifStmt, IRContext *context);
 void assignIR(ASTnode *assign, IRContext *context);
+Operand rodataIR(ASTnode *expression, IRContext *context);
 
 #endif

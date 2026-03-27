@@ -8,7 +8,7 @@ typedef struct Operand Operand;
 typedef struct IRstruct IRstruct;
 
 typedef enum {
-    IR_LABEL, IR_FUNC,
+    IR_LABEL, IR_FUNC, IR_RODATA,
     IR_ADD, IR_SUB, IR_MULT, IR_DIV, IR_GR, IR_GREQ, IR_LESS, IR_LESSEQ, IR_EQEQ, IR_UNEQ, 
     IR_CALL, IR_JMP, IR_JMP_FALSE, IR_RET, IR_ASSIGN, IR_ARG, IR_PARAM, 
     IR_ASSIGN_ARR, IR_LOAD_ARRAY,
@@ -16,7 +16,7 @@ typedef enum {
 } IRoperation;
 
 typedef enum {
-    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND, IR_IRTYPE_ERROR, IR_ARR
+    IR_VAR, IR_CONST, IR_TMP, IR_VOID_OPERAND, IR_IRTYPE_ERROR, IR_ARR, IR_OPERAND_ERROR
 } IRtype;
 
 typedef enum {
@@ -42,7 +42,7 @@ typedef struct Operand {
         struct {
             CstTypes cst_type;
             union {
-                char *string;
+                int stringID;
                 int number;
                 char chr;
                 bool boolean;
@@ -60,6 +60,12 @@ typedef struct Operand {
 typedef struct IRstruct {
     IRoperation op;
     union {
+        struct {
+            int stringID;
+            char *string;
+        } rodata;
+        
+
         struct {
             Operand dst, src1, src2;
         } binary;
@@ -129,6 +135,7 @@ typedef struct {
     IRstruct *tail;
     int current_tmp;
     int current_label;
+    int current_string;
     int errors;
     bool returned;
     IRsymbole *IRsym;
