@@ -160,8 +160,6 @@ void freeStackLayout(StackLayout *stack){
 
     for(int i = 0; i < stack->var_count; i++){
         if(stack->var[i].name_var != NULL){
-            printf("Freeing stack name pointer %p\n", stack->var[i].name_var); fflush(stdout);
-
             free(stack->var[i].name_var);
         }
     }

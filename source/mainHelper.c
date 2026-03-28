@@ -108,7 +108,6 @@ void freeASTNode(ASTnode *node){
     }
 
     NodeType type = node->ast_type;
-    printf("Now freeing %s.\n", astTypeToString(type)); fflush(stdout);
     switch (type) {
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN: {
@@ -128,19 +127,15 @@ void freeASTNode(ASTnode *node){
         }
         case AST_ASSIGN_EXPR: {
             freeASTNode(node->data.assign.value);
-            printf("Freeing pointer %p\n", &node->data.assign.target);
             free(node->data.assign.target);
             break;
         }
         case AST_BINARY_EXPR:{
-            printf("Freeing pointer %p\n", node->data.binary.left); fflush(stdout);
-            printf("Freeing pointer %p\n", node->data.binary.right); fflush(stdout);
             freeASTNode(node->data.binary.left);
             freeASTNode(node->data.binary.right);
             break;
         }
         case AST_BLOCK: {
-            printf("Freeing pointer block %p\n", node->data.block.stmts); fflush(stdout);
             freeASTNode(node->data.block.stmts);
             break;
         }
@@ -170,7 +165,6 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_IDENTIFIER:{
-            printf("Freeing pointer %p\n", node->data.identifier.name); fflush(stdout);
             free(node->data.identifier.name);
             break;
         }

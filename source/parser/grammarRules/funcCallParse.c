@@ -81,8 +81,8 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
         printf("Malloc error in funcCall");
         return NULL;
     }
-    char *name = strdup(tokenList[name_index].lexeme);
 
+    char *name = strdup(tokenList[name_index].lexeme);
     funcCall->data.func_call.args = args;
     funcCall->ast_type = AST_FUNC_CALL;
     funcCall->data.func_call.name = name;

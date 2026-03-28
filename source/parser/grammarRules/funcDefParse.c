@@ -47,11 +47,10 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
         }++i;
     }
 
-    char *name = strdup(tokenList[index_identifier].lexeme);
+
     ASTnode *block = blockParse(tokenList, &i);
 
     if (block == NULL){
-        free(name);
         return NULL; 
     }
 
@@ -59,9 +58,10 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     ASTnode *func_def_ast = malloc(sizeof(ASTnode));
     if(func_def_ast == NULL){
         printf("Malloc error in funcDefParse.\n");
-        free(name);
         return NULL;
     }
+    
+    char *name = strdup(tokenList[index_identifier].lexeme);
     if(strcmp(name, "main") == 0){
         func_def_ast->ast_type = AST_FUNC_DEF_MAIN;
     } else {

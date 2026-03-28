@@ -12,14 +12,12 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type == TOK_IDENTIFIER){
         int nameIndex = i;
-        char *name = strdup(tokenList[nameIndex].lexeme);
         ASTnode *function_call = funcCallParseExpression(tokenList, &i);
         if(function_call != NULL){
             left = function_call;
         } 
         else if(tokenList[i+1].type == TOK_LPAREN){
             //FuncCall NULL but it s not an indentifier
-            free(name);
             return NULL;
         } else if(tokenList[i+1].type == TOK_LSQRTBRAK){
             i += 2;
@@ -32,9 +30,9 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             left = malloc(sizeof(ASTnode));
             if(left == NULL){
                 printf("Malloc error in expression parser (identifier)\n");
-                free(name);
                 return NULL;
             }
+            char *name = strdup(tokenList[i].lexeme);
             ++i;
             left->ast_type = AST_IDENTIFIER;
             left->data.identifier.name = name;
@@ -53,7 +51,6 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         else left->data.int_literal.value = atoi(tokenList[i].lexeme);
         left->line = tokenList[start].line;
         left->next = NULL;
-        printf("POINTER NUMBER %d = %p\n", left->data.int_literal.value, left);
         ++i;
     }
     else if(tokenList[i].type == TOK_LPAREN){

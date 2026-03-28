@@ -85,7 +85,8 @@ Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type
 
 Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, int line) {
     tokenlist[count].type = type;
-    tokenlist[count].lexeme = sub;
+    char *string = strdup(sub);
+    tokenlist[count].lexeme = string;
     tokenlist[count].line = line;
     tokenlist[count].length = length;
     return tokenlist;

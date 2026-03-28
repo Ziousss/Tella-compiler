@@ -80,14 +80,13 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     }
     ++i;
 
-    char *name = strdup(tokenList[name_i].lexeme);
     declaration = malloc(sizeof(ASTnode));
     if(!declaration){
         printf("Malloc error in declarationParse.\n");
-        free(name);
         return NULL;
     }
 
+    char *name = strdup(tokenList[name_i].lexeme);
     declaration->ast_type = AST_VAR_DECL;
     declaration->data.declaration.identifier = name;
     declaration->data.declaration.type = decla_type;

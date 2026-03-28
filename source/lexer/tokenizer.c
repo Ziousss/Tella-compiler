@@ -252,36 +252,10 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 char *sub = getSubstring(input,start,right-1);
                 size_t sublen = strlen(sub);
 
-                if(sub[sublen-2] == '.' && sub[sublen-1] == 'h'){
-                    if(input[start - 1] == '\"' && input[right] == '\"'){
-                        tokenList = reallocTokenList(tokenList, tokencount + 3, &capacity);
-                        if(tokenList == NULL) return NULL;
-
-                            maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
-                            maketokenString(tokenList,tokencount++,TOK_LOCAL_INCLUDE, sub,sublen, line);
-                            maketokenChar(tokenList,tokencount++,TOK_QUOTE, '\"',1, line);
-                    } else {
-                        printf("Missing quotes in the local include statement line %d.\n", line);
-                        freeTokenList(tokenList);
-                        return NULL;
-                    }
-                }
-                else if (sub[sublen-2] != '.' && sub[sublen-1] == 'h') {
-                    printf("Missing the '.' in the include statement line %d.\n", line);
-                    freeTokenList(tokenList);
-                    return NULL;
-                }
-                else if (sub[sublen-1] == '.' && sub[sublen] != 'h') {
-                    printf("Missing the 'h' after the '.' in the include statement line %d.\n", line);
-                    freeTokenList(tokenList);
-                    return NULL;
-                }
-                else {
-                    tokenList = reallocTokenList(tokenList, tokencount, &capacity);
-                    if(tokenList == NULL) return NULL;
-                    maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub,sublen, line);
+                tokenList = reallocTokenList(tokenList, tokencount, &capacity);
+                if(tokenList == NULL) return NULL;
+                maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub,sublen, line);
                     
-                }
                 
                 right++;
                 left = right;
