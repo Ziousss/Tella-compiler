@@ -10,14 +10,14 @@ SemanticType arrLoadAnalyser(ASTnode *arrayLoad, SemContext *context){
     }
 
     if(arrayLoad->data.arrayLoad.index->ast_type == AST_NUMBER){
-        int value = arrayLoad->data.arrayLoad.index->data.int_literal.value;
+        int value = (int)arrayLoad->data.arrayLoad.index->data.int_literal.value;
         if(value < 0){
             printf("Trying to acces a negative index for array \"%s\" line %d.\n", name, arrayLoad->line);
             context->error_count++;
             return SEM_ERROR;
         }
         if(sym->size->ast_type == AST_NUMBER){
-            if(sym->size->data.int_literal.value <= value){
+            if((int)sym->size->data.int_literal.value <= value){
                 printf("Trying to acces an out of bound index for array \"%s\" line %d.\n", name, arrayLoad->line);
                 context->error_count++;
                 return SEM_ERROR;

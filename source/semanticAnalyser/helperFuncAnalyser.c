@@ -92,6 +92,7 @@ SemanticType fromTokToSem(Tokentype type){
         case TOK_BOOL:              return SEM_BOOL;
         case TOK_VOID:              return SEM_VOID;
         case TOK_STRING:            return SEM_STRING;
+        case TOK_SIZET:             return SEM_SIZET;
         
         default:                    return SEM_ERROR;
     }
@@ -106,6 +107,7 @@ const char *fromSemToString(SemanticType type){
         case SEM_VOID:      return "Void";
         case SEM_ERROR:     return "Error";
         case SEM_ARR_TYPE:  return "Array pointer";
+        case SEM_SIZET:     return "Size_t";
 
         default:            return "Not named yet";
     }
@@ -128,6 +130,7 @@ Tokentype fromSemToTok(SemanticType type){
         case SEM_BOOL:          return TOK_BOOL;
         case SEM_VOID:          return TOK_VOID;
         case SEM_STRING:        return TOK_STRING;
+        case SEM_SIZET:         return TOK_SIZET;
         
         default:                return TOK_ERROR;
     }
@@ -152,11 +155,39 @@ IRsymbole *newIRsym(char *name, SemanticType type, int size){
 void pushIRSym(IRsymbole *symIR, SemContext *context){
     if(context->IRsym == NULL){
         context->IRsym = symIR; 
+        context->IRsym_tail = symIR;
         return;
     }
-    SemContext *cur = context;
-    while (cur->IRsym->next != NULL){
-        cur->IRsym = cur->IRsym->next;
+
+    context->IRsym_tail->next = symIR;
+    context->IRsym_tail = symIR;
+}
+
+int compSizeTInt(SemanticType type1, SemanticType type2){
+    if(type1 == type2){
+        return 0;
     }
-    cur->IRsym->next = symIR;
+
+    if((type1 == SEM_INT && type2 == SEM_SIZET) || (type1 == SEM_SIZET && type2 == SEM_INT)){
+        return 1;
+    }
+
+    return 2;
+}
+
+bool canConvert(SemanticType target, SemanticType source, ASTnode *expr){
+    if(target == source) return true;
+    
+    if(compSizeTInt(target, source) == 1){
+        if(target == SEM_SIZET && source == SEM_INT && expr != NULL){
+            if(expr->ast_type == AST_NUMBER && expr->data.int_literal.value < 0){
+                return false;
+            }
+        } 
+        return true;
+    }
+
+    if(target == SEM_INT && source == SEM_SIZET) return true;
+    
+    return false;
 }

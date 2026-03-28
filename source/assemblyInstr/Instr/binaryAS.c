@@ -5,6 +5,8 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack, ASContext* con
     Operand src1 = binary->data.binary.src1;
     Operand src2 = binary->data.binary.src2;
 
+    CstTypes dstType = dst.data.IR_Variable.Type;
+
     //Puts the values/tmp/variables in rax and rbx
     if(src1.IR_type == IR_CONST){
         movConstant(src1, output, "rax", context);
@@ -45,8 +47,13 @@ void binaryAS(IRstruct *binary, FILE *output, StackLayout *stack, ASContext* con
         case IR_DIV:{
             fprintf(output, "mov r10, rax\n");
             fprintf(output, "mov rax, rbx\n");
-            fprintf(output, "cqo\n");
-            fprintf(output, "idiv r10\n");
+            if(dstType != IR_SIZET){
+                fprintf(output, "cqo\n");
+                fprintf(output, "idiv r10\n");
+            } else {
+                fprintf(output, "xor rdx, rdx");
+                fprintf(output, "div r10\n");
+            }
             break;
         }
 

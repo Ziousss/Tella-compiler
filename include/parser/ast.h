@@ -36,6 +36,7 @@ typedef enum {
     AST_NUMBER,
     AST_CHAR_LITERAL,
     AST_STRING_LITERAL,
+    AST_SIZET,
 } NodeType;
 
 typedef struct ParameterNode {
@@ -69,11 +70,15 @@ typedef struct ASTnode {
         struct {
             char *string;
         } string_literal;
-        
 
         struct { 
             int value; 
         } int_literal;
+
+        struct {
+            size_t value;
+        } sizeT_literal;
+        
         
         struct { 
             Tokentype op; 

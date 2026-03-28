@@ -10,7 +10,7 @@ typedef struct GlobalFunc GlobalFunc;
 typedef struct IRsymbole IRsymbole;
 
 typedef enum {
-    SEM_INT, SEM_CHAR, SEM_STRING, SEM_VOID, SEM_BOOL, SEM_ERROR, SEM_ARR_TYPE
+    SEM_INT, SEM_CHAR, SEM_STRING, SEM_VOID, SEM_BOOL, SEM_ERROR, SEM_ARR_TYPE, SEM_SIZET
 } SemanticType;
 
 typedef enum {
@@ -43,7 +43,9 @@ typedef struct SemContext {
     SymbolNode *current_function;
     bool saw_return;
     int error_count;
+
     IRsymbole *IRsym;
+    IRsymbole *IRsym_tail;
 } SemContext;
 
 typedef struct IRsymbole{

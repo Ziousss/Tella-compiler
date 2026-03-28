@@ -292,6 +292,7 @@ CstTypes fromTokToCstType(Tokentype type){
     switch (type){
         case TOK_INT:
         case TOK_INTEGER_LITERAL:       return IR_INT;
+        case TOK_SIZET:                 return IR_SIZET;
         case TOK_CHAR:
         case TOK_CHAR_LITERAL:          return IR_CHAR;
         case TOK_STRING:
@@ -307,6 +308,7 @@ CstTypes fromSemToIRTypes(SemanticType type){
     switch (type){
         case SEM_INT:           return IR_INT;
         case SEM_CHAR:          return IR_CHAR;
+        case SEM_SIZET:         return IR_SIZET;
         case SEM_STRING:        return IR_STRING;
         case SEM_VOID:          return IR_VOID;
         case SEM_BOOL:          return IR_BOOL;
@@ -323,6 +325,7 @@ const char *printCstType(CstTypes type){
         case IR_CHAR:       return "IR_char";
         case IR_BOOL:       return "IR_bool";
         case IR_VOID:       return "IR_void";
+        case IR_SIZET:      return "IR_size_t";
 
         default:            return "CSTtype not named yet";
     }

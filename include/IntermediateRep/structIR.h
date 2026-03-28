@@ -20,7 +20,7 @@ typedef enum {
 } IRtype;
 
 typedef enum {
-    IR_INT, IR_STRING, IR_CHAR, IR_BOOL, IR_VOID, IR_CST_ERROR
+    IR_INT, IR_STRING, IR_CHAR, IR_BOOL, IR_VOID, IR_CST_ERROR, IR_SIZET
 } CstTypes;
 
 typedef struct Operand {
@@ -29,6 +29,7 @@ typedef struct Operand {
     union {
         struct {
             char *identifier;
+            CstTypes Type;
 
             //Only for parameters in IR.
             CstTypes paramType;

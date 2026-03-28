@@ -19,6 +19,15 @@ void blockIR(ASTnode *block, IRContext *context){
                 dst.IR_type = IR_VAR;
                 dst.data.IR_Variable.identifier = stmt->data.declaration.identifier;
 
+                IRsymbole *symIR = findDecl(stmt->data.declaration.identifier, context);
+                if(symIR == NULL){
+                    printf("Could not find declaration in IRsymbole in AST_VAR_DECL.\n");
+                    context->errors++;
+                    return;
+                }
+
+                dst.data.IR_Variable.Type = fromSemToIRTypes(symIR->type);
+
                 Operand src = expressionIR(stmt->data.declaration.expression, context);
 
                 IRstruct *declaration = newAssign(context, dst, src);
@@ -34,12 +43,17 @@ void blockIR(ASTnode *block, IRContext *context){
                 
                 IRsymbole *sym = findDecl(dst.data.IR_Variable.identifier, context);
                 if(sym == NULL){
-                    printf("could not find Decl in findDecl, blockIR.c\n");
+                    printf("Could not find Decl in findDecl, blockIR.c\n");
                     context->errors++;
                     return;
                 }
-
+                if(sym->size < 0 && sym->size != -2){
+                    printf("Thought %s was an array but has no size.\n", dst.data.IR_Variable.identifier);
+                    context->errors++;
+                    return;
+                }
                 dst.data.IR_Variable.size = sym->size;
+                dst.data.IR_Variable.Type = fromSemToIRTypes(sym->type);
 
                 Operand index = expressionIR(stmt->data.arrayAssign.index, context);
                 Operand src = expressionIR(stmt->data.arrayAssign.value, context);

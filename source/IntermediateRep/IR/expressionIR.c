@@ -8,6 +8,15 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
             variable.IR_type = IR_VAR;
             variable.data.IR_Variable.identifier = expression->data.identifier.name;
 
+            IRsymbole *symIR = findDecl(expression->data.identifier.name, context);
+            if(symIR == NULL){
+                printf("Could not find declaration in IRsym expression.\n");
+                context->errors++;
+                return (Operand){.IR_type = IR_OPERAND_ERROR};
+            }
+
+            variable.data.IR_Variable.Type = fromSemToIRTypes(symIR->type);
+
             return variable;
         }
         case AST_STRING_LITERAL: {

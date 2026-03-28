@@ -2,29 +2,13 @@
 .globl main
 
 .section .text
-foo:
-push rbp
-mov rbp, rsp
-sub rsp, 0
-mov rax, 8
-mov rsp, rbp
-pop rbp
-ret
-cool:
-push rbp
-mov rbp, rsp
-sub rsp, 0
-mov rax, 6
-mov rsp, rbp
-pop rbp
-ret
 main:
 push rbp
 mov rbp, rsp
-sub rsp, 16
-call foo
+sub rsp, 32
+mov rax, 5
 mov [rbp -8], rax
-call cool
+mov rax, 4
 mov [rbp -16], rax
 mov rax, [rbp -8]
 push rax
@@ -33,6 +17,8 @@ pop rbx
 add rax, rbx
 mov [rbp -24], rax
 mov rax, [rbp -24]
+mov [rbp -32], rax
+mov rax, [rbp -32]
 mov rsp, rbp
 pop rbp
 ret

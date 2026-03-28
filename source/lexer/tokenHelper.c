@@ -52,6 +52,7 @@ const char* tokenTypeToString(int type) {
         case TOK_INCLUDE:           return "INCLUDE";
         case TOK_INCLUDE_NAME:      return "INCLUDE_NAME";
         case TOK_LOCAL_INCLUDE:     return "INCLUDE_LOCAL";
+        case TOK_SIZET:             return "SIZE_T";
         
         case TOK_INT:               return "INT_TYPE";
         case TOK_CHAR:              return "CHAR_TYPE";
@@ -94,6 +95,7 @@ Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype ty
 
 const Keyword keywords[] = {
     {"if", TOK_IF},
+    {"size_t", TOK_SIZET},
     {"else", TOK_ELSE},
     {"while", TOK_WHILE},
     {"for", TOK_FOR},

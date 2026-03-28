@@ -60,7 +60,16 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
                 if(right_type == SEM_ERROR){
                     return;
                 }
-                if(right_type != left_type){
+
+                if(left_type == SEM_SIZET && right_type == SEM_INT){
+                    if(stmtAst->data.declaration.expression->ast_type != AST_NUMBER || !canConvert(left_type, right_type, stmtAst->data.declaration.expression)){
+                        printf("Warning: Declaring an size_t variable %s with a type int object on line %d.\n", stmtAst->data.declaration.identifier,stmtAst->line);
+                    }
+                    if(stmtAst->data.declaration.expression->ast_type == AST_NUMBER && stmtAst->data.declaration.expression->data.int_literal.value < 0){
+                        context->error_count++;
+                        return;
+                    }
+                } else if(right_type != left_type){
                     printf("On declaration line %d, the right side has %s type but the left is defined as %s type.\n", stmtAst->line, fromSemToString(right_type), fromSemToString(left_type));
                     context->error_count++;
                     return;
@@ -74,14 +83,12 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             sym->next = NULL;
 
             push_variables(sym, context);
-
-            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, left_type, -1);
+            IRsymbole *symIR = newIRsym(stmtAst->data.declaration.identifier, left_type, -1);
             if(symIR == NULL){
                 context->error_count++;
                 return;
             }
             pushIRSym(symIR, context);
-
             break;
         }
         case AST_RETURN: {

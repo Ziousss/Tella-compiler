@@ -18,12 +18,21 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         if(left == SEM_INT && right == SEM_INT){
             return SEM_INT;
         }
+        if(left == SEM_SIZET && right == SEM_SIZET){
+            return SEM_SIZET;
+        }
+
+        if(compSizeTInt(left, right) == 1){
+            printf("Warning: binary Operation between size_t and integer in line %d.\n", binary->line);
+            return SEM_INT;
+        }
+
         printf("Arithmetic operator %s line %d can only take two ints; here left is type %s and right is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
         context->error_count++;
         return SEM_ERROR;
     }
     else if(isBool(op)){
-        if(left == SEM_INT && right == SEM_INT){
+        if(left == SEM_BOOL && right == SEM_BOOL){
             return SEM_BOOL;
         }
         printf("Comparison operator %s line %d can only take two ints; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
