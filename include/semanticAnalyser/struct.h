@@ -25,6 +25,7 @@ typedef struct SymbolNode {
     //for array
     ASTnode *size;
     bool isArr;
+    char *stringLiteral;
 
     int param_count;
     SemanticType *param;
@@ -48,12 +49,15 @@ typedef struct SemContext {
     IRsymbole *IRsym_tail;
 } SemContext;
 
+//For now has issue with several variables having same name in different functions
+//Idea to solve, also link the name of the func.
 typedef struct IRsymbole{
     char *name;
     SemanticType type;
 
     //For arrays
-    int size; 
+    int size;
+    char *string_literals;
 
     //Linked list
     IRsymbole *next;

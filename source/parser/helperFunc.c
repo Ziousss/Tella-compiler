@@ -81,8 +81,13 @@ const char* astTypeToString(NodeType type) {
         case AST_IDENTIFIER:        return "IDENTIFIER_AST";
         case AST_NUMBER:            return "NUMBER_AST";
         case AST_STRING_LITERAL:    return "STRING_AST";
+        case AST_CHAR_LITERAL:      return "CHAR_AST";
 
-        default:                    return "NOT_NAMED_YET";
+        default:{
+            static char buffer[64];
+            snprintf(buffer, sizeof(buffer), "NOT_NAMED_YET (%d)", type);
+            return buffer;
+        }
     }
 }
 
@@ -93,6 +98,26 @@ Tokentype fromTypeToPTR(Tokentype type){
 
         default:  return TOK_ERROR;
     }
+}
 
+char processChar(const char *string){
+    if(strlen(string) == 1){
+        return string[0];
+    }
 
+    if(strlen(string) >= 2 && string[0] == '\\'){
+        switch (string[1]){
+            case 'n':           return '\n';
+            case 't':           return '\t';
+            case 'r':           return '\r';
+            case '0':           return '\0';
+            case '\\':          return '\\';
+            case '\'':          return '\'';
+            case '"':           return '\"';
+            default:            return string[1];
+        }
+    }
+
+    printf("Error in processChar.\n");
+    return '\0';
 }

@@ -38,7 +38,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
             push_variables(sym, context);
 
-            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, arrType, size);
+            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, arrType, size, NULL);
             if(symIR == NULL){
                 context->error_count++;
                 return;
@@ -80,10 +80,43 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             sym->kind = SEM_VAR;
             sym->name = strdup(stmtAst->data.declaration.identifier);
             sym->type = left_type;
+            int size = -1;
+
+            ASTnode *sizeAST = malloc(sizeof(ASTnode));
+            if(sizeAST == NULL){
+                printf("Malloc failed for size in stmtAnalyser.\n");
+                context->error_count++;
+                return;
+            }
+
+            char *stringLit = NULL;
+            if(left_type == SEM_STRING){
+                if(stmtAst->data.declaration.expression != NULL && stmtAst->data.declaration.expression->ast_type == AST_STRING_LITERAL){
+                    stringLit = stmtAst->data.declaration.expression->data.string_literal.string;
+
+                    sizeAST->ast_type = AST_NUMBER;
+                    sizeAST->next = NULL;
+                    sizeAST->data.int_literal.value = (int)strlen(stringLit);
+                    sizeAST->line = stmtAst->line;
+
+                    sym->size = sizeAST;
+                    size = (int)strlen(stringLit);
+                    sym->stringLiteral = stringLit;
+                } else {
+                    sizeAST->ast_type = AST_NUMBER;
+                    sizeAST->next = NULL;
+                    sizeAST->data.int_literal.value = -2;
+                    sizeAST->line = stmtAst->line;
+
+                    sym->size = sizeAST;
+                    sym->stringLiteral = NULL;
+                }
+            }
             sym->next = NULL;
 
             push_variables(sym, context);
-            IRsymbole *symIR = newIRsym(stmtAst->data.declaration.identifier, left_type, -1);
+
+            IRsymbole *symIR = newIRsym(stmtAst->data.declaration.identifier, left_type, size, stringLit);
             if(symIR == NULL){
                 context->error_count++;
                 return;

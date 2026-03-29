@@ -62,6 +62,14 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
         paramSem->next = NULL;
 
         push_variables(paramSem, context);
+
+        IRsymbole *symIR = malloc(sizeof(IRsymbole));
+        symIR->name = strdup(paramAst->name);
+        symIR->type = fromTokToSem(paramAst->ret_type);
+        symIR->next = NULL;
+
+        pushIRSym(symIR,context);
+
         paramAst = paramAst->next;
     }
 

@@ -25,5 +25,9 @@ SemanticType arrLoadAnalyser(ASTnode *arrayLoad, SemContext *context){
         }
     }
 
+    if(sym->type == SEM_STRING){
+        return SEM_CHAR;
+    }
+
     return sym->type;
 }

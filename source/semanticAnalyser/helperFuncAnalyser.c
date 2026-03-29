@@ -137,7 +137,7 @@ Tokentype fromSemToTok(SemanticType type){
 }
 
 //size and typeSize are only for arrays for now
-IRsymbole *newIRsym(char *name, SemanticType type, int size){
+IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit){
     IRsymbole *sym = malloc(sizeof(IRsymbole));
     if(sym == NULL){
         printf("Malloc failed for IRsymbole.\n");
@@ -148,6 +148,7 @@ IRsymbole *newIRsym(char *name, SemanticType type, int size){
     sym->type = type;
     sym->size = size;
     sym->next = NULL;
+    sym->string_literals = stringLit;
     
     return sym;
 }

@@ -146,3 +146,26 @@ Tokenstruct* reallocTokenList(Tokenstruct* list, size_t tokencount, size_t* capa
     }
     return list;
 }
+
+bool isValidChar(char *string){
+    if(string == NULL) return false;
+    
+    size_t len = strlen(string);
+    
+    if(len == 1){
+        return true;
+    }
+    
+    if(len == 2 && string[0] == '\\'){
+        char escape_char = string[1];
+        return (escape_char == 'n' || 
+                escape_char == 't' || 
+                escape_char == 'r' || 
+                escape_char == '0' || 
+                escape_char == '\\' || 
+                escape_char == '\'' || 
+                escape_char == '"');
+    }
+    
+    return false;
+}

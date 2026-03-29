@@ -46,5 +46,6 @@ Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype ty
 Tokentype keyword_type(char *sub);
 void freeTokenList(Tokenstruct *tokenlist);
 Tokenstruct* reallocTokenList(Tokenstruct* list, size_t tokencount, size_t* capacity);
+bool isValidChar(char *string);
 
 #endif

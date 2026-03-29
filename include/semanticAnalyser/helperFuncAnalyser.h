@@ -20,7 +20,7 @@ bool isBool(Tokentype op);
 bool isCalculus (Tokentype op);
 GlobalFunc *getAllFunctions(const SemContext *context);
 Tokentype  fromSemToTok(SemanticType type);
-IRsymbole *newIRsym(char *name, SemanticType type, int size);
+IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit);
 void pushIRSym(IRsymbole *symIR, SemContext *context);
 int compSizeTInt(SemanticType type1, SemanticType type2);
 bool canConvert(SemanticType target, SemanticType source, ASTnode *expr);

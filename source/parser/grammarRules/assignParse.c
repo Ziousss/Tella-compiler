@@ -79,11 +79,10 @@ ASTnode *assignParse(Tokenstruct *tokenList, int *index){
         expresison->next = NULL;
 
         givenvalue = expresison;
-        givenvalue->next = NULL;
     } else {
         givenvalue = value;
-        givenvalue->next = NULL;
     }
+    givenvalue->next = NULL;
 
     if(tokenList[i].type != TOK_SEMICOLON){
         // -1 so it does not do +1 in case the ith token is on  a new line, this expects people to write the assignement on the same line. 

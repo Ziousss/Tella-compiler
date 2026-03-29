@@ -16,5 +16,6 @@ void add_stmt_list(ASTnode **head, ASTnode **last, ASTnode *stmt, NodeType ast_t
 const char* astTypeToString(NodeType type);
 void prinast(ASTnode *node);
 Tokentype fromTypeToPTR(Tokentype type);
+char processChar(const char *string);
 
 #endif

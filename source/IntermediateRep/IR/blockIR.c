@@ -18,7 +18,7 @@ void blockIR(ASTnode *block, IRContext *context){
                 Operand dst;
                 dst.IR_type = IR_VAR;
                 dst.data.IR_Variable.identifier = stmt->data.declaration.identifier;
-
+                
                 IRsymbole *symIR = findDecl(stmt->data.declaration.identifier, context);
                 if(symIR == NULL){
                     printf("Could not find declaration in IRsymbole in AST_VAR_DECL.\n");

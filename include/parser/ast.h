@@ -90,6 +90,7 @@ typedef struct ASTnode {
             ASTnode *size;
             char *name;
             Tokentype type;
+            ASTnode *value;
         } arrayDecl;
 
         struct {

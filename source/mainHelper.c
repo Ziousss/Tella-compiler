@@ -261,12 +261,6 @@ void print_ast(ASTnode *node, int indent) {
             printf(" (func: %s)", node->data.func_def.name);
             break;
 
-        /*
-        case AST_INCLUDE:
-            printf(" (include: %s)", node->data.include_node.name);
-            break;
-        */
-
         case AST_ASSIGN_EXPR:
             printf(" (assign to: %s)", node->data.assign.target);
             break;

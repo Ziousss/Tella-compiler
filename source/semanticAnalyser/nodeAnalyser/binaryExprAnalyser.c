@@ -7,8 +7,8 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         return SEM_ERROR;
     }
 
-    if(left == SEM_CHAR || left == SEM_STRING || right == SEM_CHAR || right == SEM_STRING ){
-        printf("Binary operation on line %d cannot have type CHAR or CHAR *.\n", binary->line);
+    if(left == SEM_STRING && right == SEM_STRING ){
+        printf("Binary operation on line %d cannot have only type CHAR *.\n", binary->line);
         context->error_count++;
         return SEM_ERROR;
     }

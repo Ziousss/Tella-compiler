@@ -191,29 +191,28 @@ Tokenstruct *lexicalAnalyzer(char *input){
                 size_t start = right;
                 if(input[right] == '\\'){
                     ++right;
-                } else if (input[right] == '\'' || input[right] == ' '){
-                    printf("The two ' are empty or have a space between them line %d.\n",line);
-                    freeTokenList(tokenList);
-                    return NULL;
+                } 
+
+                while(right < len && input[right] != '\''){
+                    right++;
                 }
+
 
                 tokenList = reallocTokenList(tokenList, tokencount, &capacity);
                 if(tokenList == NULL) return NULL;
 
-                char *sub = getSubstring(input,start,right);
+                char *sub = getSubstring(input,start,right-1);
                 size_t sublen = strlen(sub);
-                maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub,sublen, line);
+                bool isValid = isValidChar(sub);
                 right++;
-                if(input[right] != '\''){
-                    if(input[right] == ';'){
-                        printf("Missing a second ' in line %d for the character literal.\n", line);
-                        freeTokenList(tokenList);
-                        return NULL;
-                    }
-                    printf("Char literal line %d can only contain one character or two including the first one being '\\'.\n", line);
+
+                if(!isValid){
+                    printf("The char line %d is not valid.\n", line);
                     freeTokenList(tokenList);
                     return NULL;
-                } ++right;
+                }
+
+                maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub,sublen, line);
                 left = right;
                 tokencount++;
                 continue;

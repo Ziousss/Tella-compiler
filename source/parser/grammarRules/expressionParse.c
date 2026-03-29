@@ -71,7 +71,8 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             printf("Malloc error in expression parser (char_literal)\n");
             return NULL;
         }
-        char chr = tokenList[i].lexeme[0];
+        
+        char chr = processChar(tokenList[i].lexeme);
         left->ast_type = AST_CHAR_LITERAL;
         left->data.character_literal.character = chr;
         left->line = tokenList[start].line;

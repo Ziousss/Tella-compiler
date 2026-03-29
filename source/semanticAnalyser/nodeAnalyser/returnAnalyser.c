@@ -24,10 +24,14 @@ void returnAnalyser(ASTnode *returnAst, SemContext *context){
     SemanticType func_type = context->current_function->type;
 
     if(ret_type != func_type){
-        printf("The function returns %s type but the return statement line %d returns %s type.\n",fromSemToString(func_type), returnAst->line, fromSemToString(ret_type));
-        context->error_count++;
-        context->saw_return = true;
-        return;
+        if(compSizeTInt(ret_type, func_type) == 1){
+            printf("Warning: function %s has defined return %s but actual return is %s on line %d.\n", context->current_function->name ,fromSemToString(func_type), fromSemToString(ret_type), returnAst->line);
+        }else {
+            printf("The function returns %s type but the return statement line %d returns %s type.\n",fromSemToString(func_type), returnAst->line, fromSemToString(ret_type));
+            context->error_count++;
+            context->saw_return = true;
+            return;
+        }
     }
 
     context->saw_return = true;

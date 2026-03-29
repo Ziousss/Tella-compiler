@@ -10,6 +10,7 @@
 #include "../lexer/tokenizer.h"
 #include "../include/parser/ast.h"
 #include "../include/parser/helperFunc.h"
+#include "../include/mainHelper.h"
 
 ASTnode *funcDefParse(Tokenstruct *tokenList, int *index);
 ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index);
