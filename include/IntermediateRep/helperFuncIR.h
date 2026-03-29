@@ -34,7 +34,7 @@ IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type);
 CstTypes fromTokToCstType(Tokentype type);
 int getSizeElement(SemanticType type);
 IRstruct *newAssignArray(IRContext *context, Operand base, Operand value, Operand index);
-IRstruct *newArrayLoad(IRContext *context, Operand base, Operand dst, Operand index);
+IRstruct *newArrayLoad(IRContext *context, Operand base, Operand index, Operand tmp, bool isChar);
 IRsymbole *findDecl(char *name, IRContext *context);
 
 #endif

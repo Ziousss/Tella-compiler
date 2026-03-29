@@ -58,8 +58,8 @@ void blockIR(ASTnode *block, IRContext *context){
                 Operand index = expressionIR(stmt->data.arrayAssign.index, context);
                 Operand src = expressionIR(stmt->data.arrayAssign.value, context);
 
-                IRstruct *declArr = newAssignArray(context, dst, src, index);
-                emit(declArr, context);
+                IRstruct *assignArr = newAssignArray(context, dst, src, index);
+                emit(assignArr, context);
 
                 break;
             }

@@ -26,10 +26,16 @@ void loadArrAS(IRstruct *loadArr, FILE *output, StackLayout *stack, ASContext *c
     }
 
     fprintf(output, "imul rax, %d\n", base.data.IR_Variable.elementSize);
-    fprintf(output, "lea rcx, [rbp %+d]\n", baseOffset);
-    fprintf(output, "sub rcx, rax\n");
-    //Now the array is loaded in rcx
 
+    if(loadArr->data.loadArray.isPointer == true){
+        fprintf(output, "mov rcx, [rbp %+d]\n", baseOffset);
+        fprintf(output, "add rcx, rax\n");
+    } else {
+        fprintf(output, "lea rcx, [rbp %+d]\n", baseOffset);
+        fprintf(output, "sub rcx, rax\n");
+    }
+
+    //Now the array is loaded in rcx
     fprintf(output, "mov rbx, [rcx]\n");
     fprintf(output, "mov [rbp %+d], rbx\n", dstOffset);
 

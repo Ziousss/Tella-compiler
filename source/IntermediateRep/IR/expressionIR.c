@@ -1,8 +1,8 @@
 #include "../include/IntermediateRep/IRheader.h"
 
 Operand expressionIR(ASTnode *expression, IRContext *context){
-    NodeType type = expression->ast_type;
-    switch(type){
+    NodeType ASTtype = expression->ast_type;
+    switch(ASTtype){
         case AST_IDENTIFIER: {
             Operand variable;
             variable.IR_type = IR_VAR;
@@ -83,15 +83,24 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
             base.data.IR_Variable.size = size;
             base.data.IR_Variable.elementSize = getSizeElement(sym->type);
 
-            Operand tmp = newTmp(fromSemToIRTypes(sym->type), context);
+            CstTypes type;
+            bool isChar = false;
+            if(sym->type == SEM_STRING){
+                type = IR_CHAR;
+                isChar = true;
+            } else {
+                type = fromSemToIRTypes(sym->type);
+            }
+
+            Operand tmp = newTmp(type, context);
             
-            IRstruct *arrayLoad = newArrayLoad(context, base, index, tmp);
+            IRstruct *arrayLoad = newArrayLoad(context, base, index, tmp, isChar);
             emit(arrayLoad, context);
 
             return tmp;
         }
         default: {
-            printf("The ast %s has not been cover by expressionIR yet.\n", astTypeToString(type));
+            printf("The ast %s has not been cover by expressionIR yet.\n", astTypeToString(ASTtype));
             context->errors++;
             return (Operand){0};
         }

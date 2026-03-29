@@ -15,7 +15,7 @@ void assignArrAS(IRstruct *assignArr, FILE *output, StackLayout *stack, ASContex
         valueOffset = getOffset(value, stack, context);
     }
     
-        //load value in rbx
+    //load value in rbx
     if(valueOffset != 0){
         fprintf(output, "mov rbx, [rbp %+d]\n", valueOffset);
     } else {

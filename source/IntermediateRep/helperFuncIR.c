@@ -205,7 +205,7 @@ IRstruct *newAssignArray(IRContext *context, Operand base, Operand value, Operan
     return new;
 }
 
-IRstruct *newArrayLoad(IRContext *context, Operand base, Operand index, Operand tmp){
+IRstruct *newArrayLoad(IRContext *context, Operand base, Operand index, Operand tmp, bool isPointer){
     IRstruct *new = malloc(sizeof(IRstruct));
     if(new == NULL){
         printf("Malloc error in newAssignArray to taget.\n");
@@ -218,6 +218,7 @@ IRstruct *newArrayLoad(IRContext *context, Operand base, Operand index, Operand 
     new->data.loadArray.base = base;
     new->data.loadArray.dst = tmp;
     new->data.loadArray.index = index;
+    new->data.loadArray.isPointer = isPointer;
 
     return new;
 }
@@ -338,8 +339,10 @@ bool isbool(IRoperation op){
 
 int getSizeElement(SemanticType type){
     switch (type){
-        case SEM_CHAR:      return 1;
+        case SEM_CHAR:
+        case SEM_STRING:
         case SEM_BOOL:      return 1;
+        case SEM_SIZET:
         case SEM_INT:       return 4;
 
         default: {

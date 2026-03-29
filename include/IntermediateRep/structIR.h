@@ -66,7 +66,6 @@ typedef struct IRstruct {
             char *string;
         } rodata;
         
-
         struct {
             Operand dst, src1, src2;
         } binary;
@@ -117,6 +116,7 @@ typedef struct IRstruct {
             Operand dst;
             Operand base;
             Operand index;
+            bool isPointer;
         } loadArray;
 
         struct {

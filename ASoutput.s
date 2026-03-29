@@ -11,7 +11,7 @@ sub rsp, 16
 lea rax, [rip + string_0]
 mov [rbp -8], rax
 mov rax, 4
-imul rax, -1
+imul rax, 1
 lea rcx, [rbp -8]
 sub rcx, rax
 mov rbx, [rcx]
