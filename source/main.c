@@ -4,16 +4,17 @@ int main (int argc, char **argv) {
     if(strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0){
         printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
         printf("After this command, you can use several other commands to better visualise the process.\n\n");
-        printf("-S: Prints the source code before preprocessing.\n");
-        printf("-PR: Prints the source code after preprocessing.\n");
+        printf("-So: Prints the source code before preprocessing.\n");
+        printf("-Pr: Prints the source code after preprocessing.\n");
         printf("-L: Shows you the lexer output.\n");
-        printf("-PA: Shows you the parser output.\n");
+        printf("-Pa: Shows you the parser output.\n");
         printf("-I: Shows you the IR output.\n");
+        printf("-St: Shows you the stack layout of all functions in the files.\n");
         printf("-A: Shows you the created assembly file.\n");
         return 0;
     }
 
-    if (argc < 3 || argc > 9) {
+    if (argc < 3 || argc > 10) {
         // Usage {argv[0]} <FILE.c> <OUT>
         printf("Usage: ./compiler <FILE.c> <OUTPUT> [command1] [command2] etc\n");
         printf("For more informations: ./compiler -h or ./compiler -help\n");
@@ -101,7 +102,7 @@ int main (int argc, char **argv) {
 
     //Now go on to the assembly code.
     printf("7. Assembly generation...\n"); fflush(stdout);
-    int errors = mainAssemblyInstr(IR);
+    int errors = mainAssemblyInstr(IR, contextMain->stackLayout);
     if(errors != 0){
         cleanup(programNode, functions, IR, contextMain, tokenList);
         printf("Failed to create a good assembly file.\n");

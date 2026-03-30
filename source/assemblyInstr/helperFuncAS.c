@@ -30,12 +30,24 @@ void setArrStack(Operand op, StackLayout *stack){
         }
     }
 
-    if(op.data.IR_Variable.size >= 0){
+    for(int i = 0; i < stack->arg_count; i++){
+        if(strcmp(op.data.IR_Variable.identifier, stack->arg[i].name_var) == 0){
+            return;
+        }
+    }
+
+    if(op.data.IR_Variable.size > 0){
+        printOperand(op);
         int size = op.data.IR_Variable.size;
         int elementSize = op.data.IR_Variable.elementSize;
         int spaceNeeded = size * elementSize;
         while(spaceNeeded % 8 != 0){
             spaceNeeded++;
+        }
+
+        if(spaceNeeded == 0){
+            printf("Warning: SpaceNeeded for array %s was 0 ? UB.\n", op.data.IR_Variable.identifier);
+            return;
         }
 
         stack->current_offset_count -= spaceNeeded;
@@ -48,6 +60,12 @@ void setArrStack(Operand op, StackLayout *stack){
 }
 
 void setVarStack(Operand op, StackLayout *stack){
+    for(int i = 0; i < stack->param_count; i++){
+        if(strcmp(op.data.IR_Variable.identifier, stack->arg[i].name_var) == 0){
+            return;
+        }
+    }
+
     for(int i = 0; i < stack->var_count; i++){
         if(strcmp(op.data.IR_Variable.identifier, stack->var[i].name_var) == 0){
             return;
@@ -67,6 +85,7 @@ void setTmpStack(Operand op, StackLayout *stack){
     stack->tmp[op.data.IR_tmp.id_tmp] = stack->current_offset_count;
 }
 
+//Useless now Since everything on the stack
 void setParamStack(Operand param, StackLayout *stack, int param_offset){
     stack->arg[stack->param_count].name_var = strdup(param.data.IR_Variable.identifier);
     stack->arg[stack->param_count++].offset = param_offset;
@@ -164,4 +183,49 @@ void freeStackLayout(StackLayout *stack){
         }
     }
     free(stack);
+}
+
+void printStackLayout(StackLayout *stack, char *nameFunc){
+    printf("\n========== STACK LAYOUT %s ==========\n", nameFunc);
+    
+    printf("Total offset count: %d (allocating %d bytes)\n", 
+           stack->current_offset_count, -stack->current_offset_count);
+    printf("\n--- LOCAL VARIABLES ---\n");
+    
+    if(stack->var_count == 0){
+        printf("  (none)\n");
+    } else {
+        for(int i = 0; i < stack->var_count; i++){
+            printf("  %d. %s @ [rbp %+d]\n", 
+                   i+1, 
+                   stack->var[i].name_var, 
+                   stack->var[i].offset);
+        }
+    }
+    
+    printf("\n--- TEMPORARIES ---\n");
+    int tmp_count = 0;
+    for(int i = 0; i < 256; i++){
+        if(stack->tmp[i] != -1){
+            printf("  t%d @ [rbp %+d]\n", i, stack->tmp[i]);
+            tmp_count++;
+        }
+    }
+    if(tmp_count == 0){
+        printf("  (none)\n");
+    }
+    
+    printf("\n--- PARAMETERS ---\n");
+    if(stack->param_count == 0){
+        printf("  (none)\n");
+    } else {
+        for(int i = 0; i < stack->param_count; i++){
+            printf("  %d. %s @ [rbp %+d]\n", 
+                   i+1, 
+                   stack->arg[i].name_var, 
+                   stack->arg[i].offset);
+        }
+    }
+    
+    printf("\n========== END STACK LAYOUT ==========\n\n");
 }

@@ -13,14 +13,15 @@ MainContext *contextInit(char **argv, int argc){
     context->source = false;
     context->postSource = false;
     context->assembly = false;
+
     context->errors = 0;
 
     for(int i = 3; i < argc; i++){
-        if(strcmp(argv[i], "-PR") == 0){
+        if(strcmp(argv[i], "-Pr") == 0){
             context->postSource = true;
             continue;
         }
-        else if(strcmp(argv[i], "-S") == 0){
+        else if(strcmp(argv[i], "-So") == 0){
             context->source = true;
             continue;
         }
@@ -32,12 +33,16 @@ MainContext *contextInit(char **argv, int argc){
             context->lexer = true;
             continue;
         }
-        else if(strcmp(argv[i], "-PA") == 0){
+        else if(strcmp(argv[i], "-Pa") == 0){
             context->parser = true;
             continue;
         }
         else if(strcmp(argv[i], "-A") == 0){
             context->assembly = true;
+            continue;
+        }
+        else if(strcmp(argv[i], "-St") == 0){
+            context->stackLayout = true;
             continue;
         }
 

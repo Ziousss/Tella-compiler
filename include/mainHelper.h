@@ -19,6 +19,7 @@ typedef struct {
     bool IR;
     bool parser;
     bool assembly;
+    bool stackLayout;
 } MainContext;
 
 MainContext *contextInit(char **argv, int argc);
