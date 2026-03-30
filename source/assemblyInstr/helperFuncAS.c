@@ -15,8 +15,10 @@ void setStackLayout(Operand op, StackLayout *stack, ASContext* context){
     else if(op.IR_type == IR_TMP) {
         setTmpStack(op,stack);
         return;
+    } else if(IR_VOID_OPERAND){
+        return;
     } else {
-        printf("Problem in setStackLayout.\n");
+        printf("IRtype problem in setStackLayout {%d}.\n", op.IR_type);
         context->errors++;
         fflush(stdout);
         return;
@@ -228,4 +230,14 @@ void printStackLayout(StackLayout *stack, char *nameFunc){
     }
     
     printf("\n========== END STACK LAYOUT ==========\n\n");
+}
+
+void builtInFunctions(FILE *output, char *nameFunc, StackLayout *stack, ASContext *context){
+    if(strcmp(nameFunc, "tellaPutChar") == 0){
+        tellaPutChar(output, stack, context);
+    } else {
+        printf("The function %s is suppos to be compiler defined but it is not defined in defineCompilerFunctions.\n", nameFunc);
+        context->errors++;
+        return;
+    }   
 }

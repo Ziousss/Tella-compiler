@@ -10,55 +10,66 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
         return;
     }
 
+    for(int i = 0; i < 6; i++){
+        context->offset[i] = 0;
+    }
+
     Operand argOp = arg->data.arg.value;
     IRtype argType = argOp.IR_type;
+    int indexContext = stack->arg_count;
     const char *reg = param_reg[stack->arg_count++];
 
     switch (argType){
-    case IR_VAR:{
-        int stackOffset = findVarInStack(argOp, stack);
-        fprintf(output, "mov %s, [rbp %+d]\n", reg, stackOffset);
-        break;
-    }
-    
-    case IR_TMP:{
-        int tmpOffset = stack->tmp[argOp.data.IR_tmp.id_tmp];
-        fprintf(output, "mov %s, [rbp %+d]\n", reg, tmpOffset);
-        break;
-    }
-
-    case IR_CONST:{
-        CstTypes cstType = argOp.data.IR_constant.cst_type; 
-        switch (cstType) {
-        case IR_STRING: {
-            int stringID = argOp.data.IR_constant.value.stringID;
-            fprintf(output, "lea %s, [rip + string_%d]", reg, stringID);
+        case IR_VAR:{
+            int varOffset = findVarInStack(argOp, stack);
+            fprintf(output, "mov %s, [rbp %+d]\n", reg, varOffset);
+            context->offset[indexContext] = varOffset;
+            context->argType[indexContext] = IR_VAR;
             break;
         }
         
-        case IR_INT:{
-            fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.number);
+        case IR_TMP:{
+            int tmpOffset = stack->tmp[argOp.data.IR_tmp.id_tmp];
+            fprintf(output, "mov %s, [rbp %+d]\n", reg, tmpOffset);
+            context->offset[indexContext] = tmpOffset;
+            context->argType[indexContext] = IR_TMP;
             break;
         }
 
-        case IR_CHAR:{
-            fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.chr);
-            break;
-        }
+        case IR_CONST:{
+            CstTypes cstType = argOp.data.IR_constant.cst_type;
+            context->offset[indexContext] = 1;
+            context->argType[indexContext] = IR_CONST;
+            switch (cstType) {
+            case IR_STRING: {
+                int stringID = argOp.data.IR_constant.value.stringID;
+                fprintf(output, "lea %s, [rip + string_%d]", reg, stringID);
+                break;
+            }
+            
+            case IR_INT:{
+                fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.number);
+                break;
+            }
 
-        case IR_BOOL:{
-            fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.boolean);
-            break;
-        }
+            case IR_CHAR:{
+                fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.chr);
+                break;
+            }
 
-        default:{
-            printf("Cst with unknown type in argAS.\n");
-            context->errors++;
-            break;
+            case IR_BOOL:{
+                fprintf(output, "mov %s, %d\n", reg, argOp.data.IR_constant.value.boolean);
+                break;
+            }
+
+            default:{
+                printf("Cst with unknown type in argAS.\n");
+                context->errors++;
+                break;
+            }
+            }  
+            break;  
         }
-        }  
-        break;  
-    }
 
     default:
         printf("Arg type not known in argAS.\n");

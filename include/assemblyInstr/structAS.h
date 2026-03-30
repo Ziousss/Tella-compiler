@@ -1,6 +1,8 @@
 #ifndef STRUCTAS_H
 #define STRUCTAS_H
 
+#include "../include/IntermediateRep/structIR.h"
+
 typedef struct {
     int offset;
     char* name_var;
@@ -17,6 +19,9 @@ typedef struct {
 }StackLayout;
 
 typedef struct{
+    int offset[6];
+    IRtype argType[6];
+
     int errors;
 } ASContext;
 

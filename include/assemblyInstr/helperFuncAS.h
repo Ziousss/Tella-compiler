@@ -3,6 +3,7 @@
 
 #include "structAS.h"
 #include "../include/IntermediateRep/IRheader.h"
+#include "builtInFunctions.h"
 
 void setStackLayout(Operand op, StackLayout *stack, ASContext* context);
 void setVarStack(Operand op, StackLayout *stack);
@@ -14,5 +15,6 @@ void movConstant(Operand op, FILE *output, const char *reg, ASContext* context);
 void setArrStack(Operand op, StackLayout *stack);
 void freeStackLayout(StackLayout *stack);
 void printStackLayout(StackLayout *stack, char *nameFunc);
+void builtInFunctions(FILE *output,char *nameFunc, StackLayout *stack, ASContext *context);
 
 #endif

@@ -1,7 +1,7 @@
 .intel_syntax noprefix
 .globl main
 .section .rodata
-   string_0: .asciz "This is my name"
+   string_0: .asciz "Again my name"
 
 .section .text
 myStrlen:
@@ -47,15 +47,22 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, 32
-mov rax, 0
+mov rax, 75
 mov [rbp -8], rax
 lea rax, [rip + string_0]
 mov [rbp -16], rax
-mov rdi, [rbp -16]
-call myStrlen
-mov [rbp -24], rax
-mov rax, [rbp -24]
-mov [rbp -8], rax
+mov rax, 2
+imul rax, 1
+lea rcx, [rbp -16]
+sub rcx, rax
+movzx rbx, byte ptr [rcx]
+mov [rbp -24], rbx
+mov rdi, [rbp -24]
+lea rsi, [rbp -24]
+mov rdi, 1
+mov rax, 1
+mov rdx, 1
+syscall
 mov rax, [rbp -8]
 mov rsp, rbp
 pop rbp

@@ -16,6 +16,7 @@ file(GLOB SOURCES
     "source/IntermediateRep/*.c"
     "source/IntermediateRep/IR/*.c"
     "source/assemblyInstr/Instr/*.c"
+    "source/assemblyInstr/builtInFunctions/*.c"
     "source/assemblyInstr/*.c"
     "source/preprocess/*.c"
 )
