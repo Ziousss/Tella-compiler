@@ -1,6 +1,6 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
+void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLayoutBool){
     IRstruct *tmp = IRlist;  
     StackLayout *stack = NULL;
     bool stackDefined = false;
@@ -83,6 +83,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context){
                 if(stack == NULL){
                     return;
                 }
+                if(stackLayoutBool) printStackLayout(stack, tmp->data.function.name_func);
                 break;
         
             case IR_LOAD_ARRAY:

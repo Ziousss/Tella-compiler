@@ -70,31 +70,27 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
                 return (Operand){0};
             }
 
+            
             int size = sym->size;
-            if(size == -1){
-                printf("\"%s\" is thought to be an array but it is not.", expression->data.arrayLoad.name);
-                context->errors++;
-                return (Operand){0};
-            }
+            bool isPointer = size == -1 || size == 0;
 
             Operand base;
-            base.IR_type = IR_ARR;
+            if(isPointer) base.IR_type = IR_VAR;
+            else base.IR_type = IR_ARR;
             base.data.IR_Variable.identifier = expression->data.arrayLoad.name;
             base.data.IR_Variable.size = size;
             base.data.IR_Variable.elementSize = getSizeElement(sym->type);
 
             CstTypes type;
-            bool isChar = false;
             if(sym->type == SEM_STRING){
                 type = IR_CHAR;
-                isChar = true;
             } else {
                 type = fromSemToIRTypes(sym->type);
             }
 
             Operand tmp = newTmp(type, context);
             
-            IRstruct *arrayLoad = newArrayLoad(context, base, index, tmp, isChar);
+            IRstruct *arrayLoad = newArrayLoad(context, base, index, tmp, isPointer);
             emit(arrayLoad, context);
 
             return tmp;

@@ -31,8 +31,8 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
         CstTypes cstType = argOp.data.IR_constant.cst_type; 
         switch (cstType) {
         case IR_STRING: {
-            printf("Not implemented yet\n");
-            context->errors++;
+            int stringID = argOp.data.IR_constant.value.stringID;
+            fprintf(output, "lea %s, [rip + string_%d]", reg, stringID);
             break;
         }
         

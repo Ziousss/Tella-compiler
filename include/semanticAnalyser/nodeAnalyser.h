@@ -8,6 +8,7 @@
 #include "../include/parser/ast.h"
 #include "struct.h"
 #include "helperFuncAnalyser.h"
+#include "mainHelper.h"
 
 GlobalFunc *programAnalyser(ASTnode *program);
 void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context);

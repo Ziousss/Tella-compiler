@@ -36,7 +36,22 @@ void loadArrAS(IRstruct *loadArr, FILE *output, StackLayout *stack, ASContext *c
     }
 
     //Now the array is loaded in rcx
-    fprintf(output, "mov rbx, [rcx]\n");
+    int size = base.data.IR_Variable.elementSize;
+    if(size == 1){
+        fprintf(output, "movzx rbx, byte ptr [rcx]\n");
+    }
+    else if(size == 4){
+        fprintf(output, "mov ebx, dword ptr [rcx]\n");
+    }
+    else if(size == 8){
+        fprintf(output, "mov rbx, qword ptr [rcx]\n");
+    }
+    else{
+        printf("Unsupported element size %d in loadArrAS\n", size);
+        context->errors++;
+        return;
+    }
+
     fprintf(output, "mov [rbp %+d], rbx\n", dstOffset);
 
     return;

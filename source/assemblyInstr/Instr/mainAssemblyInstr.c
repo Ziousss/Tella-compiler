@@ -1,7 +1,7 @@
 #include "../include/assemblyInstr/assemblyInstrHeader.h"
 
-//return a bool to know whether it worked or not.
-int mainAssemblyInstr(IRstruct *IRlist){
+//returns a bool to know whether it worked or not.
+int mainAssemblyInstr(IRstruct *IRlist, bool stackLayoutBool){
     ASContext* context = malloc(sizeof(ASContext));
     if(context == NULL){
         printf("Malloc error in mainAssemblyInstr.\n");
@@ -17,7 +17,7 @@ int mainAssemblyInstr(IRstruct *IRlist){
     }
 
     fprintf(output, ".intel_syntax noprefix\n.globl main\n");
-    programAS(IRlist, output, context);
+    programAS(IRlist, output, context, stackLayoutBool);
     fprintf(output, ".section .note.GNU-stack,\"\",@progbits\n");
     fclose(output);
 

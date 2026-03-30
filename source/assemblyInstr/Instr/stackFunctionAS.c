@@ -15,9 +15,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
     stack->var_count = 0;
     stack->param_count = 0;
     stack->current_offset_count = 0;
-
-    //since param are at + from rbp
-    int param_offset = 8;
+    stack->param_count = 0;
  
     for(int i = 0; i < 256; i++){
         stack->tmp[i] = -1;
@@ -93,8 +91,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
             }
             case IR_PARAM: {
                 Operand param = tmp->data.parameters.parameter;
-                setParamStack(param, stack, param_offset);
-                param_offset += 8;
+                setStackLayout(param, stack, context);
 
                 break;
             }
@@ -130,7 +127,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
     if(stack->current_offset_count%16 == 0){
         fprintf(output, "sub rsp, %d\n", -stack->current_offset_count);
     } else {
-        fprintf(output, "sub rsp, %d\n", -stack->current_offset_count-8);
+        fprintf(output, "sub rsp, %d\n", -stack->current_offset_count+8);
     }
     return stack;
 }

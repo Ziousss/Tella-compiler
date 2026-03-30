@@ -33,9 +33,14 @@ void assignArrAS(IRstruct *assignArr, FILE *output, StackLayout *stack, ASContex
                 break;
 
             case IR_STRING:
-                printf("Strings not yet implemented for arrays.\n");
-                context->errors++;
-                return;
+                if(getSizeElement(array.data.IR_Variable.size) != 8){
+                    printf("Cannot assign somehting else than a pointer to a string to an array of type string.\n");
+                    context->errors++;
+                    return;
+                }
+                int stringID = value.data.IR_constant.value.stringID;
+                fprintf(output, "lea rbx, [rip + string_%d]\n", stringID);
+                break;
 
             default: 
                 printf("Unknown CstTypes in assignArrAS\n");
@@ -63,7 +68,21 @@ void assignArrAS(IRstruct *assignArr, FILE *output, StackLayout *stack, ASContex
     fprintf(output, "imul rax, %d\n", array.data.IR_Variable.elementSize);
     fprintf(output, "lea rcx, [rbp %+d]\n", arrOffset);
     fprintf(output, "sub rcx, rax\n");
-    fprintf(output, "mov [rcx], rbx\n");
+    int size = array.data.IR_Variable.elementSize;
+
+    if(size == 1){
+        fprintf(output, "mov byte ptr [rcx], bl\n");
+    }
+    else if(size == 4){
+        fprintf(output, "mov dword ptr [rcx], ebx\n");
+    }
+    else if(size == 8){
+        fprintf(output, "mov qword ptr [rcx], rbx\n");
+    }
+    else{
+        printf("Unsupported element size %d in assignArrAS\n", size);
+        context->errors++;
+    }
 
     return;
 }
