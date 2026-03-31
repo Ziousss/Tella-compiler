@@ -13,7 +13,7 @@ void tellaPutChar(FILE *output, StackLayout *stack, ASContext *context){
         }
         case IR_CONST:{
             if(context->offset[0] != 1){
-                printf("Unexpected error in defineCompilerFunctions. offset = %d\n", context->offset[0]);
+                printf("Unexpected error in tellaPutChar. Cst with offset = %d\n", context->offset[0]);
                 context->errors++;
                 return;
             }

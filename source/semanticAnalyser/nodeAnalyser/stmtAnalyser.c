@@ -144,6 +144,10 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             whileAnalyser(stmtAst, context);
             break;
         }
+        case AST_FOR_STMT:{
+            forAnalyser(stmtAst, context);
+            break;
+        }
 
         default: {
             break;

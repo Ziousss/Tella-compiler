@@ -26,13 +26,26 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
             return;
         }
 
-        SymbolNode *sym = malloc(sizeof(SymbolNode));
-        sym->kind = SEM_VAR;
-        sym->name = strdup(name);
-        sym->next = NULL;
-        sym->type = semType;
+        SymbolNode *symNode = malloc(sizeof(SymbolNode));
+        if(symNode == NULL){
+            printf("Malloc failed for symNode in forAnalyser.\n");
+            context->error_count++;
+            return;
+        }
 
-        push_variables(sym, context);
+        symNode->kind = SEM_VAR;
+        symNode->name = strdup(name);
+        symNode->next = NULL;
+        symNode->type = semType;
+
+        push_variables(symNode, context);
+
+        IRsymbole *symIR = newIRsym(name, semType, -1, NULL);
+        if(symIR == NULL){
+            return;
+        }
+
+        pushIRSym(symIR, context);
     } else {
         printf("This type of AST is not yet supported, please use a declaration as initialization in the for loop line %d.\n", forAst->line);
         context->error_count++;

@@ -10,7 +10,7 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
 
             IRsymbole *symIR = findDecl(expression->data.identifier.name, context);
             if(symIR == NULL){
-                printf("Could not find declaration in IRsym expression.\n");
+                printf("Could not find declaration of %s in IRsym expression.\n", expression->data.identifier.name);
                 context->errors++;
                 return (Operand){.IR_type = IR_OPERAND_ERROR};
             }

@@ -7,6 +7,6 @@
 #include "structAS.h"
 
 void tellaPutChar(FILE *output, StackLayout *stack, ASContext *context);
-void tellaPrint(char *string, FILE *output, StackLayout *stack, ASContext *context);
+void tellaPrint(FILE *output, ASContext *context);
 
 #endif

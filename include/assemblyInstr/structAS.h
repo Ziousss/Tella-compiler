@@ -21,6 +21,10 @@ typedef struct {
 typedef struct{
     int offset[6];
     IRtype argType[6];
+    int stringID[6];
+
+    //Size per stringIDs
+    size_t size[256];
 
     int errors;
 } ASContext;

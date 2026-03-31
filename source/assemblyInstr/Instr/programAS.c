@@ -15,6 +15,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLay
                 rodataNeeded = true;
             }
             fprintf(output, "   string_%d: .asciz \"%s\"\n", rodataTmp->data.rodata.stringID, rodataTmp->data.rodata.string);
+            context->size[rodataTmp->data.rodata.stringID] = strlen(rodataTmp->data.rodata.string);
         }
         rodataTmp = rodataTmp->next;
     }

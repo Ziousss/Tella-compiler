@@ -366,13 +366,16 @@ IRsymbole *findDecl(char *name, IRContext *context){
 }
 
 bool compilerDefined(char *nameFunc){
-    return(strcmp(nameFunc, "tellaPutChar") == 0);
+    return(strcmp(nameFunc, "tellaPutChar") == 0 || strcmp(nameFunc, "tellaPrint") == 0);
 }
 
 CstTypes retTypeCompilerDefined(char *nameFunc){
     if(strcmp(nameFunc, "tellaPutChar") == 0){
         return IR_VOID;
-    } else {
+    } else if (strcmp(nameFunc, "tellaPrint") == 0){
+        return IR_VOID;
+    }
+    else {
         printf("Unknown function set in retTypeCompilerDefined\n");
         return IR_CST_ERROR;
     }

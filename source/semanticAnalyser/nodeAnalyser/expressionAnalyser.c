@@ -36,6 +36,11 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
             return arrayType;
         }
 
+        case AST_ASSIGN_EXPR:{
+            SemanticType assignType = assignAnalyser(expressionAst, context);
+            return assignType;
+        }
+
         default:{
             printf("Unsupported expression in the %s at line %d\n", astTypeToString(expressionAst->ast_type), expressionAst->line);
             context->error_count++;

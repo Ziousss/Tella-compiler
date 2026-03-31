@@ -235,8 +235,10 @@ void printStackLayout(StackLayout *stack, char *nameFunc){
 void builtInFunctions(FILE *output, char *nameFunc, StackLayout *stack, ASContext *context){
     if(strcmp(nameFunc, "tellaPutChar") == 0){
         tellaPutChar(output, stack, context);
+    } else if(strcmp(nameFunc, "tellaPrint") == 0){
+        tellaPrint(output, context);
     } else {
-        printf("The function %s is suppos to be compiler defined but it is not defined in defineCompilerFunctions.\n", nameFunc);
+        printf("The function %s is suppos to be compiler defined but it is not defined in builtInFunctions.\n", nameFunc);
         context->errors++;
         return;
     }   

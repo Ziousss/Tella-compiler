@@ -12,6 +12,7 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
 
     for(int i = 0; i < 6; i++){
         context->offset[i] = 0;
+        context->stringID[i] = -1;
     }
 
     Operand argOp = arg->data.arg.value;
@@ -43,7 +44,8 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
             switch (cstType) {
             case IR_STRING: {
                 int stringID = argOp.data.IR_constant.value.stringID;
-                fprintf(output, "lea %s, [rip + string_%d]", reg, stringID);
+                fprintf(output, "lea %s, [rip + string_%d]\n", reg, stringID);
+                context->stringID[indexContext] = stringID;
                 break;
             }
             

@@ -32,7 +32,7 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         return SEM_ERROR;
     }
     else if(isBool(op)){
-        if(left == SEM_BOOL && right == SEM_BOOL){
+        if((left == SEM_BOOL && right == SEM_BOOL) || (left == SEM_INT && compSizeTInt(left, right) == 0) || compSizeTInt(left, right) == 1){
             return SEM_BOOL;
         }
         printf("Comparison operator %s line %d can only take two ints; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
