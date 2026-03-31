@@ -8,6 +8,11 @@ int mainAssemblyInstr(IRstruct *IRlist, bool stackLayoutBool){
         return 1;
     }
     context->errors = 0;
+    for(int i = 0; i < 6; i++){
+        context->offset[i] = 0;
+        context->stringID[i] = -1;
+    }
+    context->rodata = NULL;
 
     FILE *output = fopen("ASoutput.s", "w");
     if(output == NULL){

@@ -16,5 +16,6 @@ void setArrStack(Operand op, StackLayout *stack);
 void freeStackLayout(StackLayout *stack);
 void printStackLayout(StackLayout *stack, char *nameFunc);
 void builtInFunctions(FILE *output,char *nameFunc, StackLayout *stack, ASContext *context);
+IRstruct *getRodataString(ASContext *context, int stringID, char *string);
 
 #endif

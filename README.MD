@@ -2,7 +2,9 @@
 
 Welcome to the **TELLA Compiler**, a basic **C compiler written in C**.
 
-This project is an educational compiler developed to improve my practical knowledge of the C language and to deepen my understanding of fundamental concepts such as **parsing** and **semantic analysis**.  It also provides hands-on experience with the inner workings of a computer, including x86-64 assembly and low-level code generation.
+**TELLA** is a small educational **C compiler written in C**, created in the sole purpose of understanding and explore how a compiler really works.
+
+This project focuses on building a compiler **from scratch**, with an emphasis on **low-level understanding**, including parsing, semantic analysis, intermediate representations, and **x86-64 assembly generation**.
 
 ---
 
@@ -10,34 +12,73 @@ This project is an educational compiler developed to improve my practical knowle
 
 - **Source language:** C
 - **Implementation language:** C
+- **Target architecture:** x86-64  
 - **Build system:** CMake
 
 ---
 
 ## Goal
 
-The goal of this compiler is to **analyze C source code**, **detect errors**, and eventually **translate it into machine code** so that it can be safely executed.
+The main objective of TELLA is to:
 
-This project is primarily focused on learning compiler design concepts rather than providing a production-ready compiler.
+- Analyze C source code
+- Detect syntax and semantic errors
+- Generate correct low-level code (x86-64 assembly)
+- Produce working executables via GCC to transform assembly to binary
 
-Implementations have also been added to help visualise how my compiler works. To see those commands, run ./compiler -j or ./compiler -help
+This is **not a production compiler**, but a deep dive into how compilers actually work under the hood.
 
 ---
 
 ## Current Progress
 
-- Preprocesser (for local files for now)
+- Preprocessor (for local files for now)
 - Lexer  
 - Parser  
 - Semantic Analyzer  
 - IR 
-- Assembly code x86_64
+- x86_64 assembly
+
+- Compiler itself compiles and work for simple programs.
+
+- Working on an issue regarding line reporting in errors due to the introduction of the preprocessor.
+
+---
+
+## Features
+
+- All kinds of loop/statement; while and for loops and if statements (no else if for now).
+- Arithmetic (No priority rule yet tho ...)
+- 2 built-in functions, tellaPutChar and tellaPrint, which behave like putchar and printf (without format string).
+- Include statement allowed thanks to the preprocessor.
+- An early libc you can include.
+
+
+---
+
+## Debug & Visualization Tools
+
+As this is an educational tool at its core, I created several functions dedicated to printing to the terminal the different outputs from each big part of the compiler.
+
+TELLA includes tools to inspect internal stages:
+
+```bash
+./compiler -help
+./compiler -h
+```
+These commands allow you to inspect the behavior of:
+- Preprocessor
+- Tokens
+- AST
+- IR
+- StackLayout
+- Assembly output
 
 ---
 
 ## Architecture Pipeline
 
-Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assembly → Binary (GCC)
+Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assembly → Binary (via GCC)
 
 ---
 
@@ -46,12 +87,13 @@ Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assemb
 - < 1% memory leak on standard programs
 - No optimization passes
 - Basic error reporting
+- Limited subset of C
 
 ---
 
 ## Next Steps
 
-Implementing my own simple libc verison compiled through the tella compiler.
+Implementing my own simple libc version compiled through the tella compiler.
 
 ---
 
@@ -75,13 +117,6 @@ To use this compiler,
 
 ```bash
 cd build
+make
 ./compiler /path/to/the/file /path/to/executable
-```
-
-You can also use the test file given in the "tests" folder.
-Write your test code in a '.c' file.
-
-```bash
-cd build
-./compiler ../tests/test1.c test
 ```

@@ -38,6 +38,8 @@ typedef struct Operand {
             //Only for array
             int size;
             int elementSize;
+
+            char *string;
         } IR_Variable;
         
         struct {

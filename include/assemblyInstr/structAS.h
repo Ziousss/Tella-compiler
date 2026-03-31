@@ -23,11 +23,9 @@ typedef struct{
     IRtype argType[6];
     int stringID[6];
 
-    //Size per stringIDs
-    size_t size[256];
+    IRstruct *rodata;
 
     int errors;
 } ASContext;
-
 
 #endif

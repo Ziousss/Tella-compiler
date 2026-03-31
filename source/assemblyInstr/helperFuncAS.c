@@ -243,3 +243,31 @@ void builtInFunctions(FILE *output, char *nameFunc, StackLayout *stack, ASContex
         return;
     }   
 }
+
+IRstruct *getRodataString(ASContext *context, int stringID, char *string){
+    IRstruct *tmp = context->rodata;
+
+    if(string == NULL && stringID != -1){
+        while(tmp != NULL){
+            if(tmp->op == IR_RODATA){
+                if(stringID == tmp->data.rodata.stringID){
+                    return tmp;
+                }
+            }
+
+            tmp = tmp->next;
+        }
+    } else if(string != NULL && stringID == -1){
+        while(tmp != NULL){
+            if(tmp->op == IR_RODATA){
+                if(strcmp(string, tmp->data.rodata.string) == 0){
+                    return tmp;
+                }
+            }
+
+            tmp = tmp->next;
+        }
+    }
+
+    return NULL;
+}

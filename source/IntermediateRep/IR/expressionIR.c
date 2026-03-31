@@ -14,8 +14,10 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
                 context->errors++;
                 return (Operand){.IR_type = IR_OPERAND_ERROR};
             }
-
             variable.data.IR_Variable.Type = fromSemToIRTypes(symIR->type);
+            if(variable.data.IR_Variable.Type == IR_STRING){
+                variable.data.IR_Variable.string = symIR->string_literals;
+            }
 
             return variable;
         }

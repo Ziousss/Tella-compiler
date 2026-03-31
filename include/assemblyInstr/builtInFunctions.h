@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "helperFuncAS.h"
 #include "structAS.h"
 
 void tellaPutChar(FILE *output, StackLayout *stack, ASContext *context);

@@ -10,11 +10,6 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
         return;
     }
 
-    for(int i = 0; i < 6; i++){
-        context->offset[i] = 0;
-        context->stringID[i] = -1;
-    }
-
     Operand argOp = arg->data.arg.value;
     IRtype argType = argOp.IR_type;
     int indexContext = stack->arg_count;
@@ -26,6 +21,15 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
             fprintf(output, "mov %s, [rbp %+d]\n", reg, varOffset);
             context->offset[indexContext] = varOffset;
             context->argType[indexContext] = IR_VAR;
+
+            IRstruct *rodata = getRodataString(context, -1, argOp.data.IR_Variable.string);
+            if(rodata == NULL){
+                printf("Rodata null in argAS\n");
+                context->errors++;
+                return;
+            }
+
+            context->stringID[indexContext] = rodata->data.rodata.stringID;
             break;
         }
         
