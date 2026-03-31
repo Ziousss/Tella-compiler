@@ -72,7 +72,7 @@ Operand expressionIR(ASTnode *expression, IRContext *context){
 
             
             int size = sym->size;
-            bool isPointer = size == -1 || size == 0;
+            bool isPointer = (size == -1 || size == 0) || sym->type == SEM_STRING;
 
             Operand base;
             if(isPointer) base.IR_type = IR_VAR;

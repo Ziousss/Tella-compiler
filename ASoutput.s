@@ -51,14 +51,16 @@ mov rax, 75
 mov [rbp -8], rax
 lea rax, [rip + string_0]
 mov [rbp -16], rax
-mov rax, 2
+mov rax, 7
 imul rax, 1
-lea rcx, [rbp -16]
-sub rcx, rax
+mov rcx, [rbp -16]
+add rcx, rax
 movzx rbx, byte ptr [rcx]
 mov [rbp -24], rbx
-mov rdi, [rbp -24]
-lea rsi, [rbp -24]
+mov rax, [rbp -24]
+mov [rbp -32], rax
+mov rdi, [rbp -32]
+lea rsi, [rbp -32]
 mov rdi, 1
 mov rax, 1
 mov rdx, 1
