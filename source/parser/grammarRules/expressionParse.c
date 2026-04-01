@@ -60,7 +60,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             return NULL;
         }
         if(tokenList[i].type != TOK_RPAREN){
-            printf("')' expected in expression line %d\n", tokenList[i].line);
+            printf("')' expected in expression line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
         ++i;
@@ -109,7 +109,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         ++i;
     }
     else {
-        printf("expression expected line %d\n", tokenList[i].line);
+        printf("expression expected line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     }
 
@@ -139,6 +139,8 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left = tmp;
     }
 
+    left->fileName = strdup(tokenList[start].fileName);
+    left->line = tokenList[start].line;
     *index = i;
     return left;
 }

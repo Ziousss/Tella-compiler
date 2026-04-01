@@ -3,7 +3,7 @@
 void whileAnalyser(ASTnode *whileAst, SemContext *context){
     SemanticType condition = expressionAnalyser(whileAst->data.while_node.condition, context);
     if(condition != SEM_BOOL){
-        printf("In the while loop line %d, the condition has to be of type bool.\n", whileAst->line);
+        printf("In the while loop line %ld file %s, the condition has to be of type bool.\n", whileAst->line, whileAst->fileName);
         context->error_count++;
         return;
     }

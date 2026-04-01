@@ -18,8 +18,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     */
 
     if(tokenList[i].type != TOK_IDENTIFIER){
-        printf("Identifier expected line %d after type %s.\n",
-               tokenList[i].line, tokenTypeToString(tokenList[i-1].type));
+        printf("Identifier expected line %ld file %s after type %s.\n", tokenList[i].line, tokenList[i].fileName, tokenTypeToString(tokenList[i-1].type));
         return NULL;
     }
 
@@ -31,18 +30,18 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         ++i;
         ASTnode *size = expressionParse(tokenList, &i);
         if(size == NULL){
-            printf("The expression missing is the index for the declaration array on line %d.\n", tokenList[i].line);
+            printf("The expression missing is the index for the declaration array on line %ld file %s.\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
 
         if(tokenList[i].type != TOK_RSQRTBRAK){
-            printf("']' expected line %d.\n", tokenList[i].line);
+            printf("']' expected line %ld file %s.\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
         ++i;
 
         if(tokenList[i].type != TOK_SEMICOLON){
-            printf("Semicolon expected after array declaration line %d.\n", tokenList[i].line);
+            printf("Semicolon expected after array declaration line %ld file %s.\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
         ++i;
@@ -59,6 +58,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         arrayDeclation->data.arrayDecl.type = decla_type;
         arrayDeclation->data.arrayDecl.size = size;
         arrayDeclation->line = tokenList[start].line;
+        arrayDeclation->fileName = strdup(tokenList[start].fileName);
 
         *index = i;
         return arrayDeclation;
@@ -69,13 +69,13 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
         ++i;
         expression = expressionParse(tokenList, &i);
         if (!expression){
-            printf("Expression expected after '=' line %d\n", tokenList[i].line);
+            printf("Expression expected after '=' line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
     }
 
     if(tokenList[i].type != TOK_SEMICOLON){
-        printf("Semicolon expected line %d\n", tokenList[i-1].line);
+        printf("Semicolon expected line %ld file %s\n", tokenList[i-1].line, tokenList[i-1].fileName);
         return NULL;
     }
     ++i;
@@ -93,6 +93,7 @@ ASTnode *declarationParse(Tokenstruct *tokenList, int *index){
     declaration->data.declaration.expression = expression;
     declaration->next = NULL;
     declaration->line = tokenList[start].line;
+    declaration->fileName = strdup(tokenList[start].fileName);
 
     *index = i;
     return declaration;

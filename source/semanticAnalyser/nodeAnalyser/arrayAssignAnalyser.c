@@ -3,12 +3,12 @@
 void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context){
     SymbolNode *target = find_in_scope(arrayAssign->data.arrayAssign.name, context);
     if(target == NULL){
-        printf("Identifier \"%s\" on the left side of the assignment line %d is not defined yet.\n", arrayAssign->data.arrayAssign.name, arrayAssign->line);
+        printf("Identifier \"%s\" on the left side of the assignment line %ld file %s is not defined yet.\n", arrayAssign->data.arrayAssign.name, arrayAssign->line, arrayAssign->fileName);
         context->error_count++;
         return;
     }
     if(target->kind != SEM_ARR){
-        printf("Left side of assignment at line %d is not an assignable array.\n", arrayAssign->line);
+        printf("Left side of assignment at line %ld file %s is not an assignable array.\n", arrayAssign->line, arrayAssign->fileName);
         context->error_count++;
         return;
     }
@@ -22,11 +22,11 @@ void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context){
         int index = arrayAssign->data.arrayAssign.index->data.int_literal.value;
         
         if(index < 0){
-            printf("Index of the array assignment line %d is negative (%d).\n", arrayAssign->line, arrayAssign->data.arrayAssign.index->data.int_literal.value);
+            printf("Index of the array assignment line %ld file %s is negative (%d).\n", arrayAssign->line, arrayAssign->fileName, arrayAssign->data.arrayAssign.index->data.int_literal.value);
             context->error_count++;
         } 
         if(index >= size){
-            printf("Index of the array assignment line %d is greater than the maximum size of the declared array (%d).\n", arrayAssign->line, target->size->data.int_literal.value);
+            printf("Index of the array assignment line %ld file %s is greater than the maximum size of the declared array (%d).\n", arrayAssign->line, arrayAssign->fileName, target->size->data.int_literal.value);
             context->error_count++;
         }
     } else {
@@ -34,11 +34,11 @@ void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context){
         SemanticType indexType = expressionAnalyser(arrayAssign->data.arrayAssign.index, context);
 
         if(sizeType != SEM_INT){
-            printf("The declared size of the array \"%s\" is not an integer line %d.\n", target->name, target->line);
+            printf("The declared size of the array \"%s\" is not an integer line %ld file %s.\n", target->name, target->line, arrayAssign->fileName);
             context->error_count++;
         } 
         if(indexType != SEM_INT){
-            printf("The index of the array \"%s\" line %d is not an integer.\n", arrayAssign->data.arrayAssign.name, arrayAssign->line);
+            printf("The index of the array \"%s\" line %ld file %s is not an integer.\n", arrayAssign->data.arrayAssign.name, arrayAssign->line, arrayAssign->fileName);
             context->error_count++;
         }
     }
@@ -50,7 +50,7 @@ void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context){
     }
 
     if(target_type != value_type){
-        printf("Type missmatch on assignement line %d. The left is type %s and right is type %s.\n", arrayAssign->line, fromSemToString(target_type), fromSemToString(value_type));
+        printf("Type missmatch on assignement line %ld file %s. The left is type %s and right is type %s.\n", arrayAssign->line, arrayAssign->fileName, fromSemToString(target_type), fromSemToString(value_type));
         context->error_count++;
         return;
     }

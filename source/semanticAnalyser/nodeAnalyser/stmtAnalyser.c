@@ -17,7 +17,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             if(stmtAst->data.arrayDecl.size->ast_type == AST_NUMBER){
                 size = stmtAst->data.arrayDecl.size->data.int_literal.value;
                 if(size < 0){
-                    printf("The size of the array \"%s\" is negative line %d.\n", stmtAst->data.arrayDecl.name, stmtAst->line);
+                    printf("The size of the array \"%s\" is negative line %ld file %s.\n", stmtAst->data.arrayDecl.name, stmtAst->line, stmtAst->fileName);
                     context->error_count++;
                     return;
                 }
@@ -63,14 +63,14 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
                 if(left_type == SEM_SIZET && right_type == SEM_INT){
                     if(stmtAst->data.declaration.expression->ast_type != AST_NUMBER || !canConvert(left_type, right_type, stmtAst->data.declaration.expression)){
-                        printf("Warning: Declaring an size_t variable %s with a type int object on line %d.\n", stmtAst->data.declaration.identifier,stmtAst->line);
+                        printf("Warning: Declaring an size_t variable %s with a type int object on line %ld file %s.\n", stmtAst->data.declaration.identifier,stmtAst->line, stmtAst->fileName);
                     }
                     if(stmtAst->data.declaration.expression->ast_type == AST_NUMBER && stmtAst->data.declaration.expression->data.int_literal.value < 0){
                         context->error_count++;
                         return;
                     }
                 } else if(right_type != left_type){
-                    printf("On declaration line %d, the right side has %s type but the left is defined as %s type.\n", stmtAst->line, fromSemToString(right_type), fromSemToString(left_type));
+                    printf("On declaration line %ld in file %s, the right side has %s type but the left is defined as %s type.\n", stmtAst->line, stmtAst->fileName, fromSemToString(right_type), fromSemToString(left_type));
                     context->error_count++;
                     return;
                 }                

@@ -31,7 +31,7 @@ typedef struct SymbolNode {
     SemanticType *param;
 
     SymbolNode *next;
-    int line;
+    size_t line;
 } SymbolNode;
 
 typedef struct ScopeNode {

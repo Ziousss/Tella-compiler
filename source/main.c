@@ -37,24 +37,25 @@ int main (int argc, char **argv) {
     }
     
     printf("2. Preprocessing the source file...\n"); fflush(stdout);
-    char *tmp = preprocess(source);
+    char *originalFileName = argv[1];
+    PreResult preprocessStruct = preprocess(source, originalFileName);
     free(source);
-    if(tmp == NULL){
-        printf("Preprocessing issue(s).\n");
-        return 2;
+    
+    if(contextMain->postSource){
+        printf("\n");
+        for(size_t i = 0; i < preprocessStruct.size; i++){
+            printf("%c", preprocessStruct.data[i].c);
+        }
+        printf("\n");
     }
-    source = tmp;
-    if(contextMain->postSource) printf("\n%s\n\n", source);
 
     printf("3. Lexical analysis...\n"); fflush(stdout);
-    Tokenstruct *tokenList = lexicalAnalyzer(source);
+    Tokenstruct *tokenList = lexicalAnalyzer(preprocessStruct);
     if(tokenList == NULL){
-        free(source);
         cleanup(NULL, NULL, NULL, contextMain, NULL);
         return 3;
     }
 
-    free(source);
 
     if(contextMain->lexer) {
         printf("\n");

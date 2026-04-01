@@ -9,7 +9,7 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
     } ++i;
 
     if(tokenList[i].type != TOK_LPAREN){
-        printf("'(' expected after the \"for\" line %d\n", tokenList[i].line);
+        printf("'(' expected after the \"for\" line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } ++i;
 
@@ -32,7 +32,7 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
     }
 
     if(tokenList[i].type != TOK_SEMICOLON){
-        printf("';' expected in the for loop line %d\n", tokenList[i].line);
+        printf("';' expected in the for loop line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } ++i;
 
@@ -43,7 +43,7 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
     } 
 
     if(tokenList[i].type != TOK_RPAREN){
-        printf("')' expected in the \"for\" loop line %d\n", tokenList[i].line);
+        printf("')' expected in the \"for\" loop line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } ++i;
     
@@ -64,6 +64,7 @@ ASTnode *forStmtParse(Tokenstruct *tokenList, int *index){
     forStmt->data.for_node.incrementation = incrementation;
     forStmt->data.for_node.initialisation = initialisation;
     forStmt->line = tokenList[start].line;
+    forStmt->fileName = strdup(tokenList[start].fileName);
     forStmt->next = NULL;
 
     *index = i;

@@ -1,4 +1,5 @@
 #include "../include/lexer/charcheck.h"
+#include "../include/preprocess/preprocess.h"
 
 bool isDelimiter (char chr) {
     return (chr == ',' || chr == ',' || chr == '.'
@@ -58,13 +59,17 @@ bool isKeyword (char *str) {
     return false;
 }
 
-char* getSubstring (char *str, size_t start, size_t end) {
-    size_t sublength = end - start + 1;
-    char* subStr = (char*)malloc((sublength + 1) * sizeof(char));
+char* getSubstring(SourceChar *src, size_t start, size_t end)
+{
+    size_t len = end - start + 1;
+    char *out = malloc(len + 1);
 
-    strncpy(subStr, str+start, sublength);
-    subStr[sublength] = '\0';
-    return subStr;
+    for(size_t i = 0; i < len; i++){
+        out[i] = src[start + i].c;
+    }
+
+    out[len] = '\0';
+    return out;
 }
 
 bool whiteSpace(char chr){

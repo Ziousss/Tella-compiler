@@ -3,14 +3,14 @@
 void returnAnalyser(ASTnode *returnAst, SemContext *context){
     ASTnode *returnExpr = returnAst->data.return_node.expr;
     if (context->current_function == NULL) {
-        printf("Return statement outside of a function at line %d.\n", returnAst ? returnAst->line : -1);
+        printf("Return statement outside of a function at line %ld file %s.\n", returnAst ? returnAst->line : 0, returnAst->fileName);
         context->error_count++;
         return;
     }
 
     if(returnExpr == NULL){
         if(context->current_function->type != SEM_VOID){
-            printf("Current function does not return type void, but return statement line %d does.\n", returnAst->line);
+            printf("Current function does not return type void, but return statement line %ld does in file %s.\n", returnAst->line, returnAst->fileName);
             context->error_count++;
             return;
         }
@@ -25,9 +25,9 @@ void returnAnalyser(ASTnode *returnAst, SemContext *context){
 
     if(ret_type != func_type){
         if(compSizeTInt(ret_type, func_type) == 1){
-            printf("Warning: function %s has defined return %s but actual return is %s on line %d.\n", context->current_function->name ,fromSemToString(func_type), fromSemToString(ret_type), returnAst->line);
+            printf("Warning: function %s has defined return %s but actual return is %s on line %ld file %s.\n", context->current_function->name ,fromSemToString(func_type), fromSemToString(ret_type), returnAst->line, returnAst->fileName);
         }else {
-            printf("The function returns %s type but the return statement line %d returns %s type.\n",fromSemToString(func_type), returnAst->line, fromSemToString(ret_type));
+            printf("The function returns %s type but the return statement line %ld returns %s type in file %s.\n",fromSemToString(func_type), returnAst->line, fromSemToString(ret_type), returnAst->fileName);
             context->error_count++;
             context->saw_return = true;
             return;

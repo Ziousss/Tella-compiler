@@ -17,7 +17,7 @@ ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index){
     }
 
     if(tokenList[i].type != TOK_SEMICOLON){
-        printf("Expected semicolon after return expression line %d\n", tokenList[i].line);
+        printf("Expected semicolon after return expression line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } ++i;
 
@@ -29,6 +29,7 @@ ASTnode *returnStmtParse(Tokenstruct *tokenList, int *index){
     returnStmt->data.return_node.expr = expression;
     returnStmt->ast_type = AST_RETURN;
     returnStmt->line = tokenList[start].line;
+    returnStmt->fileName = strdup(tokenList[start].fileName);
     returnStmt->next = NULL;
 
     *index = i;

@@ -6,6 +6,20 @@
 #include <string.h>
 #include "../include/lexer/readFile.h"
 
-char *preprocess(char *source);
+typedef struct SourceChar SourceChar;
+typedef struct PreResult PreResult;
+
+typedef struct SourceChar{
+    char c;
+    size_t line;
+    const char *fileName;
+} SourceChar;
+
+typedef struct PreResult{
+    SourceChar *data;
+    size_t size;
+} PreResult;
+
+PreResult preprocess(char *source, char *fileName);
 
 #endif

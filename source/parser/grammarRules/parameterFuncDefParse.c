@@ -7,14 +7,14 @@ ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index){
 
     while(true){
         if(!isTOKType(tokenList[i].type)){
-            printf("Type expected in the parameter definition line %d, parameter number %d\n", tokenList[i].line, count+1);
+            printf("Type expected in the parameter definition line %ld file %s, parameter number %d\n", tokenList[i].line, tokenList[i].fileName, count+1);
             return NULL;
         }
         Tokentype type = tokenList[i].type;
         ++i;
 
         if(tokenList[i].type != TOK_IDENTIFIER){
-            printf("Identifier requiered line %d, parameter number %d\n", tokenList[i].line, count+1);
+            printf("Identifier requiered line %ld file %s, parameter number %d\n", tokenList[i].line, tokenList[i].fileName, count+1);
             return NULL;
         } 
         char *name = strdup(tokenList[i].lexeme);
@@ -32,9 +32,9 @@ ParameterNode *parameterFuncDefParse(Tokenstruct *tokenList, int *index){
         }
 
         if(isTOKType(tokenList[i].type)){
-            printf("Expected ',' between arguments %d and %d line %d\n", count, count+1, tokenList[i].line);
+            printf("Expected ',' between arguments %d and %d line %ld file %s\n", count, count+1, tokenList[i].line, tokenList[i].fileName);
         } else {
-            printf("Expected ',' or ')' line %d\n", tokenList[i].line);
+            printf("Expected ',' or ')' line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
 

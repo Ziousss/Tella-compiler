@@ -11,7 +11,7 @@ ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index){
     }
     ++i;
     if(tokenList[i].type != TOK_LPAREN){
-        printf("'(' expected in the if statement line %d\n", tokenList[i].line);
+        printf("'(' expected in the if statement line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } ++i;
 
@@ -21,7 +21,7 @@ ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index){
     }
     
     if(tokenList[i].type != TOK_RPAREN){
-        printf("')' expected in the if statement line %d\n", tokenList[i].line);
+        printf("')' expected in the if statement line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } ++i;
 
@@ -34,7 +34,7 @@ ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index){
         ++i;
         else_block = blockParse(tokenList, &i);
         if(else_block == NULL){
-            printf("else block fails line %d.\n", tokenList[i].line);
+            printf("else block fails line %ld file %s.\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
     }
@@ -49,6 +49,7 @@ ASTnode *ifStmtParse(Tokenstruct *tokenList, int *index){
     ifStmt->data.if_node.if_branch = if_block;
     ifStmt->data.if_node.else_branch = else_block;
     ifStmt->line = tokenList[start].line;
+    ifStmt->fileName = strdup(tokenList[start].fileName);
     ifStmt->next = NULL;
 
     *index = i;

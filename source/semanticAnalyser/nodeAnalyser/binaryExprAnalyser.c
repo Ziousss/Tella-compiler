@@ -8,7 +8,7 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
     }
 
     if(left == SEM_STRING && right == SEM_STRING ){
-        printf("Binary operation on line %d cannot have only type CHAR *.\n", binary->line);
+        printf("Binary operation on line %ld file %s cannot have only type CHAR *.\n", binary->line, binary->fileName);
         context->error_count++;
         return SEM_ERROR;
     }
@@ -23,11 +23,11 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         }
 
         if(compSizeTInt(left, right) == 1){
-            printf("Warning: binary Operation between size_t and integer in line %d.\n", binary->line);
+            printf("Warning: binary Operation between size_t and integer in line %ld file %s.\n", binary->line, binary->fileName);
             return SEM_INT;
         }
 
-        printf("Arithmetic operator %s line %d can only take two ints; here left is type %s and right is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
+        printf("Arithmetic operator %s line %ld file %s can only take two ints; here left is type %s and right is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, binary->fileName, fromSemToString(left), fromSemToString(right));
         context->error_count++;
         return SEM_ERROR;
     }
@@ -35,7 +35,7 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         if((left == SEM_BOOL && right == SEM_BOOL) || (left == SEM_INT && compSizeTInt(left, right) == 0) || compSizeTInt(left, right) == 1){
             return SEM_BOOL;
         }
-        printf("Comparison operator %s line %d can only take two ints; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
+        printf("Comparison operator %s line %ld file %s can only take two ints; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, binary->fileName, fromSemToString(left), fromSemToString(right));
         context->error_count++;
         return SEM_ERROR;
     }
@@ -43,7 +43,7 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         if(left == SEM_BOOL && right == SEM_BOOL){
             return SEM_BOOL;
         }
-        printf("The %s operator line %d need two bool type; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
+        printf("The %s operator line %ld file %s need two bool type; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, binary->fileName, fromSemToString(left), fromSemToString(right));
         context->error_count++;
         return SEM_ERROR;
     }
@@ -51,11 +51,11 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         if(left == right){
             return SEM_BOOL;
         }
-        printf("The %s operator line %d need two identifier with the same type; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, fromSemToString(left), fromSemToString(right));
+        printf("The %s operator line %ld file %s need two identifier with the same type; here leftside is type %s and rightside is type %s.\n", tokenTypeToString(binary->data.binary.op), binary->line, binary->fileName, fromSemToString(left), fromSemToString(right));
         context->error_count++;
         return SEM_ERROR;
     }
-    printf("Unknown binary operator %s at line %d.\n", tokenTypeToString(op), binary->line);
+    printf("Unknown binary operator %s at line %ld file %s.\n", tokenTypeToString(op), binary->line, binary->fileName);
     context->error_count++;
     return SEM_ERROR;
 }

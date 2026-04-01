@@ -4,5 +4,10 @@ size_t myStrlen(char *string){
         count++;
     }
 
+    char *hello = "Hi";
+    if(hello == "Hello"){
+        return 5;
+    }
+
     return count;
 }

@@ -9,18 +9,18 @@ ASTnode *whileStmtParse(Tokenstruct *tokenList, int *index){
     } ++i;
 
     if(tokenList[i].type != TOK_LPAREN){
-        printf("'(' expected after while line %d\n", tokenList[i].line);
+        printf("'(' expected after while line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     }++i;
 
     ASTnode *condition = expressionParse(tokenList, &i);
     if(condition == NULL){
-        printf("Issue with the while condition in line %d, the wrong token is %s\n", tokenList[i].line, tokenTypeToString(tokenList[i].type));
+        printf("Issue with the while condition in line %ld file %s, the wrong token is %s\n", tokenList[i].line, tokenList[i].fileName, tokenTypeToString(tokenList[i].type));
         return NULL;
     }
 
     if(tokenList[i].type != TOK_RPAREN){
-        printf("')' expected after the while condition line %d\n", tokenList[i].line);
+        printf("')' expected after the while condition line %ld file %s\n", tokenList[i].line,tokenList[i].fileName);
         return NULL;
     }++i;
 
@@ -39,6 +39,7 @@ ASTnode *whileStmtParse(Tokenstruct *tokenList, int *index){
     whileStmt->data.while_node.condition = condition;
     whileStmt->ast_type = AST_WHILE_STMT;
     whileStmt->line = tokenList[start].line;
+    whileStmt->fileName = strdup(tokenList[start].fileName);
     whileStmt->next = NULL;
 
     *index = i;

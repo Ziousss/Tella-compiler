@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "../include/lexer/charcheck.h"
+#include "../include/preprocess/preprocess.h"
+
 typedef enum {
     //general
     TOK_IDENTIFIER, TOK_INTEGER_LITERAL, TOK_CHAR_LITERAL, TOK_STRING_LITERAL, TOK_FLOAT_LITERAL, TOK_UNIDENTIFIED, 
@@ -35,14 +38,15 @@ extern const Keyword keywords[];
 typedef struct {
     Tokentype type;
     const char* lexeme;
-    int line;
+    size_t line;
     size_t length;
+    const char *fileName;
 } Tokenstruct;
 
 const char* tokenTypeToString(int type);
-Tokenstruct *lexicalAnalyzer (char* input);
-Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, int line);
-Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, int line);
+Tokenstruct *lexicalAnalyzer (PreResult pre);
+Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, size_t line, const char *fileName);
+Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, size_t line, const char *fileName);
 Tokentype keyword_type(char *sub);
 void freeTokenList(Tokenstruct *tokenlist);
 Tokenstruct* reallocTokenList(Tokenstruct* list, size_t tokencount, size_t* capacity);

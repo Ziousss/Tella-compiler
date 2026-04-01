@@ -14,7 +14,7 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
     } ++i;
 
     if(tokenList[i].type == TOK_SEMICOLON){
-        printf("Missing a ')' line %d for the function call\n", tokenList[i].line);
+        printf("Missing a ')' line %ld for the function call file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     }
     if (tokenList[i].type == TOK_RPAREN)
@@ -35,7 +35,7 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
             ArgNode *arg = malloc(sizeof(ArgNode));
             ASTnode *expression = expressionParse(tokenList, &i);
             if(expression == NULL){
-                printf("Issue in the expressions of function calls line %d\n", tokenList[i].line);
+                printf("Issue in the expressions of function calls line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
                 return NULL;
             }
             arg->expression = expression;
@@ -58,7 +58,7 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
             }
 
             if(tokenList[i].type != TOK_COMMA){
-                printf("Comma expected in the parameter of the function call line %d\n", tokenList[i].line);
+                printf("Comma expected in the parameter of the function call line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
                 while(arg != NULL){
                     ArgNode *next = arg->next;
                     free(arg);
@@ -73,7 +73,7 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type != TOK_SEMICOLON){
         free(funcCall);
-        printf("Missing semi colon line %d after the function call\n", tokenList[i].line);
+        printf("Missing semi colon line %ld after the function call of %s file %s\n", tokenList[i].line, tokenList[name_index].lexeme, tokenList[i].fileName);
     } ++i;
 
     funcCall = malloc(sizeof(ASTnode));
@@ -87,6 +87,7 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
     funcCall->ast_type = AST_FUNC_CALL;
     funcCall->data.func_call.name = name;
     funcCall->line = tokenList[start].line;
+    funcCall->fileName = strdup(tokenList[start].fileName);
     funcCall->next = NULL;
 
     *index = i;

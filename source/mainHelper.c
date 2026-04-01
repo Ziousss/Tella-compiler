@@ -101,7 +101,7 @@ void freeIR(IRstruct *IR){
 void printLexer(Tokenstruct *tokenList){
     int i = 0;
     while(tokenList[i].type != TOK_EOF){
-        printf("%s, %s\n", tokenList[i].lexeme, tokenTypeToString(tokenList[i].type));
+        printf("%s, %s, file = %s\n", tokenList[i].lexeme, tokenTypeToString(tokenList[i].type), tokenList[i].fileName);
         i++;
     }
     printf("%s, %s\n", tokenList[i].lexeme, tokenTypeToString(tokenList[i].type));

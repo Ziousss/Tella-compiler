@@ -6,7 +6,7 @@ void ifAnalyser(ASTnode *ifStmtAst, SemContext *context){
         return;
     }
     if(condition_type != SEM_INT && condition_type != SEM_BOOL){
-        printf("In the if statement line %d, the condition has to be of type boolean or integer, not %s.\n", ifStmtAst->line, fromSemToString(condition_type));
+        printf("In the if statement line %ld file %s, the condition has to be of type boolean or integer, not %s.\n", ifStmtAst->line, ifStmtAst->fileName, fromSemToString(condition_type));
         context->error_count++;
         return;
     }

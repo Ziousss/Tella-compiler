@@ -73,7 +73,7 @@ const char* tokenTypeToString(int type) {
     }
 }
 
-Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, int line){
+Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, size_t line, const char *fileName){
     tokenlist[count].type = type;
     char *temp = (char *)malloc(2);
     temp[0] = chr;
@@ -81,15 +81,17 @@ Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type
     tokenlist[count].lexeme = temp;
     tokenlist[count].line = line;
     tokenlist[count].length = length;
+    tokenlist[count].fileName = fileName;
     return tokenlist;
 }
 
-Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, int line) {
+Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, size_t line, const char *fileName) {
     tokenlist[count].type = type;
     char *string = strdup(sub);
     tokenlist[count].lexeme = string;
     tokenlist[count].line = line;
     tokenlist[count].length = length;
+    tokenlist[count].fileName = fileName;
     return tokenlist;
 }
 

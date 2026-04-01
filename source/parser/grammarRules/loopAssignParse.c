@@ -5,7 +5,7 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
     int start = *index;
 
     if(tokenList[i].type != TOK_IDENTIFIER){
-        printf("Left side of the assignment line %d must be a defined identifier.\n", tokenList[i].line);
+        printf("Left side of the assignment line %ld file %s must be a defined identifier.\n", tokenList[i].line,tokenList[i].fileName);
         return NULL;
     }
     int identifier_name = i;
@@ -13,10 +13,10 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
 
     if(tokenList[i].type != TOK_EQ && tokenList[i].type != TOK_PLUSEQ && tokenList[i].type != TOK_PLUSPLUS && tokenList[i].type != TOK_MINUSEQ && tokenList[i].type != TOK_MINUSMINUS){
         if(tokenList[i].line != tokenList[i-1].line){
-            printf("Equal sign expected in assignment line %d\n", tokenList[i-1].line);
+            printf("Equal sign expected in assignment line %ld file %s\n", tokenList[i-1].line, tokenList[i-1].fileName);
             return NULL;
         } 
-        printf("Equal sign expected in assignment line %d\n", tokenList[i].line);
+        printf("Equal sign expected in assignment line %ld file %s\n", tokenList[i].line,tokenList[i].fileName);
         return NULL;
     } 
     int tok = i;
@@ -38,6 +38,7 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
 
         value->ast_type = AST_NUMBER;
         value->data.int_literal.value = 1;
+        value->fileName = tokenList[i].fileName;
 
         value->next = NULL;
     }
@@ -85,7 +86,9 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
     assigneNode->data.assign.target = name;
     assigneNode->data.assign.value = givenvalue;
     assigneNode->line = tokenList[start].line;
+    assigneNode->fileName = strdup(tokenList[start].fileName);
     assigneNode->next = NULL;
+
     *index = i;
     return assigneNode;
 }

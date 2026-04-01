@@ -1,136 +1,84 @@
 #include "../include/preprocess/preprocess.h"
+#include <string.h>
 
-char *preprocess(char *source){
-    size_t sourceSize = strlen(source);
-    size_t capacity = 16;
-    size_t outputIndex = 0;
-    char *output = malloc(capacity);
-    if(output == NULL){
-        printf("Malloc failed for output in the preprocess.\n");
-        return NULL;
-    }
-    
-    char *fileName = NULL;
-    char *fileContent = NULL;
-    char *tmp = NULL;
+PreResult preprocess(char *source, char *fileName)
+{
+    size_t cap = 64;
+    size_t size = 0;
 
-    size_t index = 0;
-    while(index < sourceSize){
-        if(source[index] != '#'){
-            if(outputIndex >= capacity){
-                capacity *= 2;
-                tmp = realloc(output, capacity);
-                if(tmp == NULL){
-                    printf("Realloc failed for output in preprocess.\n");
-                    free(output);
-                    return NULL;
-                }
-                output = tmp;
+    SourceChar *out = malloc(sizeof(SourceChar) * cap);
+
+    size_t line = 1;
+
+    for (size_t i = 0; source[i]; i++)
+    {
+        if (source[i] == '\n')
+            line++;
+
+        if (source[i] != '#')
+        {
+            if (size >= cap)
+            {
+                cap *= 2;
+                out = realloc(out, sizeof(SourceChar) * cap);
             }
 
-            output[outputIndex] = source[index];
-            outputIndex++;
-            index++;
+            out[size].c = source[i];
+            out[size].line = line;
+            out[size].fileName = fileName;
+
+            size++;
             continue;
         }
 
-        index++;
-        while(index < sourceSize && source[index] == ' '){
-            index++;
-        }
+        i++;
 
-        char *includeStart = source + index;
-        size_t includeLen = 0;
-        size_t start = index;
+        while (source[i] == ' ') i++;
 
-        while (index < sourceSize && source[index] != ' ' && source[index] != '\n' && source[index] != '\"') {
-            index++;
-            includeLen++;
-        }
-
-        if (includeLen != 7 || strncmp(includeStart, "include", 7) != 0) {
-            index = start;
-            index++;
+        if (strncmp(&source[i], "include", 7) != 0)
             continue;
-        }
 
-        //Account for space(s)
-        while(index < sourceSize && source[index] == ' '){
-            index++;
-        }
+        i += 7;
 
-        if(source[index] != '\"'){
-            printf("Only local files are implemented for now and they require \"fileName\" usage.\n");
-            free(output);
-            return NULL;
-        } index++;
+        while (source[i] == ' ') i++;
 
-        size_t fileNameSize = 16;
-        tmp = malloc(fileNameSize);
-        if(tmp == NULL){
-            printf("Malloc failed for fileName in preprocess.\n");
-            free(output);
-            return NULL;
-        }
-        fileName = tmp;
+        if (source[i] != '"')
+            continue;
 
-        size_t countChar = 0;
-        start = index;
-        while(index < sourceSize && source[index] != '\"'){
-            if(fileNameSize >= index - start){
-                fileNameSize *= 2;
-                tmp = realloc(fileName, fileNameSize);
-                if(tmp == NULL){
-                    printf("Realloc failed for fileName in preprocess.\n");
-                    free(output);
-                    return NULL;
-                }
-                fileName = tmp;
-            }
-            fileName[countChar] = source[index];
-            countChar++;
-            index++;
-        }
-        fileName[countChar] = '\x00';
-        index++;
-        //Skip last " and so end of include statementprocessed
+        i++;
 
-        fileContent = readFile(fileName);
-        if(fileContent == NULL){
-            free(output);
-            free(fileName);
-            return NULL;
-        }
-        free(fileName);
+        char buffer[256];
+        size_t f = 0;
 
-        char *processed = preprocess(fileContent);
+        while (source[i] && source[i] != '"' && f < 255)
+            buffer[f++] = source[i++];
+
+        buffer[f] = '\0';
+
+        char *fileContent = readFile(buffer);
+
+        char *fname = strdup(buffer);
+        PreResult inc = preprocess(fileContent, fname);
         free(fileContent);
-        if(processed == NULL){
-            free(output);
-            return NULL;
-        }
-        fileContent = processed;
 
+        for (size_t j = 0; j < inc.size; j++)
+        {
+            if (size >= cap)
+            {
+                cap *= 2;
+                out = realloc(out, sizeof(SourceChar) * cap);
+            }
 
-        size_t fileContentSize = strlen(fileContent);
-        while(capacity < fileContentSize + outputIndex + 1){
-            capacity *= 2;
+            out[size].c = inc.data[j].c;
+            out[size].line = inc.data[j].line;
+
+            out[size].fileName = inc.data[j].fileName;
+
+            size++;
         }
 
-        tmp = realloc(output, capacity);
-        if(tmp == NULL){
-            printf("Realloc failed for output after fileContentSize in preprocess.\n");
-            free(output);
-            return NULL;
-        }
-        output = tmp;
-
-        for(size_t j = 0; j < fileContentSize; j++){
-            output[outputIndex + j] = fileContent[j];
-        }
-        outputIndex += fileContentSize;
+        free(inc.data);
     }
 
-    output[outputIndex] = '\0';
-    return output;
+    return (PreResult){ out, size };
 }

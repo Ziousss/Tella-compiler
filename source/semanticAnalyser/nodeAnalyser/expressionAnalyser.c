@@ -6,7 +6,7 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
         case AST_IDENTIFIER: {
             SymbolNode *identifier =  find_in_scope(expressionAst->data.identifier.name, context);
             if (identifier == NULL){
-                printf("Identifier %s line %d not defined yet.\n", expressionAst->data.identifier.name, expressionAst->line);
+                printf("Identifier %s line %ld file %s not defined yet.\n", expressionAst->data.identifier.name, expressionAst->line, expressionAst->fileName);
                 context->error_count += 1;
                 return SEM_ERROR;
             }
@@ -42,7 +42,7 @@ SemanticType expressionAnalyser(ASTnode *expressionAst, SemContext *context){
         }
 
         default:{
-            printf("Unsupported expression in the %s at line %d\n", astTypeToString(expressionAst->ast_type), expressionAst->line);
+            printf("Unsupported expression in the %s at line %ld file %s\n", astTypeToString(expressionAst->ast_type), expressionAst->line, expressionAst->fileName);
             context->error_count++;
             return SEM_ERROR;
         }

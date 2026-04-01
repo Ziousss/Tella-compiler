@@ -5,10 +5,10 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
     
     if(tokenList[i].type != TOK_LBRACE){
         if(tokenList[i].line == tokenList[i-1].line){
-            printf("Expected '{' line %d\n", tokenList[i].line);
+            printf("Expected '{' line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
             return NULL;
         }
-        printf("Expected '{' line %d\n", tokenList[i-1].line);
+        printf("Expected '{' line %ld file %s\n", tokenList[i-1].line, tokenList[i-1].fileName);
         return NULL;
     } ++i;
 
@@ -88,7 +88,7 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
                 continue;
             }  
             if (i == start_i) {
-                printf("Unexpected token '%s' ('%s') in block at line %d or error if error message.\n",tokenTypeToString(tokenList[i].type), tokenList[i].lexeme, tokenList[i].line);
+                printf("Unexpected token '%s' ('%s') in block at line %ld file %s or error if error message.\n",tokenTypeToString(tokenList[i].type), tokenList[i].lexeme, tokenList[i].line, tokenList[i].fileName);
                 return NULL;
             }
         }
@@ -103,6 +103,7 @@ ASTnode *blockParse(Tokenstruct *tokenList, int *index){
     }
     block->ast_type = AST_BLOCK;
     block->data.block.stmts = stmt_list;
+    block->fileName = strdup(tokenList[i].fileName);
     block->next = NULL;
 
     *index = i;

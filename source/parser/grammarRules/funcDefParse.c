@@ -5,21 +5,21 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     int start = *index;
 
     if(!isTOKType(tokenList[i].type)){
-        printf("type expected in the function definition, line %d\n", tokenList[i].line);
+        printf("type expected in the function definition, line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     }
     Tokentype return_type = tokenList[i].type; 
     ++i;
 
     if(tokenList[i].type != TOK_IDENTIFIER){
-        printf("Indentifier expected in the function definition, line %d\n", tokenList[i].line);
+        printf("Indentifier expected in the function definition, line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     } 
     int index_identifier = i;
     ++i;
 
     if(tokenList[i].type != TOK_LPAREN){
-        printf(" \"(\" expected in the function definition, line %d\n", tokenList[i].line);
+        printf(" \"(\" expected in the function definition, line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;     
     } ++i;
 
@@ -34,7 +34,7 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
         parameters->name = NULL;
     } 
     else if(!isTOKType(tokenList[i].type) && tokenList[i].type != TOK_IDENTIFIER){
-        printf("Missing ')' on line %d in the function definition.\n", tokenList[i].line);
+        printf("Missing ')' on line %ld file %s in the function definition.\n", tokenList[i].line, tokenList[i].fileName);
         return NULL;
     }
     else {
@@ -43,7 +43,7 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
             return NULL;
         }
         if(tokenList[i].type != TOK_RPAREN){
-            printf("Right parenthesis expected, line %d\n", tokenList[i].line);
+            printf("Right parenthesis expected, line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
         }++i;
     }
 
@@ -67,12 +67,14 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
     } else {
         func_def_ast->ast_type = AST_FUNC_DEF;
     }
+
     func_def_ast->data.func_def.body = block;
     func_def_ast->data.func_def.name = name;
     func_def_ast->data.func_def.parameters = parameters;
     func_def_ast->data.func_def.param = param;
     func_def_ast->data.func_def.return_type = return_type;
     func_def_ast->line = tokenList[start].line;
+    func_def_ast->fileName = strdup(tokenList[start].fileName);
     func_def_ast->next = NULL;
 
     *index = i;
