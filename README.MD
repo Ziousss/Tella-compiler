@@ -41,8 +41,6 @@ This is **not a production compiler**, but a deep dive into how compilers actual
 
 - Compiler itself compiles and work for simple programs.
 
-- Working on an issue regarding line reporting in errors due to the introduction of the preprocessor.
-
 ---
 
 ## Features
@@ -50,9 +48,9 @@ This is **not a production compiler**, but a deep dive into how compilers actual
 - All kinds of loop/statement; while and for loops and if statements (no else if for now).
 - Arithmetic (No priority rule yet tho ...)
 - 2 built-in functions, tellaPutChar and tellaPrint, which behave like putchar and printf (without format string).
-- Include statement allowed thanks to the preprocessor.
+- Include statement allowed thanks to the preprocessor (Can only include the .c files for now).
 - An early libc you can include.
-
+- Fairly precise error messages indicating the file and line where the mistake is.
 
 ---
 
