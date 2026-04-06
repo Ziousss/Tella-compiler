@@ -124,6 +124,10 @@ void printIR(IRstruct *IR){
 
 void printOperand(Operand op){
     switch(op.IR_type){
+        case IR_VOID_OPERAND:
+            printf("Void");
+            break;
+
         case IR_ARR:
         case IR_VAR:
             printf("%s", op.data.IR_Variable.identifier);

@@ -23,6 +23,12 @@ int mainAssemblyInstr(IRstruct *IRlist, bool stackLayoutBool){
 
     fprintf(output, ".intel_syntax noprefix\n.globl main\n");
     programAS(IRlist, output, context, stackLayoutBool);
+    if(!context->returned){
+        fprintf(output, "mov rsp, rbp\n");
+        fprintf(output, "pop rbp\n");
+        fprintf(output, "ret\n");
+    }
+    
     fprintf(output, ".section .note.GNU-stack,\"\",@progbits\n");
     fclose(output);
 

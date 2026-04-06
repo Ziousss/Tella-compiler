@@ -19,6 +19,8 @@ typedef struct {
 }StackLayout;
 
 typedef struct{
+    bool returned;
+
     int offset[6];
     IRtype argType[6];
     int stringID[6];

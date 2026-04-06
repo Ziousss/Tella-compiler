@@ -5,6 +5,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLay
     StackLayout *stack = NULL;
     bool stackDefined = false;
     bool rodataNeeded = false;
+    context->returned = false;
 
     IRstruct *rodataTmp = tmp;
 
@@ -41,6 +42,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLay
             
             case IR_RET: 
                 returnAS(tmp, output, stack, context);
+                context->returned = true;
                 break;
 
             case IR_CALL:
@@ -87,6 +89,7 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLay
                     return;
                 }
                 if(stackLayoutBool) printStackLayout(stack, tmp->data.function.name_func);
+                context->returned = false;
                 break;
         
             case IR_LOAD_ARRAY:

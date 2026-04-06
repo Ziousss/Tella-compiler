@@ -1,7 +1,7 @@
 .intel_syntax noprefix
 .globl main
 .section .rodata
-   string_0: .asciz "David"
+   string_0: .asciz "Hello\n"
 
 .section .text
 myStrlen:
@@ -46,28 +46,13 @@ ret
 main:
 push rbp
 mov rbp, rsp
-sub rsp, 32
-lea rax, [rip + string_0]
-mov [rbp -8], rax
-mov rdi, [rbp -8]
-mov rsi, [rbp -8]
-mov rdx, 5
+sub rsp, 0
+lea rdi, [rip + string_0]
+lea rsi, [rip + string_0]
+mov rdx, 7
 mov rdi, 1
 mov rax, 1
 syscall
-mov rax, 5
-push rax
-mov rax, 4
-pop rbx
-add rax, rbx
-mov [rbp -16], rax
-mov rax, 3
-push rax
-mov rax, [rbp -16]
-pop rbx
-imul rax, rbx
-mov [rbp -24], rax
-mov rax, [rbp -24]
 mov rsp, rbp
 pop rbp
 ret

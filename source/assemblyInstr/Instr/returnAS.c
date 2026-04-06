@@ -3,6 +3,13 @@
 void returnAS(IRstruct *ret, FILE *output, StackLayout *stack, ASContext* context){
     Operand dst = ret->data.ret.return_value;
     IRtype dstType = dst.IR_type;
+    if(dst.IR_type == IR_VOID_OPERAND){
+        fprintf(output, "mov rsp, rbp\n");
+        fprintf(output, "pop rbp\n");
+        fprintf(output, "ret\n");
+        return;
+    }
+
     switch (dstType) {
         case IR_VAR:
         case IR_TMP: {

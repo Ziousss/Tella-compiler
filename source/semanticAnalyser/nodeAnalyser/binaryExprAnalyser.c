@@ -23,7 +23,9 @@ SemanticType binaryExprAnalyser(ASTnode *binary, SemContext *context){
         }
 
         if(compSizeTInt(left, right) == 1){
-            printf("Warning: binary Operation between size_t and integer in line %ld file %s.\n", binary->line, binary->fileName);
+            if(binary->data.binary.left->ast_type != AST_NUMBER && binary->data.binary.right->ast_type != AST_NUMBER){
+                printf("Warning: binary Operation between size_t and integer in line %ld file %s.\n", binary->line, binary->fileName);
+            }
             return SEM_INT;
         }
 
