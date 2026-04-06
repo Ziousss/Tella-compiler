@@ -4,6 +4,9 @@
    string_0: .asciz "Hello\n"
 
 .section .text
+mov rsp, rbp
+pop rbp
+ret
 myStrlen:
 push rbp
 mov rbp, rsp
@@ -53,6 +56,15 @@ mov rdx, 7
 mov rdi, 1
 mov rax, 1
 syscall
+mov rsp, rbp
+pop rbp
+ret
+foo:
+push rbp
+mov rbp, rsp
+sub rsp, 16
+mov rax, 5
+mov [rbp -8], rax
 mov rsp, rbp
 pop rbp
 ret

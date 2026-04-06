@@ -79,6 +79,11 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLay
                 break;
             
             case IR_FUNC:
+                if(!context->returned){
+                    fprintf(output, "mov rsp, rbp\n");
+                    fprintf(output, "pop rbp\n");
+                    fprintf(output, "ret\n");
+                }
                 if(stackDefined == true){
                     freeStackLayout(stack);
                 } else {
