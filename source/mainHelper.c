@@ -114,6 +114,7 @@ void freeASTNode(ASTnode *node){
 
     NodeType type = node->ast_type;
     switch (type) {
+        case AST_FUNC_SIGN:
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN: {
             free(node->data.func_def.name);
@@ -263,6 +264,7 @@ void print_ast(ASTnode *node, int indent) {
 
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN:
+        case AST_FUNC_SIGN:
             printf(" (func: %s)", node->data.func_def.name);
             break;
 
@@ -328,6 +330,9 @@ void print_ast(ASTnode *node, int indent) {
             }
             break;
         }
+
+        case AST_FUNC_SIGN:
+            break;
 
         case AST_BLOCK:
             print_ast(node->data.block.stmts, indent + 1);

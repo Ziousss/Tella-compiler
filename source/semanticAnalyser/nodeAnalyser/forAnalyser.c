@@ -40,7 +40,7 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
 
         push_variables(symNode, context);
 
-        IRsymbole *symIR = newIRsym(name, semType, -1, NULL);
+        IRsymbole *symIR = newIRsym(name, semType, -1, NULL, SEM_VAR);
         if(symIR == NULL){
             return;
         }

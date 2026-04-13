@@ -306,5 +306,4 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
     tokencount++;
     
     return tokenList;
-
 }

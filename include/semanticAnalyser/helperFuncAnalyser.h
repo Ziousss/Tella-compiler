@@ -8,6 +8,7 @@
 #include "struct.h"
 #include "../include/parser/helperFunc.h"
 #include "../include/lexer/tokenizer.h"
+#include "../include/IntermediateRep/helperFuncIR.h"
 
 void push_scope(SemContext *context);
 void pop_scope(SemContext *context);
@@ -20,9 +21,10 @@ bool isBool(Tokentype op);
 bool isCalculus (Tokentype op);
 GlobalFunc *getAllFunctions(const SemContext *context);
 Tokentype  fromSemToTok(SemanticType type);
-IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit);
+IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit, SemanticKind kind);
 void pushIRSym(IRsymbole *symIR, SemContext *context);
 int compSizeTInt(SemanticType type1, SemanticType type2);
 bool canConvert(SemanticType target, SemanticType source, ASTnode *expr);
+SymbolParams *getParams(ParameterNode *ASTparams);
 
 #endif

@@ -9,13 +9,23 @@ typedef struct SemContext SemContext;
 typedef struct GlobalFunc GlobalFunc;
 typedef struct IRsymbole IRsymbole;
 
+typedef struct SymbolParams SymbolParams;
+
 typedef enum {
     SEM_INT, SEM_CHAR, SEM_STRING, SEM_VOID, SEM_BOOL, SEM_ERROR, SEM_ARR_TYPE, SEM_SIZET
 } SemanticType;
 
 typedef enum {
-    SEM_FCT, SEM_PARAM, SEM_VAR, SEM_ARR
+    SEM_FCT, SEM_PARAM, SEM_VAR, SEM_ARR, SEM_SIGN
 } SemanticKind;
+
+typedef struct SymbolParams{
+    SemanticType type;
+    char *name;
+    int count;
+
+    SymbolParams *next;
+}SymbolParams;
 
 typedef struct SymbolNode {
     SemanticType type;
@@ -27,8 +37,9 @@ typedef struct SymbolNode {
     bool isArr;
     char *stringLiteral;
 
+
     int param_count;
-    SemanticType *param;
+    SymbolParams *param;
 
     SymbolNode *next;
     size_t line;
@@ -54,6 +65,7 @@ typedef struct SemContext {
 typedef struct IRsymbole{
     char *name;
     SemanticType type;
+    SemanticKind kind;
 
     //For arrays
     int size;

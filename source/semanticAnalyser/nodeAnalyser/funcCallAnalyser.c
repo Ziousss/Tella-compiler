@@ -2,8 +2,9 @@
 
 SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
     char *name = funcCallAst->data.func_call.name;
+
     SymbolNode *funcCallNode = find_in_scope(name, context);
-    if(funcCallNode == NULL || funcCallNode->kind != SEM_FCT){
+    if(funcCallNode == NULL || (funcCallNode->kind != SEM_FCT && funcCallNode->kind != SEM_SIGN)){
         printf("You call the function %s but it has not been defined yet.\n", name);
         context->error_count++;
         return SEM_ERROR;
@@ -23,6 +24,8 @@ SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
     }
 
     ArgNode *arg = funcCallAst->data.func_call.args;
+    SymbolParams *paramSym = funcCallNode->param;
+    SymbolParams* tmp = paramSym;
 
     for(int i = 0; i < param_call_count; i++){
         SemanticType param_type = expressionAnalyser(arg->expression, context);
@@ -30,12 +33,13 @@ SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
         if(param_type == SEM_ERROR){
             return SEM_ERROR;
         }
-        if(param_type != funcCallNode->param[i]){
-            printf("Type mismatch in call to '%s' at line %ld file %s: argument %d is %s but expected %s.\n",funcCallNode->name,  funcCallAst->line, funcCallAst->fileName,  i + 1,   fromSemToString(param_type), fromSemToString(funcCallNode->param[i]));
+        if(param_type != tmp->type){
+            printf("Type mismatch in call to '%s' at line %ld file %s: argument %d is %s but expected %s.\n",funcCallNode->name,  funcCallAst->line, funcCallAst->fileName,  i + 1,   fromSemToString(param_type), fromSemToString(tmp->type));
             context->error_count++;
             return SEM_ERROR;
         }
         arg = arg->next;
+        tmp = tmp->next;
     }
     return funcCallNode->type;
 }

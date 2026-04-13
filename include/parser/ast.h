@@ -15,6 +15,7 @@ typedef enum {
 
     AST_FUNC_DEF,
     AST_FUNC_DEF_MAIN,
+    AST_FUNC_SIGN,
     AST_INCLUDE,
     AST_FUNC_CALL,
     AST_VAR_DECL,

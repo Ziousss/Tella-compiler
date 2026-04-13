@@ -1,10 +1,10 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
 void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
-    NodeType ast_type = stmtAst->ast_type;
-    switch (ast_type){
+    NodeType astType = stmtAst->ast_type;
+    switch (astType){
         case AST_ARRAY_DECL: {
-            if(find_in_current_scope(stmtAst->data.arrayDecl.name, context)){
+            if(find_in_current_scope(stmtAst->data.arrayDecl.name,context)){
                 printf("Redefinition of the %s identifier in the same scope.\n", stmtAst->data.arrayDecl.name);
                 context->error_count++;
                 return;
@@ -38,7 +38,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
             push_variables(sym, context);
 
-            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, arrType, size, NULL);
+            IRsymbole *symIR = newIRsym(stmtAst->data.arrayDecl.name, arrType, size, NULL, SEM_ARR);
             if(symIR == NULL){
                 context->error_count++;
                 return;
@@ -116,7 +116,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
 
             push_variables(sym, context);
 
-            IRsymbole *symIR = newIRsym(stmtAst->data.declaration.identifier, left_type, size, stringLit);
+            IRsymbole *symIR = newIRsym(stmtAst->data.declaration.identifier, left_type, size, stringLit, SEM_VAR);
             if(symIR == NULL){
                 context->error_count++;
                 return;
@@ -124,6 +124,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             pushIRSym(symIR, context);
             break;
         }
+
         case AST_RETURN: {
             returnAnalyser(stmtAst, context);
             break;
@@ -146,6 +147,10 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
         }
         case AST_FOR_STMT:{
             forAnalyser(stmtAst, context);
+            break;
+        }
+        case AST_FUNC_CALL:{
+            funcCallAnalyser(stmtAst, context);
             break;
         }
 

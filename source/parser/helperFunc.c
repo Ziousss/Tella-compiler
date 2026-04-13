@@ -78,6 +78,7 @@ const char* astTypeToString(NodeType type) {
         case AST_BOOLEAN:           return "BOOL_AST";
         case AST_FUNC_DEF:          return "FUNC_DEF_AST";
         case AST_FUNC_DEF_MAIN:     return "FUNC_DEF_MAIN_AST";
+        case AST_FUNC_SIGN:         return "FUNC_SIGNATURE_AST";
         case AST_IDENTIFIER:        return "IDENTIFIER_AST";
         case AST_NUMBER:            return "NUMBER_AST";
         case AST_STRING_LITERAL:    return "STRING_AST";

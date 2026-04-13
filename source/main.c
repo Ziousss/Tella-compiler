@@ -40,6 +40,10 @@ int main (int argc, char **argv) {
     char *originalFileName = argv[1];
     PreResult preprocessStruct = preprocess(source, originalFileName);
     free(source);
+    if(preprocessStruct.size == 0){
+        cleanup(NULL, NULL, NULL, contextMain, NULL);
+        return 40;
+    }
     
     if(contextMain->postSource){
         printf("\n");
@@ -71,6 +75,11 @@ int main (int argc, char **argv) {
         cleanup(NULL, NULL, NULL, contextMain, tokenList);
         return 4;
     }
+
+    for(size_t i = 0; i < preprocessStruct.size; i++){
+        free(preprocessStruct.data[i].fileName);
+    }
+    free(preprocessStruct.data);
 
     if(contextMain->parser){
         printf("\n");

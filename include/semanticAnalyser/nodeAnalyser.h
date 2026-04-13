@@ -24,5 +24,6 @@ void whileAnalyser(ASTnode *whileAst, SemContext *context);
 void forAnalyser(ASTnode *forAst, SemContext *context);
 void arrayAssignAnalyser(ASTnode *arrayAssign, SemContext *context);
 SemanticType arrLoadAnalyser(ASTnode *arrayAssign, SemContext *context);
+void funcSignAnalyser(ASTnode *funcSign, SemContext *context);
 
 #endif

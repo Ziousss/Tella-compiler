@@ -66,7 +66,6 @@ GlobalFunc *getAllFunctions(const SemContext *context) {
             node->name = sym->name;          
             node->type = sym->type;
             node->param_count = sym->param_count;
-            node->param = sym->param;        
             node->next = NULL;
 
             if (!head) {
@@ -137,7 +136,7 @@ Tokentype fromSemToTok(SemanticType type){
 }
 
 //size and typeSize are only for arrays for now
-IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit){
+IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit, SemanticKind kind){
     IRsymbole *sym = malloc(sizeof(IRsymbole));
     if(sym == NULL){
         printf("Malloc failed for IRsymbole.\n");
@@ -149,6 +148,7 @@ IRsymbole *newIRsym(char *name, SemanticType type, int size, char *stringLit){
     sym->size = size;
     sym->next = NULL;
     sym->string_literals = stringLit;
+    sym->kind = kind;
     
     return sym;
 }
@@ -191,4 +191,47 @@ bool canConvert(SemanticType target, SemanticType source, ASTnode *expr){
     if(target == SEM_INT && source == SEM_SIZET) return true;
     
     return false;
+}
+
+SymbolParams *getParams(ParameterNode *ASTparams){
+    ParameterNode *tmp = ASTparams;
+    SymbolParams *head = NULL;
+    SymbolParams *tail = NULL;
+
+    if(ASTparams == NULL){
+        return NULL;
+    }
+
+    int count = 0;
+    while (tmp != NULL){
+        SymbolParams *symParam = malloc(sizeof(SymbolParams));
+        if(symParam == NULL){
+            for(int i = 0; i < count; i++){
+                SymbolParams *next = head->next;
+                free(head->name);
+                free(head);
+                head = next; 
+            }
+            printf("Malloc failed in getParams\n");
+            return NULL;
+        }
+        count++;
+
+        symParam->name = tmp->name;
+        symParam->type = fromTokToSem(tmp->ret_type);
+        symParam->next = NULL;
+        symParam->count = count;
+
+        if(head == NULL){
+            head = symParam;
+            tail = symParam;
+        } else {
+            tail->next = symParam;
+            tail = symParam;
+        }
+
+        tmp = tmp->next;
+    }
+    
+    return head;
 }

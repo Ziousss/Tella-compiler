@@ -22,7 +22,9 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
     initGlobalFunctions(definedFunc);
     ASTnode *funcdef = program->data.program_node.func_def;
     while(funcdef != NULL){
-        funcDefIR(funcdef, context);
+        if(funcdef->ast_type == AST_FUNC_DEF || funcdef->ast_type == AST_FUNC_DEF_MAIN){
+            funcDefIR(funcdef, context);
+        }
         funcdef = funcdef->next;
     }
 

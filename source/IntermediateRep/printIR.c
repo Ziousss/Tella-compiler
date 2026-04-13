@@ -20,7 +20,7 @@ void printIR(IRstruct *IR){
                     printf(" = ");
                 }
 
-                printf("CALL %s %d\n",
+                printf("CALL %s (%d args) \n",
                        tmp->data.call.func_name,
                        tmp->data.call.arg_count);
                 break;
