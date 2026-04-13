@@ -77,20 +77,25 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             }
 
             SymbolNode *sym = malloc(sizeof(SymbolNode));
+            if(sym == NULL){
+                printf("Malloc failed for sym in AST_VAR_DECL.\n");
+                return;
+            }
             sym->kind = SEM_VAR;
             sym->name = strdup(stmtAst->data.declaration.identifier);
             sym->type = left_type;
+            sym->size = NULL;
             int size = -1;
-
-            ASTnode *sizeAST = malloc(sizeof(ASTnode));
-            if(sizeAST == NULL){
-                printf("Malloc failed for size in stmtAnalyser.\n");
-                context->error_count++;
-                return;
-            }
 
             char *stringLit = NULL;
             if(left_type == SEM_STRING){
+                ASTnode *sizeAST = malloc(sizeof(ASTnode));
+                if(sizeAST == NULL){
+                    printf("Malloc failed for size in stmtAnalyser.\n");
+                    context->error_count++;
+                    return;
+                }
+
                 if(stmtAst->data.declaration.expression != NULL && stmtAst->data.declaration.expression->ast_type == AST_STRING_LITERAL){
                     stringLit = stmtAst->data.declaration.expression->data.string_literal.string;
 
@@ -111,17 +116,22 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
                     sym->size = sizeAST;
                     sym->stringLiteral = NULL;
                 }
+            } else {
+                sym->size = NULL;
             }
+            
             sym->next = NULL;
 
             push_variables(sym, context);
 
             IRsymbole *symIR = newIRsym(stmtAst->data.declaration.identifier, left_type, size, stringLit, SEM_VAR);
             if(symIR == NULL){
+
                 context->error_count++;
                 return;
             }
             pushIRSym(symIR, context);
+
             break;
         }
 

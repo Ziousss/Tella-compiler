@@ -20,7 +20,8 @@ void funcSignAnalyser(ASTnode *funcSign, SemContext *context){
     }
 
     sym->kind = SEM_SIGN;
-    sym->name = funcSign->data.func_def.name;
+    sym->name = strdup(funcSign->data.func_def.name);
+    sym->size = NULL;
     sym->isArr = false;
     sym->line = funcSign->line;
     sym->next = NULL;

@@ -14,6 +14,7 @@ void pop_scope(SemContext *context){
     while(sym != NULL){
         SymbolNode *next = sym->next;
         free(sym->name);
+        freeASTNode(sym->size);
         free(sym);
         sym = next;
     }
@@ -63,7 +64,7 @@ GlobalFunc *getAllFunctions(const SemContext *context) {
                 return NULL;
             }
 
-            node->name = sym->name;          
+            node->name = strdup(sym->name);          
             node->type = sym->type;
             node->param_count = sym->param_count;
             node->next = NULL;
@@ -217,7 +218,7 @@ SymbolParams *getParams(ParameterNode *ASTparams){
         }
         count++;
 
-        symParam->name = tmp->name;
+        symParam->name = strdup(tmp->name);
         symParam->type = fromTokToSem(tmp->ret_type);
         symParam->next = NULL;
         symParam->count = count;

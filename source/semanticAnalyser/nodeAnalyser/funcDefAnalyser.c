@@ -49,6 +49,7 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     funcDefSem->kind = SEM_FCT;
     funcDefSem->type = type;
     funcDefSem->next = NULL;
+    funcDefSem->size = NULL;
 
     //This is useful for function calls
     int paramCount = 0;
@@ -61,19 +62,21 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     ParameterNode *param = funcDefAst->data.func_def.parameters;
     SymbolParams *symParams = getParams(param);
 
-    SymbolParams *funcSignParams = NULL;
-    if(!funcNull && func->param != NULL){
-        funcSignParams = func->param;
-    }
+    if(sign){
+        SymbolParams *funcSignParams = NULL;
+        if(!funcNull && func->param != NULL){
+            funcSignParams = func->param;
+        }
 
-    if(symParams == NULL && funcSignParams != NULL){
-        printf("Function definition has no parameters but the function signature does.\n");
-        context->error_count++;
-        return;
-    } else if (symParams != NULL && funcSignParams == NULL){
-        printf("Function signature has no parameters but the function definition does.\n");
-        context->error_count++;
-        return;
+        if(symParams == NULL && funcSignParams != NULL){
+            printf("Function definition %s has no parameters but the function signature does.\n", func->name);
+            context->error_count++;
+            return;
+        } else if (symParams != NULL && funcSignParams == NULL){
+            printf("Function signature %s has no parameters but the function definition does.\n", funcDefAst->data.func_def.name);
+            context->error_count++;
+            return;
+        }
     }
 
     if(sign && symParams != NULL){
@@ -122,19 +125,22 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
 
     for(int i = 0; i < paramCount; i++){
         SymbolNode *paramSem = malloc(sizeof(SymbolNode));
+        if(paramSem == NULL){
+            printf("malloc for Paramsem failed.\n");
+            context->error_count++;
+            return;
+        }
 
         paramSem->kind = SEM_PARAM;
         paramSem->name = strdup(paramAst->name);
         paramSem->type = fromTokToSem(paramAst->ret_type);
+        paramSem->size = NULL;
         paramSem->next = NULL;
 
         push_variables(paramSem, context);
 
-        IRsymbole *symIR = malloc(sizeof(IRsymbole));
-        symIR->name = strdup(paramAst->name);
-        symIR->type = fromTokToSem(paramAst->ret_type);
-        symIR->next = NULL;
-
+        
+        IRsymbole *symIR = newIRsym(strdup(paramAst->name), fromTokToSem(paramAst->ret_type), -1, NULL, SEM_PARAM);
         pushIRSym(symIR,context);
 
         paramAst = paramAst->next;
@@ -149,5 +155,13 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     }
 
     context->current_function = NULL;
+    
+    while(symParams != NULL){
+        SymbolParams *next = symParams->next;
+        free(symParams->name);
+        free(symParams);
+        symParams = next;
+    }
+    
     pop_scope(context);
 }

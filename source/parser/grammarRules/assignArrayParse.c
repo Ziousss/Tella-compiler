@@ -77,7 +77,7 @@ ASTnode *rightAssignArrayParse(Tokenstruct *tokenList, int *index, int nameNumbe
     rightArray->ast_type = AST_ARRAY_LOAD;
     rightArray->data.arrayLoad.name = name;
     rightArray->data.arrayLoad.index = arrIndex;
-    rightArray->fileName = tokenList[start].fileName;
+    rightArray->fileName = strdup(tokenList[start].fileName);
     
     *index = i;
     return rightArray;

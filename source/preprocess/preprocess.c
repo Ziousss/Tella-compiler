@@ -74,6 +74,10 @@ PreResult preprocess(char *source, char *fileName){
 
             size++;
         }
+
+        for(size_t index = 0; index < inc.size; index++){
+            free((void*)inc.data[index].fileName);
+        }
         free(inc.data);
     }
 

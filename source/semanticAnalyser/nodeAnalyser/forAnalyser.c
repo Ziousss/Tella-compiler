@@ -34,6 +34,7 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
         }
 
         symNode->kind = SEM_VAR;
+        symNode->size = NULL;
         symNode->name = strdup(name);
         symNode->next = NULL;
         symNode->type = semType;

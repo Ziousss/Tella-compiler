@@ -78,10 +78,11 @@ Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type
     char *temp = (char *)malloc(2);
     temp[0] = chr;
     temp[1] = '\0';
-    tokenlist[count].lexeme = temp;
+    tokenlist[count].lexeme = strdup(temp);
+    free(temp);
     tokenlist[count].line = line;
     tokenlist[count].length = length;
-    tokenlist[count].fileName = fileName;
+    tokenlist[count].fileName = strdup(fileName);
     return tokenlist;
 }
 
@@ -91,7 +92,7 @@ Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype ty
     tokenlist[count].lexeme = string;
     tokenlist[count].line = line;
     tokenlist[count].length = length;
-    tokenlist[count].fileName = fileName;
+    tokenlist[count].fileName = strdup(fileName);
     return tokenlist;
 }
 
@@ -130,10 +131,16 @@ Tokentype keyword_type(char *sub){
 
 void freeTokenList(Tokenstruct *tokenlist){
     int i = 0;
-    while(tokenlist[i].type != TOK_EOF) {
+    while(1) {
+        if(tokenlist[i].type == TOK_EOF){
+            free((void*)tokenlist[i].fileName);
+            break;
+        }
+        
         if(tokenlist[i].lexeme != NULL) {
             free((void*)tokenlist[i].lexeme);
         }
+        free((void*)tokenlist[i].fileName);
         i++;
     }
     free(tokenlist);

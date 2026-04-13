@@ -118,6 +118,7 @@ void freeASTNode(ASTnode *node){
         case AST_FUNC_DEF:
         case AST_FUNC_DEF_MAIN: {
             free(node->data.func_def.name);
+            free((void*)node->fileName);
             freeASTNode(node->data.func_def.body);
             ParameterNode *param = node->data.func_def.parameters;
             if(param != NULL) {
@@ -132,16 +133,19 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_ASSIGN_EXPR: {
+            free((void*)node->fileName);
             freeASTNode(node->data.assign.value);
             free(node->data.assign.target);
             break;
         }
         case AST_BINARY_EXPR:{
+            free((void*)node->fileName);
             freeASTNode(node->data.binary.left);
             freeASTNode(node->data.binary.right);
             break;
         }
         case AST_BLOCK: {
+            free((void*)node->fileName);
             freeASTNode(node->data.block.stmts);
             break;
         }
@@ -152,6 +156,7 @@ void freeASTNode(ASTnode *node){
         }
         
         case AST_FOR_STMT:{
+            free((void*)node->fileName);
             freeASTNode(node->data.for_node.block);
             freeASTNode(node->data.for_node.condition);
             freeASTNode(node->data.for_node.incrementation);
@@ -159,6 +164,7 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_FUNC_CALL:{
+            free((void*)node->fileName);
             free(node->data.func_call.name);
             ArgNode *arg = node->data.func_call.args;
             ArgNode *current = arg;
@@ -171,10 +177,12 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_IDENTIFIER:{
+            free((void*)node->fileName);
             free(node->data.identifier.name);
             break;
         }
         case AST_IF_STMT:{
+            free((void*)node->fileName);
             freeASTNode(node->data.if_node.condition);
             freeASTNode(node->data.if_node.else_branch);
             freeASTNode(node->data.if_node.if_branch);
@@ -182,34 +190,41 @@ void freeASTNode(ASTnode *node){
         }
         
         case AST_RETURN:{
+            free((void*)node->fileName);
             freeASTNode(node->data.return_node.expr);
             break;
         }
         case AST_VAR_DECL:{
+            free((void*)node->fileName);
             freeASTNode(node->data.declaration.expression);
             break;
         }
         case AST_STRING_LITERAL:{
+            free((void*)node->fileName);
             free(node->data.string_literal.string);
             break;
         }
         case AST_WHILE_STMT:{
+            free((void*)node->fileName);
             freeASTNode(node->data.while_node.condition);
             freeASTNode(node->data.while_node.block);
             break;
         }
         case AST_ARRAY_DECL:{
+            free((void*)node->fileName);
             freeASTNode(node->data.arrayDecl.size);
             free(node->data.arrayDecl.name);
             break;
         }
         case AST_ASSIGN_ARRAY:{
+            free((void*)node->fileName);
             freeASTNode(node->data.arrayAssign.index);
             freeASTNode(node->data.arrayAssign.value);
             free(node->data.arrayAssign.name);
             break;
         }
         case AST_ARRAY_LOAD:{
+            free((void*)node->fileName);
             freeASTNode(node->data.arrayLoad.index);
             break;
         }

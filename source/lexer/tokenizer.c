@@ -203,6 +203,8 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 }
 
                 maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub,sublen, input[start].line, input[start].fileName);
+                free(sub);
+                
                 left = right;
                 tokencount++;
                 continue;
@@ -220,7 +222,8 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
 
                 char *sub = getSubstring(input, start,right-1);
                 size_t sublen = strlen(sub);
-                maketokenString(tokenList, tokencount, TOK_INTEGER_LITERAL, sub, sublen,input[start].line, input[start].fileName);
+                maketokenString(tokenList, tokencount, TOK_INTEGER_LITERAL, sub, sublen, input[start].line, input[start].fileName);
+                free(sub);
 
                 left = right;
                 tokencount++;
@@ -239,14 +242,14 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                     right++;
                 }
                 
-                char *sub = getSubstring(input,start,right-1);
+                char *sub= getSubstring(input,start,right-1);
                 size_t sublen = strlen(sub);
 
                 tokenList = reallocTokenList(tokenList, tokencount, &capacity);
                 if(tokenList == NULL) return NULL;
                 maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub,sublen, input[start].line, input[start].fileName);
-                    
-                
+                free(sub);
+
                 right++;
                 left = right;
                 continue;
@@ -268,6 +271,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                     char *sub = getSubstring(input, start, right + 1);
                     size_t sublen = strlen(sub);
                     maketokenString(tokenList, tokencount, TOK_INCLUDE_NAME, sub, sublen, input[start].line, input[start].fileName);
+                    free(sub);
                     right = right + 2;
                     left = right;
                 }
@@ -284,6 +288,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                             sub = getSubstring(input, start, right);
                             sublen = strlen(sub);
                             maketokenString(tokenList, tokencount, TOK_STRING, sub, sublen, input[start].line, input[start].fileName);
+                            free(sub);
                             tokencount++;
                             right++;
                             left = right;
@@ -291,6 +296,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                         }
                     } 
                     maketokenString(tokenList, tokencount, type, sub, sublen, input[start].line, input[start].fileName);
+                    free(sub);
                 }
 
                 tokencount++;

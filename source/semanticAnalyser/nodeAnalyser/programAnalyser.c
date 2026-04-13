@@ -11,6 +11,7 @@ GlobalFunc *programAnalyser(ASTnode *program) {
         printf("Malloc error for context in programAnalyser.\n");
         return NULL;
     }
+
     context->current_function = NULL;
     context->error_count = 0;
     context->current_scope = NULL;
@@ -39,25 +40,15 @@ GlobalFunc *programAnalyser(ASTnode *program) {
     }
 
     GlobalFunc *current = functionsList;
-    while (current != NULL)
-    {
+    while (current != NULL){
         current->sym = context->IRsym;
         current = current->next;
     }
 
-    ScopeNode *cur = context->current_scope;
-    while(cur != NULL){
-        SymbolNode *nodeSym = cur->symbols;
-        while(nodeSym != NULL){
-            SymbolNode *next = nodeSym->next;
-            free(nodeSym);
-            nodeSym = next;
-        }
-        ScopeNode *next = cur->parent;
-        free(cur);
-        cur = next;
+    while (context->current_scope != NULL){
+        pop_scope(context);
     }
-    
     free(context);
+    
     return functionsList;
 }

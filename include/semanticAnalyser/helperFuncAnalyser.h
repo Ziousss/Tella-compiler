@@ -9,6 +9,7 @@
 #include "../include/parser/helperFunc.h"
 #include "../include/lexer/tokenizer.h"
 #include "../include/IntermediateRep/helperFuncIR.h"
+#include "mainHelper.h"
 
 void push_scope(SemContext *context);
 void pop_scope(SemContext *context);
