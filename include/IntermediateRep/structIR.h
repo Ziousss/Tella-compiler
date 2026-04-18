@@ -109,9 +109,7 @@ typedef struct IRstruct {
             char *name_func;
         } function;
 
-        struct {
-            Operand parameter;
-        } parameters;     
+        Operand parameters;     
         
         //For arrays specifically
         struct {

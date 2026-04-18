@@ -39,14 +39,13 @@ typedef struct {
     Tokentype type;
     const char* lexeme;
     size_t line;
-    size_t length;
     const char *fileName;
 } Tokenstruct;
 
 const char* tokenTypeToString(int type);
 Tokenstruct *lexicalAnalyzer (PreResult pre);
-Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t length, size_t line, const char *fileName);
-Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t length, size_t line, const char *fileName);
+Tokenstruct *maketokenChar (Tokenstruct *tokenlist, size_t count, Tokentype type, char chr, size_t line, const char *fileName);
+Tokenstruct *maketokenString (Tokenstruct *tokenlist, size_t count, Tokentype type, const char *sub, size_t line, const char *fileName);
 Tokentype keyword_type(char *sub);
 void freeTokenList(Tokenstruct *tokenlist);
 Tokenstruct* reallocTokenList(Tokenstruct* list, size_t tokencount, size_t* capacity);

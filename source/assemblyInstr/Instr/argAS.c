@@ -4,7 +4,7 @@ char const *param_reg[] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
 
 void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
     //will add stack argument later.
-    if(stack->arg_count >= 6){
+    if(stack->param_count >= 6){
         printf("ERROR: Too many arguments (> 6)\n");
         context->errors++;
         return;
@@ -12,8 +12,8 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
 
     Operand argOp = arg->data.arg.value;
     IRtype argType = argOp.IR_type;
-    int indexContext = stack->arg_count;
-    const char *reg = param_reg[stack->arg_count++];
+    int indexContext = stack->param_count;
+    const char *reg = param_reg[stack->param_count++];
 
     switch (argType){
         case IR_VAR:{
@@ -22,14 +22,12 @@ void argAS(IRstruct *arg, FILE *output, StackLayout *stack, ASContext* context){
             context->offset[indexContext] = varOffset;
             context->argType[indexContext] = IR_VAR;
 
-            IRstruct *rodata = getRodataString(context, -1, argOp.data.IR_Variable.string);
-            if(rodata == NULL){
-                printf("Rodata null in argAS\n");
-                context->errors++;
-                return;
+            if(argOp.data.IR_Variable.Type != IR_STRING){
+                context->stringID[indexContext] = -1;
+            } else {
+                IRstruct *rodata = getRodataString(context, -1, argOp.data.IR_Variable.string);
+                context->stringID[indexContext] = rodata->data.rodata.stringID;
             }
-
-            context->stringID[indexContext] = rodata->data.rodata.stringID;
             break;
         }
         

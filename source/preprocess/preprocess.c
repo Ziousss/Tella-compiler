@@ -54,6 +54,7 @@ PreResult preprocess(char *source, char *fileName){
         char *fname = strdup(buffer);
         PreResult inc = preprocess(fileContent, fname);
         free(fileContent);
+        free(fname);
 
         for (size_t j = 0; j < inc.size; j++){
             if (size >= cap){

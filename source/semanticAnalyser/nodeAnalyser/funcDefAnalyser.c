@@ -61,6 +61,7 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
 
     ParameterNode *param = funcDefAst->data.func_def.parameters;
     SymbolParams *symParams = getParams(param);
+    funcDefSem->param = symParams;
 
     if(sign){
         SymbolParams *funcSignParams = NULL;
@@ -140,7 +141,7 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
         push_variables(paramSem, context);
 
         
-        IRsymbole *symIR = newIRsym(strdup(paramAst->name), fromTokToSem(paramAst->ret_type), -1, NULL, SEM_PARAM);
+        IRsymbole *symIR = newIRsym(paramAst->name, fromTokToSem(paramAst->ret_type), -1, NULL, SEM_PARAM);
         pushIRSym(symIR,context);
 
         paramAst = paramAst->next;
@@ -155,13 +156,6 @@ void funcDefAnalyser(ASTnode *funcDefAst, SemContext *context){
     }
 
     context->current_function = NULL;
-    
-    while(symParams != NULL){
-        SymbolParams *next = symParams->next;
-        free(symParams->name);
-        free(symParams);
-        symParams = next;
-    }
     
     pop_scope(context);
 }

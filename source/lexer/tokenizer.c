@@ -49,7 +49,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 tokenList = reallocTokenList(tokenList, tokencount, &capacity);
                 if(tokenList == NULL) return NULL;
                 
-                maketokenChar(tokenList, tokencount, TOK_DOT, '.', 1, input[start].line, input[start].fileName);
+                maketokenChar(tokenList, tokencount, TOK_DOT, '.', input[start].line, input[start].fileName);
                 right++;
                 left = right;
                 tokencount++;
@@ -65,7 +65,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 {
                     case '|': 
                         if(right+1 < len && input[right+1].c == '|'){
-                            maketokenString(tokenList, tokencount, TOK_OR, "||", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_OR, "||", input[start].line, input[start].fileName);
                             right++;
                             break;
                         }
@@ -75,7 +75,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                         }
                     case '&':
                         if(right+1 < len && input[right+1].c == '&'){
-                            maketokenString(tokenList, tokencount, TOK_AND, "&&", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_AND, "&&", input[start].line, input[start].fileName);
                             right++;
                             break;
                         }
@@ -83,17 +83,17 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                             printf("The character '&' in file %s line %ld cannot stand alone, maybe you meant &&?\n", input[start].fileName, input[start].line);
                             break;
                         }
-                    case '#': maketokenChar(tokenList, tokencount, TOK_HASHTAG, input[right].c, 1, input[start].line, input[start].fileName); break;
-                    case ';': maketokenChar(tokenList, tokencount, TOK_SEMICOLON, input[right].c, 1, input[start].line, input[start].fileName); break;
-                    case ',': maketokenChar(tokenList, tokencount, TOK_COMMA, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case '(': maketokenChar(tokenList, tokencount, TOK_LPAREN, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case ')': maketokenChar(tokenList, tokencount, TOK_RPAREN, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case '{': maketokenChar(tokenList, tokencount, TOK_LBRACE, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case '}': maketokenChar(tokenList, tokencount, TOK_RBRACE, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case '[': maketokenChar(tokenList, tokencount, TOK_LSQRTBRAK, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case ']': maketokenChar(tokenList, tokencount, TOK_RSQRTBRAK, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    case ':': maketokenChar(tokenList, tokencount, TOK_DOUBLEPOINT, input[right].c, 1, input[start].line, input[start].fileName);break;
-                    default: maketokenChar(tokenList, tokencount, TOK_UNIDENTIFIED, input[right].c, 1, input[start].line, input[start].fileName);break;
+                    case '#': maketokenChar(tokenList, tokencount, TOK_HASHTAG, input[right].c, input[start].line, input[start].fileName); break;
+                    case ';': maketokenChar(tokenList, tokencount, TOK_SEMICOLON, input[right].c, input[start].line, input[start].fileName); break;
+                    case ',': maketokenChar(tokenList, tokencount, TOK_COMMA, input[right].c, input[start].line, input[start].fileName);break;
+                    case '(': maketokenChar(tokenList, tokencount, TOK_LPAREN, input[right].c, input[start].line, input[start].fileName);break;
+                    case ')': maketokenChar(tokenList, tokencount, TOK_RPAREN, input[right].c, input[start].line, input[start].fileName);break;
+                    case '{': maketokenChar(tokenList, tokencount, TOK_LBRACE, input[right].c, input[start].line, input[start].fileName);break;
+                    case '}': maketokenChar(tokenList, tokencount, TOK_RBRACE, input[right].c, input[start].line, input[start].fileName);break;
+                    case '[': maketokenChar(tokenList, tokencount, TOK_LSQRTBRAK, input[right].c, input[start].line, input[start].fileName);break;
+                    case ']': maketokenChar(tokenList, tokencount, TOK_RSQRTBRAK, input[right].c, input[start].line, input[start].fileName);break;
+                    case ':': maketokenChar(tokenList, tokencount, TOK_DOUBLEPOINT, input[right].c, input[start].line, input[start].fileName);break;
+                    default: maketokenChar(tokenList, tokencount, TOK_UNIDENTIFIED, input[right].c, input[start].line, input[start].fileName);break;
                 }
                 right++;
                 tokencount++;
@@ -109,62 +109,62 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 switch(input[right].c){
                     case '>':
                         if (right+1 >= len || input[right+1].c != '=') {
-                            maketokenChar(tokenList, tokencount, TOK_GR, input[right].c, 1, input[start].line, input[start].fileName);
+                            maketokenChar(tokenList, tokencount, TOK_GR, input[right].c, input[start].line, input[start].fileName);
                         } else {
-                            maketokenString(tokenList, tokencount, TOK_GREQ, ">=", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_GREQ, ">=", input[start].line, input[start].fileName);
                             right++;
                         }
                         break;
                     case '<':
                         if (right+1 >= len || input[right+1].c != '=') {
-                            maketokenChar(tokenList, tokencount, TOK_LESS, input[right].c, 1, input[start].line, input[start].fileName);
+                            maketokenChar(tokenList, tokencount, TOK_LESS, input[right].c, input[start].line, input[start].fileName);
                         } else {
-                            maketokenString(tokenList, tokencount, TOK_LESSEQ, "<=", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_LESSEQ, "<=", input[start].line, input[start].fileName);
                             right++;
                         }
                         break;
                     case '+':
                         if (right+1 < len && input[right+1].c == '=') {
-                            maketokenString(tokenList, tokencount, TOK_PLUSEQ, "+=", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_PLUSEQ, "+=", input[start].line, input[start].fileName);
                             right++;
                         } else if(right+1 < len && input[right+1].c == '+') {
-                            maketokenString(tokenList, tokencount, TOK_PLUSPLUS, "++", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_PLUSPLUS, "++", input[start].line, input[start].fileName);
                             right++;
                         } else {
-                            maketokenChar(tokenList, tokencount, TOK_PLUS, input[right].c, 1, input[start].line, input[start].fileName);
+                            maketokenChar(tokenList, tokencount, TOK_PLUS, input[right].c, input[start].line, input[start].fileName);
                         }
                         break;
                     case '-':
                         if (right+1 < len && input[right+1].c == '=') {
-                            maketokenString(tokenList, tokencount, TOK_MINUSEQ, "-=", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_MINUSEQ, "-=", input[start].line, input[start].fileName);
                             right++;
                         } else if(right+1 < len && input[right+1].c == '-') {
-                            maketokenString(tokenList, tokencount, TOK_MINUSMINUS, "--", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_MINUSMINUS, "--", input[start].line, input[start].fileName);
                             right++;
                         } else {
-                            maketokenChar(tokenList, tokencount, TOK_MINUS, input[right].c, 1, input[start].line, input[start].fileName);
+                            maketokenChar(tokenList, tokencount, TOK_MINUS, input[right].c, input[start].line, input[start].fileName);
                         }
                         break;
-                    case '/': maketokenChar(tokenList, tokencount, TOK_SLASH, input[right].c, 1, input[start].line, input[start].fileName); break;
-                    case '*': maketokenChar(tokenList, tokencount, TOK_STAR, input[right].c, 1, input[start].line, input[start].fileName); break;
+                    case '/': maketokenChar(tokenList, tokencount, TOK_SLASH, input[right].c, input[start].line, input[start].fileName); break;
+                    case '*': maketokenChar(tokenList, tokencount, TOK_STAR, input[right].c, input[start].line, input[start].fileName); break;
                     case '=':
                         if(right+1 < len && input[right+1].c == '='){
-                            maketokenString(tokenList, tokencount, TOK_EQEQ, "==", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_EQEQ, "==", input[start].line, input[start].fileName);
                             right++;
                         } else {
-                            maketokenChar(tokenList, tokencount, TOK_EQ, input[right].c, 1, input[start].line, input[start].fileName);
+                            maketokenChar(tokenList, tokencount, TOK_EQ, input[right].c, input[start].line, input[start].fileName);
                         }
                         break;
                     case '!':
                         if (right+1 < len && input[right+1].c == '=') {
-                            maketokenString(tokenList, tokencount, TOK_UNEQ, "!=", 2, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_UNEQ, "!=", input[start].line, input[start].fileName);
                             right++;
                         } else {
-                            maketokenChar(tokenList, tokencount, TOK_EXCLAMATION, '!', 1, input[start].line, input[start].fileName);
+                            maketokenChar(tokenList, tokencount, TOK_EXCLAMATION, '!', input[start].line, input[start].fileName);
                         }
                         break;
                     default:
-                        maketokenChar(tokenList, tokencount, TOK_UNIDENTIFIED, input[right].c, 1, input[start].line, input[start].fileName);
+                        maketokenChar(tokenList, tokencount, TOK_UNIDENTIFIED, input[right].c, input[start].line, input[start].fileName);
                         break;
                 }
 
@@ -192,7 +192,6 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 if(tokenList == NULL) return NULL;
 
                 char *sub = getSubstring(input,start,right-1);
-                size_t sublen = strlen(sub);
                 bool isValid = isValidChar(sub);
                 right++;
 
@@ -202,7 +201,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                     return NULL;
                 }
 
-                maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub,sublen, input[start].line, input[start].fileName);
+                maketokenString(tokenList,tokencount,TOK_CHAR_LITERAL, sub, input[start].line, input[start].fileName);
                 free(sub);
                 
                 left = right;
@@ -221,8 +220,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 if(tokenList == NULL) return NULL;
 
                 char *sub = getSubstring(input, start,right-1);
-                size_t sublen = strlen(sub);
-                maketokenString(tokenList, tokencount, TOK_INTEGER_LITERAL, sub, sublen, input[start].line, input[start].fileName);
+                maketokenString(tokenList, tokencount, TOK_INTEGER_LITERAL, sub, input[start].line, input[start].fileName);
                 free(sub);
 
                 left = right;
@@ -243,11 +241,10 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                 }
                 
                 char *sub= getSubstring(input,start,right-1);
-                size_t sublen = strlen(sub);
 
                 tokenList = reallocTokenList(tokenList, tokencount, &capacity);
                 if(tokenList == NULL) return NULL;
-                maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub,sublen, input[start].line, input[start].fileName);
+                maketokenString(tokenList,tokencount++,TOK_STRING_LITERAL, sub, input[start].line, input[start].fileName);
                 free(sub);
 
                 right++;
@@ -269,15 +266,13 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
 
                 if(right + 1 < len && input[right].c == '.' && input[right+1].c == 'h'){
                     char *sub = getSubstring(input, start, right + 1);
-                    size_t sublen = strlen(sub);
-                    maketokenString(tokenList, tokencount, TOK_INCLUDE_NAME, sub, sublen, input[start].line, input[start].fileName);
+                    maketokenString(tokenList, tokencount, TOK_INCLUDE_NAME, sub, input[start].line, input[start].fileName);
                     free(sub);
                     right = right + 2;
                     left = right;
                 }
                 else{
                     char *sub = getSubstring(input, start, right - 1);
-                    size_t sublen = strlen(sub);
                     Tokentype type = keyword_type(sub);
                     
                     if(type == TOK_CHAR){
@@ -286,8 +281,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                                 right++;
                             }
                             sub = getSubstring(input, start, right);
-                            sublen = strlen(sub);
-                            maketokenString(tokenList, tokencount, TOK_STRING, sub, sublen, input[start].line, input[start].fileName);
+                            maketokenString(tokenList, tokencount, TOK_STRING, sub, input[start].line, input[start].fileName);
                             free(sub);
                             tokencount++;
                             right++;
@@ -295,7 +289,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                             continue;
                         }
                     } 
-                    maketokenString(tokenList, tokencount, type, sub, sublen, input[start].line, input[start].fileName);
+                    maketokenString(tokenList, tokencount, type, sub, input[start].line, input[start].fileName);
                     free(sub);
                 }
 
@@ -308,7 +302,10 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
     }
     tokenList = reallocTokenList(tokenList, tokencount, &capacity);
     if(tokenList == NULL) return NULL;
-    maketokenChar(tokenList,tokencount,TOK_EOF,' ',0,input[start].line, input[start].fileName);
+    
+    tokenList[tokencount].type = TOK_EOF;
+    tokenList[tokencount].line = input[start].line;
+    tokenList[tokencount].fileName = strdup(input[start].fileName);
     tokencount++;
     
     return tokenList;

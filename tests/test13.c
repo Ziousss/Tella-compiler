@@ -1,7 +1,7 @@
 char main(){
-    char *string = "hello";
+    char *test = "hello";
 
-    return string[0];
+    return test[0];
 }
 
 /*

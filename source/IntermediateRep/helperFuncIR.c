@@ -148,10 +148,10 @@ IRstruct *newParam(IRContext *context, int index, char *name, CstTypes type){
         return NULL;
     }
 
-    new->data.parameters.parameter.data.IR_Variable.param_index = index;
-    new->data.parameters.parameter.IR_type = IR_VAR;
-    new->data.parameters.parameter.data.IR_Variable.paramType = type;
-    new->data.parameters.parameter.data.IR_Variable.identifier = strdup(name);
+    new->data.parameters.data.IR_Variable.param_index = index;
+    new->data.parameters.IR_type = IR_VAR;
+    new->data.parameters.data.IR_Variable.paramType = type;
+    new->data.parameters.data.IR_Variable.identifier = strdup(name);
     new->next = NULL;
     new->op = IR_PARAM;
     return new;

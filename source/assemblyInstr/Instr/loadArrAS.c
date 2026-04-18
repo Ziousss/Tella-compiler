@@ -31,7 +31,6 @@ void loadArrAS(IRstruct *loadArr, FILE *output, StackLayout *stack, ASContext *c
         fprintf(output, "mov rcx, [rbp %+d]\n", baseOffset);
         fprintf(output, "add rcx, rax\n");
     } else {
-        printf("HERE\n");
         fprintf(output, "lea rcx, [rbp %+d]\n", baseOffset);
         fprintf(output, "sub rcx, rax\n");
     }

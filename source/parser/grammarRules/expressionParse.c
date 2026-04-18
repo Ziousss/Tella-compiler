@@ -36,6 +36,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
             ++i;
             left->ast_type = AST_IDENTIFIER;
             left->data.identifier.name = name;
+            left->fileName = strdup(tokenList[start].fileName);
             left->line = tokenList[start].line;
             left->next = NULL;
         }
@@ -49,6 +50,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         left->ast_type = AST_NUMBER;
         if(isNegative) left->data.int_literal.value = -atoi(tokenList[i].lexeme);
         else left->data.int_literal.value = atoi(tokenList[i].lexeme);
+        left->fileName = strdup(tokenList[start].fileName);
         left->line = tokenList[start].line;
         left->next = NULL;
         ++i;
@@ -75,6 +77,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         char chr = processChar(tokenList[i].lexeme);
         left->ast_type = AST_CHAR_LITERAL;
         left->data.character_literal.character = chr;
+        left->fileName = strdup(tokenList[start].fileName);
         left->line = tokenList[start].line;
         left->next = NULL;
         ++i;
@@ -88,6 +91,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         char *string = strdup(tokenList[i].lexeme);
         left->ast_type = AST_STRING_LITERAL;
         left->data.string_literal.string = string;
+        left->fileName = strdup(tokenList[start].fileName);
         left->line = tokenList[start].line;
         left->next = NULL;
         ++i;
@@ -104,6 +108,7 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         } else {
             left->data.boolean_literal.boolean = false;
         }
+        left->fileName = strdup(tokenList[start].fileName);
         left->line = tokenList[start].line;
         left->next = NULL;
         ++i;
@@ -115,7 +120,6 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
 
     
     if(isOperatorExpression(tokenList[i].type)){
-        //wrong for calculation for now but we ll let it be and change it later
         Tokentype op = tokenList[i].type;
         ++i;
         
@@ -135,12 +139,11 @@ ASTnode *expressionParse(Tokenstruct *tokenList, int *index){
         tmp->data.binary.right = right;
         tmp->data.binary.op = op;
         tmp->line = tokenList[start].line;
+        tmp->fileName = strdup(tokenList[start].fileName);
         tmp->next = NULL;
         left = tmp;
     }
 
-    left->fileName = strdup(tokenList[start].fileName);
-    left->line = tokenList[start].line;
     *index = i;
     return left;
 }

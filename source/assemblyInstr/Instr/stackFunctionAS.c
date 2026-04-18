@@ -90,7 +90,7 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
                 break;
             }
             case IR_PARAM: {
-                Operand param = tmp->data.parameters.parameter;
+                Operand param = tmp->data.parameters;
                 setStackLayout(param, stack, context);
 
                 break;
@@ -98,7 +98,6 @@ StackLayout *stackFunctionAS(IRstruct *IRlist, FILE *output, ASContext* context)
             case IR_LABEL: break;
             case IR_JMP: break;
 
-            //array already allocated
             case IR_LOAD_ARRAY: {
                 Operand dst = tmp->data.loadArray.dst;
                 Operand index = tmp->data.loadArray.index;

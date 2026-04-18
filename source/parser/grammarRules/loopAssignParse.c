@@ -38,7 +38,7 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
 
         value->ast_type = AST_NUMBER;
         value->data.int_literal.value = 1;
-        value->fileName = tokenList[i].fileName;
+        value->fileName = strdup(tokenList[i].fileName);
 
         value->next = NULL;
     }
@@ -59,6 +59,7 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
 
         identifier->ast_type = AST_IDENTIFIER;
         identifier->data.identifier.name = strdup(tokenList[identifier_name].lexeme);
+        identifier->fileName = strdup(tokenList[i].fileName);
         identifier->next = NULL;
 
         expresison->ast_type = AST_BINARY_EXPR;

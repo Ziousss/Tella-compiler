@@ -15,7 +15,7 @@ Operand rodataIR(ASTnode *expression, IRContext *context){
     int stringID = context->current_string++;
 
     stringIR->op = IR_RODATA;
-    stringIR->data.rodata.string = stringChar;
+    stringIR->data.rodata.string = strdup(stringChar);
     stringIR->data.rodata.stringID = stringID;
     stringIR->next = NULL;
 
@@ -25,6 +25,5 @@ Operand rodataIR(ASTnode *expression, IRContext *context){
     stringOP.IR_type = IR_CONST;
     stringOP.data.IR_constant.cst_type = IR_STRING;
     stringOP.data.IR_constant.value.stringID = stringID;
-
     return stringOP;
 }

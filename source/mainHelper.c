@@ -13,7 +13,7 @@ MainContext *contextInit(char **argv, int argc){
     context->source = false;
     context->postSource = false;
     context->assembly = false;
-
+    context->stackLayout = false;
     context->errors = 0;
 
     for(int i = 3; i < argc; i++){
@@ -67,12 +67,12 @@ bool compileAssembly(const char *asmFile, const char *outputFile){
 
 void cleanup(ASTnode *programNode, GlobalFunc *functions, IRstruct *IR, MainContext *contextMain, Tokenstruct *tokenList){
     free(contextMain);
+    if(tokenList != NULL){
+        freeTokenList(tokenList);
+    }
     if(programNode != NULL){
         freeASTNode(programNode->data.program_node.func_def);
         free(programNode);
-    }
-    if(tokenList != NULL){
-        freeTokenList(tokenList);
     }
     if(functions != NULL) freeFunctions(functions);
     if(IR != NULL) freeIR(IR);
@@ -92,6 +92,19 @@ void freeIR(IRstruct *IR){
     IRstruct *current = IR;
     while(current != NULL){
         IRstruct *next = current->next;
+        IRoperation type = current->op;
+        switch (type){
+            case IR_PARAM:
+                if (current->data.parameters.IR_type == IR_VAR){
+                    free(current->data.parameters.data.IR_Variable.identifier);
+                }
+                break;
+            case IR_RODATA:{
+                free(current->data.rodata.string);
+            }
+            default:
+                break;
+        }
         free(current);
         current = next;
     }
@@ -149,8 +162,14 @@ void freeASTNode(ASTnode *node){
             break;
         }
         case AST_BOOLEAN: 
-        case AST_NUMBER:
+            free((void*)node->fileName);
+            break;
+        case AST_NUMBER:{
+            free((void*)node->fileName);
+            break;
+        }
         case AST_CHAR_LITERAL:{
+            free((void*)node->fileName);
             break;
         }
         
@@ -195,6 +214,7 @@ void freeASTNode(ASTnode *node){
         }
         case AST_VAR_DECL:{
             free((void*)node->fileName);
+            free((void*)node->data.declaration.identifier);
             freeASTNode(node->data.declaration.expression);
             break;
         }
@@ -224,6 +244,7 @@ void freeASTNode(ASTnode *node){
         }
         case AST_ARRAY_LOAD:{
             free((void*)node->fileName);
+            free(node->data.arrayLoad.name);
             freeASTNode(node->data.arrayLoad.index);
             break;
         }

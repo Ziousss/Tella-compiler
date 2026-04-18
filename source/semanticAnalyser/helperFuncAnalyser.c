@@ -14,7 +14,6 @@ void pop_scope(SemContext *context){
     while(sym != NULL){
         SymbolNode *next = sym->next;
         free(sym->name);
-        freeASTNode(sym->size);
         free(sym);
         sym = next;
     }

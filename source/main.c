@@ -62,7 +62,7 @@ int main (int argc, char **argv) {
     }
     
     printf("2. Preprocessing the source file...\n"); fflush(stdout);
-    char *originalFileName = argv[1];
+    char *originalFileName = argv[2];
     PreResult preprocessStruct = preprocess(source, originalFileName);
     free(source);
     if(preprocessStruct.size == 0){
@@ -102,7 +102,7 @@ int main (int argc, char **argv) {
     }
 
     for(size_t i = 0; i < preprocessStruct.size; i++){
-        free(preprocessStruct.data[i].fileName);
+        free((void*)preprocessStruct.data[i].fileName);
     }
     free(preprocessStruct.data);
 

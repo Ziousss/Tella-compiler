@@ -32,14 +32,13 @@ void setArrStack(Operand op, StackLayout *stack){
         }
     }
 
-    for(int i = 0; i < stack->arg_count; i++){
+    for(int i = 0; i < stack->param_count; i++){
         if(strcmp(op.data.IR_Variable.identifier, stack->arg[i].name_var) == 0){
             return;
         }
     }
 
     if(op.data.IR_Variable.size > 0){
-        printOperand(op);
         int size = op.data.IR_Variable.size;
         int elementSize = op.data.IR_Variable.elementSize;
         int spaceNeeded = size * elementSize;
@@ -246,6 +245,9 @@ void builtInFunctions(FILE *output, char *nameFunc, StackLayout *stack, ASContex
 
 IRstruct *getRodataString(ASContext *context, int stringID, char *string){
     IRstruct *tmp = context->rodata;
+    if(context->rodata == NULL){
+        return NULL;
+    }
 
     if(string == NULL && stringID != -1){
         while(tmp != NULL){
