@@ -20,12 +20,18 @@ GlobalFunc *programAnalyser(ASTnode *program) {
 
     push_scope(context);
     ASTnode *node = program->data.program_node.func_def;
+    while (node != NULL){
+        if(node->ast_type == AST_FUNC_SIGN){
+            funcSignAnalyser(node, context);
+        }
+        node = node->next;
+    }
+    node = program->data.program_node.func_def;
+    
     while (node != NULL)
     {
         if(node->ast_type == AST_FUNC_DEF || node->ast_type == AST_FUNC_DEF_MAIN){
             funcDefAnalyser(node, context);
-        } else if (node->ast_type == AST_FUNC_SIGN){
-            funcSignAnalyser(node, context);
         }
         node = node->next;
     } 

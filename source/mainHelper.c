@@ -44,11 +44,10 @@ MainContext *contextInit(char **argv, int argc){
         else if(strcmp(argv[i], "-St") == 0){
             context->stackLayout = true;
             continue;
-        }
-
-        printf("Unknown command [%s]. Use compiler -h to have the list of available commands.\n", argv[i]);
-        context->errors++;
-        return context;
+        } 
+        else if(strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "-o") == 0 ){
+            continue;
+        } 
     }
 
     return context;

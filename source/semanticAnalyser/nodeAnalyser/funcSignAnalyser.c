@@ -1,7 +1,8 @@
 #include "../include/semanticAnalyser/nodeAnalyser.h"
 
 void funcSignAnalyser(ASTnode *funcSign, SemContext *context){
-    if(find_in_scope(funcSign->data.func_def.name, context)){
+    SymbolNode *temp = find_in_scope(funcSign->data.func_def.name, context);
+    if(temp != NULL && temp->kind != SEM_SIGN){
         printf("Redefinition of the function signature %s.\n", funcSign->data.func_def.name);
         context->error_count++;
         return;

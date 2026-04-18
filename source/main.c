@@ -2,7 +2,7 @@
 
 int main (int argc, char **argv) {
     if(strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0){
-        printf("Usage: ./compiler <FILE.c> <OUTPUT>\n");
+        printf("Usage: ./compiler -f <FILE(S).c> -o <OUTPUT>\n");
         printf("After this command, you can use several other commands to better visualise the process.\n\n");
         printf("-So: Prints the source code before preprocessing.\n");
         printf("-Pr: Prints the source code after preprocessing.\n");
@@ -14,9 +14,9 @@ int main (int argc, char **argv) {
         return 0;
     }
 
-    if (argc < 3 || argc > 10) {
+    if (argc < 5) {
         // Usage {argv[0]} <FILE.c> <OUT>
-        printf("Usage: ./compiler <FILE.c> <OUTPUT> [command1] [command2] etc\n");
+        printf("Usage: ./compiler -f <FILE.c> -o <OUTPUT> [command1] [command2] etc\n");
         printf("For more informations: ./compiler -h or ./compiler -help\n");
         return 0;
     }
@@ -27,11 +27,36 @@ int main (int argc, char **argv) {
     }
 
     printf("1. Reading file...\n"); fflush(stdout);
-    char *source = readFile(argv[1]);
-    if (source == NULL){
-        printf("Fail to read the given file to compile.\n");
-        return 1;
+    size_t sourceLen = 0;
+    size_t argvIndex = 2;
+    char *source = NULL;
+
+    while(strcmp(argv[argvIndex], "-o") != 0){
+        char *tmp = readFile(argv[argvIndex]);
+        if (tmp == NULL){
+            printf("Fail to read the given file to compile.\n");
+            if(source != NULL) free(source);
+            return 1;
+        }
+        size_t tmpLen = strlen(tmp);
+        char *newSource = realloc(source, sourceLen + tmpLen + 1);
+        if(newSource == NULL){
+            printf("Realloc failed for newSource in main.\n");
+            if(source != NULL) free(source);
+            free(tmp);
+            return 50;
+        }
+
+        source = newSource;
+        memcpy(source + sourceLen, tmp, tmpLen);
+        sourceLen += tmpLen;
+        source[sourceLen] = '\0';
+        free(tmp);
+        tmp = NULL;
+        argvIndex++;
     }
+    size_t outputFileIndex = ++argvIndex;
+
     if(contextMain->source) {
         printf("\n%s\n\n", source);
     }
@@ -119,7 +144,7 @@ int main (int argc, char **argv) {
         return 7;
     }
 
-    char *executable = argv[2];
+    char *executable = argv[outputFileIndex];
     bool compiled = compileAssembly("ASoutput.s", executable);
 
     if(!compiled){

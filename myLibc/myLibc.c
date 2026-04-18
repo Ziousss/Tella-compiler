@@ -6,3 +6,7 @@ size_t myStrlen(char *string){
 
     return count;
 }
+
+int foo(){
+    return 5;
+}
