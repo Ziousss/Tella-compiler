@@ -2,6 +2,10 @@
 
 SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
     char *name = funcCallAst->data.func_call.name;
+    if(compilerDefined(name)){
+        //all this does is push to scope the specific defined functio it wants to use.
+        pushCompilerDefinedFunc(name, context, funcCallAst->line);
+    }
     SymbolNode *funcCallNode = find_in_scope(name,context);
     if(funcCallNode == NULL || (funcCallNode->kind != SEM_FCT && funcCallNode->kind != SEM_SIGN)){
         printf("You call the function %s but it has not been defined yet.\n", name);

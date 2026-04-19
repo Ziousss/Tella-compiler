@@ -7,17 +7,17 @@ void programAS(IRstruct *IRlist, FILE *output, ASContext* context, bool stackLay
     bool rodataNeeded = false;
     context->returned = false;
 
-    IRstruct *rodataTmp = tmp;
+    IRstruct *rodataCheck = tmp;
 
-    while(rodataTmp != NULL){
-        if(rodataTmp->op == IR_RODATA){
+    while(rodataCheck != NULL){
+        if(rodataCheck->op == IR_RODATA){
             if(!rodataNeeded){
                 fprintf(output, ".section .rodata\n");
                 rodataNeeded = true;
             }
-            fprintf(output, "   string_%d: .asciz \"%s\"\n", rodataTmp->data.rodata.stringID, rodataTmp->data.rodata.string);
+            fprintf(output, "   string_%d: .asciz \"%s\"\n", rodataCheck->data.rodata.stringID, rodataCheck->data.rodata.string);
         }
-        rodataTmp = rodataTmp->next;
+        rodataCheck = rodataCheck->next;
     }
 
     IRstruct *tmpContext = tmp;

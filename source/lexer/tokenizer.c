@@ -277,6 +277,7 @@ Tokenstruct *lexicalAnalyzer(PreResult pre){
                     
                     if(type == TOK_CHAR){
                         if(right+1 < len && (input[right].c == '*' || input[right+1].c == '*')){
+                            free(sub);
                             if(input[right].c == ' '){
                                 right++;
                             }

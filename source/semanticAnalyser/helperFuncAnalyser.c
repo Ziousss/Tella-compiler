@@ -14,6 +14,7 @@ void pop_scope(SemContext *context){
     while(sym != NULL){
         SymbolNode *next = sym->next;
         free(sym->name);
+        freeASTNode(sym->size);
         free(sym);
         sym = next;
     }
@@ -234,4 +235,179 @@ SymbolParams *getParams(ParameterNode *ASTparams){
     }
     
     return head;
+}
+
+ASTnode *copyAST(ASTnode *node){
+    if(node == NULL) return NULL;
+
+    ASTnode *copy = malloc(sizeof(ASTnode));
+    if(copy == NULL){
+        printf("Malloc failed in copyAST\n");
+        return NULL;
+    }
+
+    copy->ast_type = node->ast_type;
+    copy->line = node->line;
+    copy->fileName = node->fileName ? strdup(node->fileName) : NULL;
+
+    switch(node->ast_type){
+        case AST_IDENTIFIER:
+            copy->data.identifier.name = strdup(node->data.identifier.name);
+            break;
+
+        case AST_NUMBER:
+            copy->data.int_literal.value = node->data.int_literal.value;
+            break;
+
+        case AST_SIZET:
+            copy->data.sizeT_literal.value = node->data.sizeT_literal.value;
+            break;
+
+        case AST_CHAR_LITERAL:
+            copy->data.character_literal.character = node->data.character_literal.character;
+            break;
+
+        case AST_BOOLEAN:
+            copy->data.boolean_literal.boolean = node->data.boolean_literal.boolean;
+            break;
+
+        case AST_STRING_LITERAL:
+            copy->data.string_literal.string = strdup(node->data.string_literal.string);
+            break;
+
+        case AST_BINARY_EXPR:
+            copy->data.binary.op = node->data.binary.op;
+            copy->data.binary.left = copyAST(node->data.binary.left);
+            copy->data.binary.right = copyAST(node->data.binary.right);
+            break;
+
+        case AST_ASSIGN_EXPR:
+            copy->data.assign.target = strdup(node->data.assign.target);
+            copy->data.assign.value = copyAST(node->data.assign.value);
+            break;
+
+        case AST_VAR_DECL:
+            copy->data.declaration.type = node->data.declaration.type;
+            copy->data.declaration.identifier = strdup(node->data.declaration.identifier);
+            copy->data.declaration.expression = copyAST(node->data.declaration.expression);
+            break;
+
+        case AST_ARRAY_DECL:
+            copy->data.arrayDecl.name = strdup(node->data.arrayDecl.name);
+            copy->data.arrayDecl.type = node->data.arrayDecl.type;
+            copy->data.arrayDecl.size = copyAST(node->data.arrayDecl.size);
+            copy->data.arrayDecl.value = copyAST(node->data.arrayDecl.value);
+            break;
+
+        case AST_ASSIGN_ARRAY:
+            copy->data.arrayAssign.name = strdup(node->data.arrayAssign.name);
+            copy->data.arrayAssign.type = node->data.arrayAssign.type;
+            copy->data.arrayAssign.index = copyAST(node->data.arrayAssign.index);
+            copy->data.arrayAssign.value = copyAST(node->data.arrayAssign.value);
+            break;
+
+        case AST_ARRAY_LOAD:
+            copy->data.arrayLoad.name = strdup(node->data.arrayLoad.name);
+            copy->data.arrayLoad.index = copyAST(node->data.arrayLoad.index);
+            break;
+
+        case AST_FUNC_CALL: {
+            copy->data.func_call.name = strdup(node->data.func_call.name);
+
+            ArgNode *src = node->data.func_call.args;
+            ArgNode *head = NULL;
+            ArgNode *tail = NULL;
+
+            while(src){
+                ArgNode *newArg = malloc(sizeof(ArgNode));
+                newArg->expression = copyAST(src->expression);
+                newArg->next = NULL;
+
+                if(!head) head = tail = newArg;
+                else {
+                    tail->next = newArg;
+                    tail = newArg;
+                }
+                src = src->next;
+            }
+
+            copy->data.func_call.args = head;
+            break;
+        }
+
+        case AST_BLOCK:
+            copy->data.block.stmts = copyAST(node->data.block.stmts);
+            break;
+
+        case AST_RETURN:
+            copy->data.return_node.expr = copyAST(node->data.return_node.expr);
+            break;
+
+        case AST_IF_STMT:
+            copy->data.if_node.condition = copyAST(node->data.if_node.condition);
+            copy->data.if_node.if_branch = copyAST(node->data.if_node.if_branch);
+            copy->data.if_node.else_branch = copyAST(node->data.if_node.else_branch);
+            break;
+
+        case AST_WHILE_STMT:
+            copy->data.while_node.condition = copyAST(node->data.while_node.condition);
+            copy->data.while_node.block = copyAST(node->data.while_node.block);
+            break;
+
+        case AST_FOR_STMT:
+            copy->data.for_node.initialisation = copyAST(node->data.for_node.initialisation);
+            copy->data.for_node.condition = copyAST(node->data.for_node.condition);
+            copy->data.for_node.incrementation = copyAST(node->data.for_node.incrementation);
+            copy->data.for_node.block = copyAST(node->data.for_node.block);
+            break;
+
+        case AST_FUNC_DEF:
+        case AST_FUNC_DEF_MAIN:
+        case AST_FUNC_SIGN: {
+            copy->data.func_def.name = strdup(node->data.func_def.name);
+            copy->data.func_def.return_type = node->data.func_def.return_type;
+            copy->data.func_def.body = copyAST(node->data.func_def.body);
+            copy->data.func_def.param = node->data.func_def.param;
+
+            // copy parameters
+            ParameterNode *src = node->data.func_def.parameters;
+            ParameterNode *head = NULL;
+            ParameterNode *tail = NULL;
+
+            while(src){
+                ParameterNode *p = malloc(sizeof(ParameterNode));
+                p->name = strdup(src->name);
+                p->ret_type = src->ret_type;
+                p->count = src->count;
+                p->next = NULL;
+
+                if(!head) head = tail = p;
+                else {
+                    tail->next = p;
+                    tail = p;
+                }
+
+                src = src->next;
+            }
+
+            copy->data.func_def.parameters = head;
+            break;
+        }
+
+        case AST_PROGRAM:
+            copy->data.program_node.func_def = copyAST(node->data.program_node.func_def);
+            copy->data.program_node.include = copyAST(node->data.program_node.include);
+            break;
+
+        case AST_INCLUDE:
+            copy->data.include_node.name = strdup(node->data.include_node.name);
+            break;
+
+        default:
+            printf("copyAST: unhandled type %d\n", node->ast_type);
+            break;
+    }
+
+    copy->next = copyAST(node->next);
+    return copy;
 }

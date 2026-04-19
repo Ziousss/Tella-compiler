@@ -42,6 +42,10 @@ GlobalFunc *programAnalyser(ASTnode *program) {
         return NULL;
     } else if(context->error_count != 0){
         printf("%d errors in the semantic analyser.\n", context->error_count);
+        while(context->current_scope != NULL){
+            pop_scope(context);
+        }
+        free(context);
         return NULL;
     }
 
@@ -51,7 +55,7 @@ GlobalFunc *programAnalyser(ASTnode *program) {
         current = current->next;
     }
 
-    while (context->current_scope != NULL){
+    while(context->current_scope != NULL){
         pop_scope(context);
     }
     free(context);

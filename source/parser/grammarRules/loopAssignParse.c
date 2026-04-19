@@ -64,9 +64,12 @@ ASTnode *loopAssignParse(Tokenstruct *tokenList, int *index){
 
         expresison->ast_type = AST_BINARY_EXPR;
         expresison->data.binary.left = identifier;
-        if(tokenList[tok].type == TOK_PLUSEQ || tokenList[tok].type == TOK_PLUSPLUS) expresison->data.binary.op = TOK_PLUS;
+        if(tokenList[tok].type == TOK_PLUSEQ || tokenList[tok].type == TOK_PLUSPLUS) {
+            expresison->data.binary.op = TOK_PLUS;
+        }
         else expresison->data.binary.op = TOK_MINUS;
         expresison->data.binary.right = value;
+        expresison->fileName = strdup(tokenList[i].fileName);
         expresison->next = NULL;
 
         givenvalue = expresison;

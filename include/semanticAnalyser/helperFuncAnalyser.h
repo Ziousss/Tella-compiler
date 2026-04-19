@@ -27,5 +27,6 @@ void pushIRSym(IRsymbole *symIR, SemContext *context);
 int compSizeTInt(SemanticType type1, SemanticType type2);
 bool canConvert(SemanticType target, SemanticType source, ASTnode *expr);
 SymbolParams *getParams(ParameterNode *ASTparams);
+ASTnode *copyAST(ASTnode *node);
 
 #endif

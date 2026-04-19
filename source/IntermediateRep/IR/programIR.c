@@ -16,6 +16,7 @@ IRstruct *programIR(ASTnode *program, GlobalFunc *definedFunc){
     context->tail = NULL;
     context->current_label = 0;
     context->current_tmp = 0;
+    context->current_string = 0;
     context->errors = 0;
     context->IRsym = definedFunc->sym;
 

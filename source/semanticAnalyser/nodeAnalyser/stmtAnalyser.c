@@ -30,7 +30,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             }
 
             sym->kind = SEM_ARR;
-            sym->size = stmtAst->data.arrayDecl.size;
+            sym->size = copyAST(stmtAst->data.arrayDecl.size);
             sym->name = strdup(stmtAst->data.arrayDecl.name);
             sym->type = arrType;
             sym->next = NULL;
@@ -79,12 +79,13 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
             SymbolNode *sym = malloc(sizeof(SymbolNode));
             if(sym == NULL){
                 printf("Malloc failed for sym in AST_VAR_DECL.\n");
+                context->error_count++;
                 return;
             }
             sym->kind = SEM_VAR;
+            sym->size = NULL;
             sym->name = strdup(stmtAst->data.declaration.identifier);
             sym->type = left_type;
-            sym->size = NULL;
             int size = -1;
 
             char *stringLit = NULL;
@@ -103,6 +104,7 @@ void stmtAnalyser(ASTnode *stmtAst, SemContext *context){
                     sizeAST->next = NULL;
                     sizeAST->data.int_literal.value = (int)strlen(stringLit);
                     sizeAST->line = stmtAst->line;
+                    sizeAST->fileName = strdup(stmtAst->fileName);
 
                     sym->size = sizeAST;
                     size = (int)strlen(stringLit);

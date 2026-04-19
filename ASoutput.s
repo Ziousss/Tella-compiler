@@ -1,7 +1,5 @@
 .intel_syntax noprefix
 .globl main
-.section .rodata
-   string_0: .asciz "hello"
 
 .section .text
 mov rsp, rbp
@@ -10,16 +8,34 @@ ret
 main:
 push rbp
 mov rbp, rsp
-sub rsp, 16
-lea rax, [rip + string_0]
-mov [rbp -8], rax
+sub rsp, 32
 mov rax, 0
-imul rax, 1
-mov rcx, [rbp -8]
-add rcx, rax
-movzx rbx, byte ptr [rcx]
-mov [rbp -16], rbx
+mov [rbp -8], rax
+L0:
+mov rax, [rbp -8]
+push rax
+mov rax, 6
+pop rbx
+cmp rbx, rax
+setl al
+movzx eax, al
+mov [rbp -16], rax
 mov rax, [rbp -16]
+test rax, rax
+je L1
+mov rax, 0
+mov [rbp -24], rax
+mov rax, [rbp -8]
+push rax
+mov rax, 1
+pop rbx
+add rax, rbx
+mov [rbp -32], rax
+mov rax, [rbp -32]
+mov [rbp -8], rax
+jmp L0
+L1:
+mov rax, 0
 mov rsp, rbp
 pop rbp
 ret

@@ -82,10 +82,15 @@ Source Code → Lexer → Parser → AST → Semantic Analysis → IR → Assemb
 
 ## Known Limitations
 
-- < 1% memory leak on standard programs
 - No optimization passes
 - Basic error reporting
 - Limited subset of C
+
+---
+
+## Memory Safety
+
+- No memory leaks or invalid memory accesses detected on the current test suite (Valgrind)
 
 ---
 
