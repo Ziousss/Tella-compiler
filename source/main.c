@@ -1,7 +1,7 @@
 #include "../include/main.h"
 
 int main (int argc, char **argv) {
-    if(strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0){
+    if(argc > 1 && (strcmp("-h", argv[1]) == 0 || strcmp("-help", argv[1]) == 0)){
         printf("Usage: ./compiler -f <FILE(S).c> -o <OUTPUT>\n");
         printf("After this command, you can use several other commands to better visualise the process.\n\n");
         printf("-So: Prints the source code before preprocessing.\n");

@@ -44,12 +44,6 @@ SemanticType funcCallAnalyser(ASTnode *funcCallAst, SemContext *context){
         arg = arg->next;
         tmp = tmp->next;
     }
-    while(paramSym != NULL){
-        SymbolParams *next = paramSym->next;
-        free(paramSym->name);
-        free(paramSym);
-        paramSym = next;
-    }
-    
+
     return funcCallNode->type;
 }

@@ -64,7 +64,7 @@ ASTnode *funcDefParse(Tokenstruct *tokenList, int *index){
         *index = i;
         return func_def_ast;
     }
-
+    
     ASTnode *block = blockParse(tokenList, &i);
 
     if (block == NULL){

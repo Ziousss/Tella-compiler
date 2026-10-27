@@ -69,7 +69,7 @@ void forAnalyser(ASTnode *forAst, SemContext *context){
         pop_scope(context);
         return;      
     }
-
+    
     blockAnalyser(block, context, false);
 
     //for the declared variable in the initialization

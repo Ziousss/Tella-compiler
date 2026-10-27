@@ -19,6 +19,12 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
     }
     if (tokenList[i].type == TOK_RPAREN)
     {
+        i++;
+        if(tokenList[i].type != TOK_SEMICOLON){
+            printf("Missing ';' after '(' on line %ld for the function call file %s\n", tokenList[i].line, tokenList[i].fileName);
+            return NULL;
+        }
+        
         funcCall = malloc(sizeof(ASTnode));
         if (funcCall == NULL){
             printf("Malloc error in funcCall");
@@ -32,10 +38,14 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
         return funcCall;
     } else {
         while(true){
-            ArgNode *arg = malloc(sizeof(ArgNode));
             ASTnode *expression = expressionParse(tokenList, &i);
             if(expression == NULL){
                 printf("Issue in the expressions of function calls line %ld file %s\n", tokenList[i].line, tokenList[i].fileName);
+                return NULL;
+            }
+            ArgNode *arg = malloc(sizeof(ArgNode));
+            if(arg == NULL){
+                printf("Malloc malfunctionned in funcCallParse\n");
                 return NULL;
             }
             arg->expression = expression;
@@ -72,8 +82,8 @@ ASTnode *funcCallParse(Tokenstruct *tokenList, int *index){
     }++i;
 
     if(tokenList[i].type != TOK_SEMICOLON){
-        free(funcCall);
         printf("Missing semi colon line %ld after the function call of %s file %s\n", tokenList[i].line, tokenList[name_index].lexeme, tokenList[i].fileName);
+        return NULL;
     } ++i;
 
     funcCall = malloc(sizeof(ASTnode));
